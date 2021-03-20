@@ -1,15 +1,18 @@
 import {
+	AmbientLight,
 	BoxGeometry,
 	BufferGeometry,
+	DirectionalLight,
 	Line,
 	LineBasicMaterial,
 	Mesh,
-	MeshBasicMaterial,
+	MeshPhongMaterial,
 	PerspectiveCamera,
 	Scene,
 	Vector3,
 	WebGLRenderer,
 } from 'three'
+import { DragControls } from 'three/examples/jsm/controls/DragControls'
 
 export class ThreeApp {
 	renderer = new WebGLRenderer()
@@ -24,8 +27,17 @@ export class ThreeApp {
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 		document.body.appendChild(this.renderer.domElement)
 
+		const ambientLight = new AmbientLight(0x404040)
+		this.scene.add(ambientLight)
+		const light = new DirectionalLight(0xa0a0a0)
+		light.position.x = -2
+		this.scene.add(light)
+
 		const geometry = new BoxGeometry()
-		const material = new MeshBasicMaterial({ color: 0x00ff00 })
+		const material = new MeshPhongMaterial({
+			color: 0x00ff00,
+			specular: 0xaaaaaa,
+		})
 		const cube = new Mesh(geometry, material)
 		this.scene.add(cube)
 
@@ -41,6 +53,18 @@ export class ThreeApp {
 		this.scene.add(line)
 
 		this.camera.position.z = 5
+
+		const controls = new DragControls(
+			[cube],
+			this.camera,
+			this.renderer.domElement
+		)
+		controls.addEventListener('dragstart', function (event) {
+			event.object.material.emissive.set(0x333333)
+		})
+		controls.addEventListener('dragend', function (event) {
+			event.object.material.emissive.set(0x000000)
+		})
 	}
 	update() {
 		this.scene.children.forEach((child) => child.rotateX(0.01).rotateY(0.005))
