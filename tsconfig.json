@@ -7,7 +7,6 @@
 		"noUnusedLocals": true,
 		"esModuleInterop": true,
 		"sourceMap": true,
-//		"skipLibCheck": true,
 		"forceConsistentCasingInFileNames": true,
 		"strictPropertyInitialization": false,
 		"allowJs": true,
