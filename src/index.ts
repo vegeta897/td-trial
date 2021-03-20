@@ -1,35 +1,16 @@
 import './style.css'
-import {
-	BoxGeometry,
-	Mesh,
-	MeshBasicMaterial,
-	PerspectiveCamera,
-	Scene,
-	WebGLRenderer,
-} from 'three'
+import { WEBGL } from 'three/examples/jsm/WebGL'
+import { ThreeApp } from './three-app'
 
-const scene = new Scene()
-const camera = new PerspectiveCamera(
-	75,
-	window.innerWidth / window.innerHeight,
-	0.1,
-	1000
-)
-
-const renderer = new WebGLRenderer()
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
-
-const geometry = new BoxGeometry()
-const material = new MeshBasicMaterial({ color: 0x00ff00 })
-const cube = new Mesh(geometry, material)
-scene.add(cube)
-camera.position.z = 5
-
-function animate() {
-	requestAnimationFrame(animate)
-	cube.rotation.x += 0.01
-	cube.rotation.y += 0.01
-	renderer.render(scene, camera)
+if (WEBGL.isWebGLAvailable()) {
+	const app = new ThreeApp()
+	function animate() {
+		requestAnimationFrame(animate)
+		app.update()
+		app.render()
+	}
+	animate()
+} else {
+	const warning = WEBGL.getWebGLErrorMessage()
+	document.body.appendChild(warning)
 }
-animate()
