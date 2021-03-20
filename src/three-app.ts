@@ -59,10 +59,16 @@ export class ThreeApp {
 			this.camera,
 			this.renderer.domElement
 		)
-		controls.addEventListener('dragstart', function (event) {
+		controls.addEventListener('dragstart', (event) => {
 			event.object.material.emissive.set(0x333333)
 		})
-		controls.addEventListener('dragend', function (event) {
+		controls.addEventListener('hoveron', (event) => {
+			event.object.material.emissive.set(0x111111)
+		})
+		controls.addEventListener('hoveroff', (event) => {
+			event.object.material.emissive.set(0x000000)
+		})
+		controls.addEventListener('dragend', (event) => {
 			event.object.material.emissive.set(0x000000)
 		})
 	}
