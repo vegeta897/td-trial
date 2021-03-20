@@ -66,9 +66,6 @@ export class ThreeApp {
 			event.object.material.emissive.set(0x000000)
 		})
 	}
-	update() {
-		this.scene.children.forEach((child) => child.rotateX(0.01).rotateY(0.005))
-	}
 	render() {
 		this.renderer.render(this.scene, this.camera)
 	}
