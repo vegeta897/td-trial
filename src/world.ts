@@ -17,7 +17,7 @@ export class ECSWorld {
 		this.systems.push(new PathSystem(this.world))
 
 		// Create level
-		const level = new Level()
+		const level = new Level(threeApp)
 
 		// Add cube on path
 		this.world.create(

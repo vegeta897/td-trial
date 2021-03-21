@@ -33,6 +33,8 @@ export class ThreeApp {
 		this.scene.add(ambientLight)
 		const light = new DirectionalLight(0xa0a0a0)
 		light.position.x = -2
+		light.position.z = 4
+		light.position.y = 10
 		this.scene.add(light)
 
 		const geometry = new BoxGeometry(0.5, 0.5, 0.5)
