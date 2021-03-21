@@ -1,28 +1,30 @@
 import {
 	AmbientLight,
+	AxesHelper,
 	BoxGeometry,
-	BufferGeometry,
 	DirectionalLight,
-	Line,
-	LineBasicMaterial,
 	Mesh,
 	MeshPhongMaterial,
-	PerspectiveCamera,
+	OrthographicCamera,
 	Scene,
-	Vector3,
 	WebGLRenderer,
 } from 'three'
-import { DragControls } from 'three/examples/jsm/controls/DragControls'
+
+const ASPECT = window.innerWidth / window.innerHeight
+const SCALE = 6
 
 export class ThreeApp {
 	renderer = new WebGLRenderer()
 	scene = new Scene()
-	camera = new PerspectiveCamera(
-		75,
-		window.innerWidth / window.innerHeight,
-		0.1,
-		1000
+	camera = new OrthographicCamera(
+		-ASPECT * SCALE,
+		ASPECT * SCALE,
+		SCALE,
+		-SCALE,
+		0,
+		200
 	)
+	cube: Mesh
 	constructor() {
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 		document.body.appendChild(this.renderer.domElement)
@@ -33,44 +35,21 @@ export class ThreeApp {
 		light.position.x = -2
 		this.scene.add(light)
 
-		const geometry = new BoxGeometry()
+		const geometry = new BoxGeometry(0.5, 0.5, 0.5)
 		const material = new MeshPhongMaterial({
 			color: 0x00ff00,
 			specular: 0xaaaaaa,
 		})
-		const cube = new Mesh(geometry, material)
-		this.scene.add(cube)
+		this.cube = new Mesh(geometry, material)
+		this.scene.add(this.cube)
 
-		const lineMaterial = new LineBasicMaterial({ color: 0x0000ff })
-		const points = []
-		points.push(new Vector3(-1, 0, 0))
-		points.push(new Vector3(0, 1, 0))
-		points.push(new Vector3(1, 0, 0))
-		points.push(new Vector3(0, -1, 0))
-		points.push(new Vector3(-1, 0, 0))
-		const lineGeometry = new BufferGeometry().setFromPoints(points)
-		const line = new Line(lineGeometry, lineMaterial)
-		this.scene.add(line)
+		this.camera.position.x = 100
+		this.camera.position.y = 100
+		this.camera.position.z = 50
+		this.camera.lookAt(2, 0, 2)
 
-		this.camera.position.z = 5
-
-		const controls = new DragControls(
-			[cube],
-			this.camera,
-			this.renderer.domElement
-		)
-		controls.addEventListener('dragstart', (event) => {
-			event.object.material.emissive.set(0x333333)
-		})
-		controls.addEventListener('hoveron', (event) => {
-			event.object.material.emissive.set(0x111111)
-		})
-		controls.addEventListener('hoveroff', (event) => {
-			event.object.material.emissive.set(0x000000)
-		})
-		controls.addEventListener('dragend', (event) => {
-			event.object.material.emissive.set(0x000000)
-		})
+		const axesHelper = new AxesHelper(4)
+		this.scene.add(axesHelper)
 	}
 	render() {
 		this.renderer.render(this.scene, this.camera)

@@ -1,8 +1,10 @@
 import { World } from 'uecs'
 import ThreeObject3D from './components/com_object3d'
 import { ThreeApp } from './three-app'
-import { RotateSystem } from './systems/sys_rotate'
 import { System } from './systems/system'
+import Path from './components/com_path'
+import { Level } from './level'
+import { PathSystem } from './systems/sys_path'
 
 export class ECSWorld {
 	world = new World()
@@ -12,11 +14,15 @@ export class ECSWorld {
 		this.threeApp = threeApp
 
 		// Create systems
-		this.systems.push(new RotateSystem(this.world))
+		this.systems.push(new PathSystem(this.world))
 
-		// Create ThreeObject3D components for all objects in scene
-		this.threeApp.scene.children.forEach((obj3d) =>
-			this.world.create(new ThreeObject3D(obj3d))
+		// Create level
+		const level = new Level()
+
+		// Add cube on path
+		this.world.create(
+			new ThreeObject3D(this.threeApp.cube),
+			new Path(level.startingNode)
 		)
 	}
 	update() {
