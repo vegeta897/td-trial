@@ -9,21 +9,17 @@ import {
 	Scene,
 	WebGLRenderer,
 } from 'three'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
+import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 
-const ASPECT = window.innerWidth / window.innerHeight
 const SCALE = 6
 
 export class ThreeApp {
-	renderer = new WebGLRenderer({ antialias: true })
+	renderer = new WebGLRenderer()
+	composer = new EffectComposer(this.renderer)
 	scene = new Scene()
-	camera = new OrthographicCamera(
-		-ASPECT * SCALE,
-		ASPECT * SCALE,
-		SCALE,
-		-SCALE,
-		0,
-		200
-	)
+	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
 	cube: Mesh
 	constructor() {
 		this.renderer.setPixelRatio(window.devicePixelRatio)
@@ -54,8 +50,24 @@ export class ThreeApp {
 		const axesHelper = new AxesHelper(3)
 		axesHelper.position.y = -1 / 4
 		this.scene.add(axesHelper)
+
+		this.composer.addPass(new RenderPass(this.scene, this.camera))
+		this.composer.addPass(new SMAAPass(0, 0))
+
+		window.addEventListener('resize', this.onWindowResize.bind(this))
+		this.onWindowResize()
 	}
 	render(dt: number) {
-		this.renderer.render(this.scene, this.camera)
+		this.composer.render()
+	}
+	onWindowResize() {
+		const aspect = window.innerWidth / window.innerHeight
+		this.camera.left = -aspect * SCALE
+		this.camera.right = aspect * SCALE
+		this.camera.top = SCALE
+		this.camera.bottom = -SCALE
+		this.camera.updateProjectionMatrix()
+		this.renderer.setSize(window.innerWidth, window.innerHeight)
+		this.composer.setSize(window.innerWidth, window.innerHeight)
 	}
 }
