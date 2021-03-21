@@ -14,7 +14,7 @@ const ASPECT = window.innerWidth / window.innerHeight
 const SCALE = 6
 
 export class ThreeApp {
-	renderer = new WebGLRenderer()
+	renderer = new WebGLRenderer({ antialias: true })
 	scene = new Scene()
 	camera = new OrthographicCamera(
 		-ASPECT * SCALE,
@@ -26,6 +26,7 @@ export class ThreeApp {
 	)
 	cube: Mesh
 	constructor() {
+		this.renderer.setPixelRatio(window.devicePixelRatio)
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 		document.body.appendChild(this.renderer.domElement)
 
@@ -50,10 +51,11 @@ export class ThreeApp {
 		this.camera.position.z = 50
 		this.camera.lookAt(2, 0, 2)
 
-		const axesHelper = new AxesHelper(4)
+		const axesHelper = new AxesHelper(3)
+		axesHelper.position.y = -1 / 4
 		this.scene.add(axesHelper)
 	}
-	render() {
+	render(dt: number) {
 		this.renderer.render(this.scene, this.camera)
 	}
 }
