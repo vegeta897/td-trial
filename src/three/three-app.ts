@@ -4,6 +4,7 @@ import {
 	DirectionalLight,
 	OrthographicCamera,
 	Scene,
+	Vector3,
 	WebGLRenderer,
 } from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
@@ -11,7 +12,8 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
 
-const SCALE = 6
+const SCALE = 4
+const NO_AA = false
 
 export class ThreeApp {
 	renderer = new WebGLRenderer()
@@ -32,23 +34,25 @@ export class ThreeApp {
 		light.position.y = 10
 		this.scene.add(light)
 
-		this.camera.position.x = 100
-		this.camera.position.y = 100
-		this.camera.position.z = 50
-		this.camera.lookAt(2, 0, 2)
+		const center = new Vector3(2, 0, 2)
+		this.camera.position.setFromSphericalCoords(
+			100, // Distance
+			Math.PI / 4, // Pitch
+			(Math.PI * 2) / 6 // Yaw
+		)
+		this.camera.lookAt(center)
 
-		const axesHelper = new AxesHelper(3)
+		const axesHelper = new AxesHelper(2)
 		axesHelper.position.y = -1 / 4
 		this.scene.add(axesHelper)
 
 		this.composer.addPass(new RenderPass(this.scene, this.camera))
-		this.composer.addPass(new SMAAPass(0, 0))
+		if (!NO_AA) this.composer.addPass(new SMAAPass(0, 0))
 
 		window.addEventListener('resize', this.onWindowResize.bind(this))
 		this.onWindowResize()
 	}
 	render(dt: number) {
-		// TODO: Use dt to lerp
 		this.systems.forEach((system) => system.update(dt))
 		this.composer.render()
 	}

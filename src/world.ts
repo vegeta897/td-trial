@@ -28,7 +28,7 @@ export class ECSWorld {
 
 		const spawnerCube = createCube()
 		threeApp.scene.add(spawnerCube)
-		this.world.create(new ThreeObject3D(spawnerCube), new Spawner(30))
+		this.world.create(new ThreeObject3D(spawnerCube), new Spawner(60))
 	}
 	update() {
 		this.systems.forEach((system) => system.update())
