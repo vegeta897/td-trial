@@ -9,6 +9,7 @@ import {
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
+import { System } from '../systems/system'
 
 const SCALE = 6
 
@@ -17,6 +18,7 @@ export class ThreeApp {
 	composer = new EffectComposer(this.renderer)
 	scene = new Scene()
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
+	systems: System[] = []
 	constructor() {
 		this.renderer.setPixelRatio(window.devicePixelRatio)
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
@@ -47,6 +49,7 @@ export class ThreeApp {
 	}
 	render(dt: number) {
 		// TODO: Use dt to lerp
+		this.systems.forEach((system) => system.update(dt))
 		this.composer.render()
 	}
 	onWindowResize() {

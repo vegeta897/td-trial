@@ -6,6 +6,7 @@ import { ThreeApp } from '../three/three-app'
 import { Level } from '../level'
 import { createCube } from '../three/cube'
 import { World } from 'uecs'
+import Transform3D from '../components/com_transform3d'
 
 export default class SpawnerSystem extends System {
 	view = this.world.view(ThreeObject3D, Spawner)
@@ -22,6 +23,7 @@ export default class SpawnerSystem extends System {
 				const marcher = createCube()
 				this.threeApp.scene.add(marcher)
 				this.world.create(
+					new Transform3D(),
 					new ThreeObject3D(marcher),
 					new Path(this.level.startingNode)
 				)

@@ -7,5 +7,5 @@ export abstract class System {
 		this.world = world
 	}
 
-	abstract update(): void
+	abstract update(dt?: number): void
 }

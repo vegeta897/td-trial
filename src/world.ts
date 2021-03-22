@@ -7,6 +7,8 @@ import { PathSystem } from './systems/sys_path'
 import Spawner from './components/com_spawner'
 import { createCube } from './three/cube'
 import SpawnerSystem from './systems/sys_spawner'
+import RenderSystem from './systems/sys_render'
+import TransformSystem from './systems/sys_transform'
 
 export class ECSWorld {
 	world = new World()
@@ -19,8 +21,10 @@ export class ECSWorld {
 		const level = new Level(threeApp)
 
 		// Create systems
-		this.systems.push(new PathSystem(this.world))
 		this.systems.push(new SpawnerSystem(this.world, threeApp, level))
+		this.systems.push(new PathSystem(this.world))
+		this.systems.push(new TransformSystem(this.world))
+		threeApp.systems.push(new RenderSystem(this.world))
 
 		const spawnerCube = createCube()
 		threeApp.scene.add(spawnerCube)
