@@ -19,7 +19,8 @@ export default class SpawnerSystem extends System {
 	}
 	update() {
 		this.view.each((entity, obj3d, spawner) => {
-			if (spawner.tick === 0) {
+			if (++spawner.tick === spawner.interval) {
+				spawner.tick = 0
 				const marcher = createCube()
 				this.threeApp.scene.add(marcher)
 				this.world.create(
@@ -28,7 +29,6 @@ export default class SpawnerSystem extends System {
 					new Path(this.level.startingNode)
 				)
 			}
-			spawner.tick = (spawner.tick + 1) % spawner.interval
 		})
 	}
 }

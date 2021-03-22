@@ -17,23 +17,24 @@ export class PathSystem extends System {
 					path.toNode = path.fromNode.nextNode
 					path.distance = path.fromNode.distanceTo(path.toNode)
 					path.progress = 0
+					this.world.emplace(
+						entity,
+						new Velocity3D(
+							new Vector3()
+								.subVectors(path.toNode, path.fromNode)
+								.normalize()
+								.multiplyScalar(MOVE_SPEED)
+						)
+					)
 				} else {
 					this.world.destroy(entity)
 					return
 				}
 			}
-			this.world.emplace(
-				entity,
-				new Velocity3D(
-					new Vector3()
-						.subVectors(path.toNode, path.fromNode)
-						.normalize()
-						.multiplyScalar(MOVE_SPEED)
-				)
-			)
 			path.progress += MOVE_SPEED
 			if (path.progress >= path.distance) {
 				path.fromNode = path.toNode
+				this.world.remove(entity, Velocity3D)
 				delete path.toNode
 			}
 		})
