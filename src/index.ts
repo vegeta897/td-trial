@@ -1,6 +1,6 @@
 import './style.css'
 import { WEBGL } from 'three/examples/jsm/WebGL'
-import { ThreeApp } from './three-app'
+import { ThreeApp } from './three/three-app'
 import { ECSWorld } from './world'
 import Stats from 'three/examples/jsm/libs/stats.module'
 

@@ -1,10 +1,7 @@
 import {
 	AmbientLight,
 	AxesHelper,
-	BoxGeometry,
 	DirectionalLight,
-	Mesh,
-	MeshPhongMaterial,
 	OrthographicCamera,
 	Scene,
 	WebGLRenderer,
@@ -20,7 +17,6 @@ export class ThreeApp {
 	composer = new EffectComposer(this.renderer)
 	scene = new Scene()
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
-	cube: Mesh
 	constructor() {
 		this.renderer.setPixelRatio(window.devicePixelRatio)
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
@@ -33,14 +29,6 @@ export class ThreeApp {
 		light.position.z = 4
 		light.position.y = 10
 		this.scene.add(light)
-
-		const geometry = new BoxGeometry(0.5, 0.5, 0.5)
-		const material = new MeshPhongMaterial({
-			color: 0x00ff00,
-			specular: 0xaaaaaa,
-		})
-		this.cube = new Mesh(geometry, material)
-		this.scene.add(this.cube)
 
 		this.camera.position.x = 100
 		this.camera.position.y = 100
@@ -58,6 +46,7 @@ export class ThreeApp {
 		this.onWindowResize()
 	}
 	render(dt: number) {
+		// TODO: Use dt to lerp
 		this.composer.render()
 	}
 	onWindowResize() {

@@ -15,7 +15,7 @@ export class PathSystem extends System {
 					path.distance = path.fromNode.distanceTo(path.toNode)
 					path.progress = 0
 				} else {
-					this.world.remove(entity, Path)
+					this.world.destroy(entity)
 					return
 				}
 			}

@@ -1,5 +1,5 @@
 import { BufferGeometry, Line, LineBasicMaterial, Vector3 } from 'three'
-import { ThreeApp } from './three-app'
+import { ThreeApp } from './three/three-app'
 
 export class PathNode extends Vector3 {
 	nextNode?: PathNode
