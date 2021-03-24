@@ -27,7 +27,8 @@ export default class SpawnerSystem extends System {
 				this.world.create(
 					new Transform3D(transform.vector3.clone()),
 					new ThreeObject3D(marcher),
-					new Path(this.level.startingNode)
+					new Path(this.level.startingNode),
+					Tag.for(TagID.Enemy)
 				)
 			}
 		})
