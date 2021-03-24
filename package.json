@@ -17,7 +17,7 @@
 	},
 	"dependencies": {
 		"three": "^0.126.1",
-		"uecs": "^0.2.7"
+		"uecs": "^0.3.0"
 	},
 	"devDependencies": {
 		"@types/three": "^0.126.1",

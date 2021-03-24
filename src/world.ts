@@ -15,10 +15,10 @@ import { Group, Vector3 } from 'three'
 import BulletSystem from './systems/sys_bullet'
 
 export enum TagID {
-	Turret = 'turret',
-	Spawner = 'spawner',
-	Bullet = 'bullet',
-	Enemy = 'enemy',
+	Turret,
+	Spawner,
+	Bullet,
+	Enemy,
 }
 
 export class ECSWorld {
