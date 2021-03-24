@@ -26,12 +26,10 @@ export class ThreeApp {
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 		document.body.appendChild(this.renderer.domElement)
 
-		const ambientLight = new AmbientLight(0x404040)
+		const ambientLight = new AmbientLight(0x5d275d)
 		this.scene.add(ambientLight)
-		const light = new DirectionalLight(0xa0a0a0)
-		light.position.x = -4
-		light.position.z = 8
-		light.position.y = 20
+		const light = new DirectionalLight(0xe0e0e0)
+		light.position.set(2, 5, 1)
 		this.scene.add(light)
 
 		const center = new Vector3(4, 0, 4)

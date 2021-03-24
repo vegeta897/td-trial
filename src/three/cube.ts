@@ -1,9 +1,8 @@
-import { BoxGeometry, Mesh, MeshPhongMaterial, Object3D } from 'three'
+import { BoxGeometry, Mesh, MeshLambertMaterial, Object3D } from 'three'
 
 const geometry = new BoxGeometry()
-const material = new MeshPhongMaterial({
+const material = new MeshLambertMaterial({
 	color: 0x00ff00,
-	specular: 0xaaaaaa,
 })
 const cube = new Mesh(geometry, material)
 
