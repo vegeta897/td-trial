@@ -60,7 +60,7 @@ export class ECSWorld {
 			Tag.for(TagID.Turret),
 			new ThreeObject3D(turretCube),
 			new Transform3D(new Vector3(2, 0, 10)),
-			new Emitter(20)
+			new Emitter(50)
 		)
 	}
 	update() {

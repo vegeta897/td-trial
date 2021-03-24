@@ -25,7 +25,7 @@ export default class TurretSystem extends System {
 		this.view.each((entity, turret, transform) => {
 			if (++turret.tick === turret.interval) {
 				turret.tick = 0
-				const bullet = createCube(0.2)
+				const bullet = createCube(0.15)
 				this.threeApp.scene.add(bullet)
 				this.world.create(
 					new Transform3D(transform.vector3.clone()),
