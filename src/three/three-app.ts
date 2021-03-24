@@ -12,7 +12,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
 
-const SCALE = 4
+const SCALE = 8
 const NO_AA = false
 
 export class ThreeApp {
@@ -29,12 +29,12 @@ export class ThreeApp {
 		const ambientLight = new AmbientLight(0x404040)
 		this.scene.add(ambientLight)
 		const light = new DirectionalLight(0xa0a0a0)
-		light.position.x = -2
-		light.position.z = 4
-		light.position.y = 10
+		light.position.x = -4
+		light.position.z = 8
+		light.position.y = 20
 		this.scene.add(light)
 
-		const center = new Vector3(2, 0, 2)
+		const center = new Vector3(4, 0, 4)
 		this.camera.position.setFromSphericalCoords(
 			100, // Distance
 			Math.PI / 4, // Pitch
@@ -42,8 +42,8 @@ export class ThreeApp {
 		)
 		this.camera.lookAt(center)
 
-		const axesHelper = new AxesHelper(2)
-		axesHelper.position.y = -1 / 4
+		const axesHelper = new AxesHelper(4)
+		axesHelper.position.y = -1 / 2
 		this.scene.add(axesHelper)
 
 		this.composer.addPass(new RenderPass(this.scene, this.camera))

@@ -12,7 +12,7 @@ export class PathNode extends Vector3 {
 export class Level {
 	startingNode = new PathNode()
 	constructor(threeApp: ThreeApp) {
-		this.startingNode.addNode(0, 0, 4).addNode(2).addNode(0, 0, -2).addNode(4)
+		this.startingNode.addNode(0, 0, 8).addNode(4).addNode(0, 0, -4).addNode(8)
 		let node: PathNode | undefined = this.startingNode
 		const pathPoints: Vector3[] = []
 		do {

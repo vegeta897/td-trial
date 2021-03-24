@@ -4,7 +4,7 @@ import Transform3D from '../components/com_transform3d'
 import Velocity3D from '../components/com_velocity3d'
 import { Vector3 } from 'three'
 
-const MOVE_SPEED = 0.02
+const MOVE_SPEED = 0.04
 
 export class PathSystem extends System {
 	view = this.world.view(Transform3D, Path)
