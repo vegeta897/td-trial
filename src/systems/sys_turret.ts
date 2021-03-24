@@ -10,6 +10,8 @@ import Transform3D from '../components/com_transform3d'
 import Velocity3D from '../components/com_velocity3d'
 import { Vector3 } from 'three'
 
+const BULLET_SPEED = 0.3
+
 export default class TurretSystem extends System {
 	view = this.world.view(Emitter, Transform3D, Tag.for(TagID.Turret))
 	threeApp: ThreeApp
@@ -28,7 +30,7 @@ export default class TurretSystem extends System {
 				this.world.create(
 					new Transform3D(transform.vector3.clone()),
 					new ThreeObject3D(bullet),
-					new Velocity3D(new Vector3(0, 0, -0.3)),
+					new Velocity3D(new Vector3(0, 0, -BULLET_SPEED)),
 					Tag.for(TagID.Bullet)
 				)
 			}

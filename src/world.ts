@@ -11,7 +11,7 @@ import RenderSystem from './systems/sys_render'
 import TransformSystem from './systems/sys_transform'
 import TurretSystem from './systems/sys_turret'
 import Transform3D from './components/com_transform3d'
-import { Vector3 } from 'three'
+import { Group, Vector3 } from 'three'
 import BulletSystem from './systems/sys_bullet'
 
 export enum TagID {
@@ -28,15 +28,19 @@ export class ECSWorld {
 	constructor(threeApp: ThreeApp) {
 		this.threeApp = threeApp
 
+		// Group enemy meshes for bullet raycasting
+		const enemyGroup = new Group()
+		this.threeApp.scene.add(enemyGroup)
+
 		// Create level
 		const level = new Level(threeApp)
 
 		// Create systems
-		this.systems.push(new SpawnerSystem(this.world, threeApp, level))
+		this.systems.push(new SpawnerSystem(this.world, enemyGroup, level))
 		this.systems.push(new PathSystem(this.world))
 		this.systems.push(new TurretSystem(this.world, threeApp, level))
+		this.systems.push(new BulletSystem(this.world, enemyGroup))
 		this.systems.push(new TransformSystem(this.world))
-		this.systems.push(new BulletSystem(this.world))
 		threeApp.systems.push(new RenderSystem(this.world))
 
 		// Create spawner
