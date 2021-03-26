@@ -9,20 +9,25 @@ const TICKS_PER_SECOND = 60
 
 const SIMULATION = {
 	tickTime: 1000 / TICKS_PER_SECOND,
+	smaa: true,
 }
-
-const gui = new GUI({ width: 400 })
-const simFolder = gui.addFolder('Simulation')
-simFolder
-	.add(SIMULATION, 'tickTime', 1, 300)
-	.onChange((value) => (SIMULATION.tickTime = value))
-simFolder.open()
 
 if (WEBGL.isWebGLAvailable()) {
 	const app = new ThreeApp()
 	const world = new ECSWorld(app)
 	const stats = Stats()
 	document.body.appendChild(stats.dom)
+
+	const gui = new GUI({ width: 400 })
+	const simFolder = gui.addFolder('Simulation')
+	simFolder
+		.add(SIMULATION, 'tickTime', 1, 300)
+		.onChange((tickTime) => (SIMULATION.tickTime = tickTime))
+	simFolder
+		.add(SIMULATION, 'smaa')
+		.onFinishChange((enabled) => (app.smaaPass.enabled = enabled))
+	simFolder.open()
+
 	let lastUpdate = performance.now()
 	let lag = 0
 	function update() {
@@ -37,7 +42,6 @@ if (WEBGL.isWebGLAvailable()) {
 			lag -= SIMULATION.tickTime
 		}
 		stats.begin()
-		app.controls.update()
 		app.render(lag / SIMULATION.tickTime)
 		stats.end()
 		lastUpdate = performance.now()

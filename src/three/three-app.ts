@@ -14,16 +14,16 @@ import { System } from '../systems/system'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 const SCALE = 8
-const NO_AA = false
 
 export class ThreeApp {
 	renderer = new WebGLRenderer()
 	composer = new EffectComposer(this.renderer)
 	scene = new Scene()
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
-	controls = new OrbitControls(this.camera, this.renderer.domElement)
+	cameraControls = new OrbitControls(this.camera, this.renderer.domElement)
 	systems: System[] = []
 	center = new Vector3(4, 0, 4)
+	smaaPass = new SMAAPass(0, 0)
 	constructor() {
 		this.renderer.setPixelRatio(window.devicePixelRatio)
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
@@ -47,23 +47,24 @@ export class ThreeApp {
 		this.scene.add(axesHelper)
 
 		this.composer.addPass(new RenderPass(this.scene, this.camera))
-		if (!NO_AA) this.composer.addPass(new SMAAPass(0, 0))
+		this.composer.addPass(this.smaaPass)
 
 		window.addEventListener('resize', this.onWindowResize.bind(this))
 		this.onWindowResize()
 
-		this.controls.target = this.center
-		this.controls.enableDamping = true
-		this.controls.dampingFactor = 0.05
-		this.controls.screenSpacePanning = false
-		this.controls.minDistance = 100
-		this.controls.maxDistance = 500
-		this.controls.minZoom = 0.1
-		this.controls.maxZoom = 5
-		this.controls.maxPolarAngle = Math.PI / 2
+		this.cameraControls.target = this.center
+		this.cameraControls.enableDamping = true
+		this.cameraControls.dampingFactor = 0.1
+		this.cameraControls.screenSpacePanning = false
+		this.cameraControls.minDistance = 100
+		this.cameraControls.maxDistance = 500
+		this.cameraControls.minZoom = 0.1
+		this.cameraControls.maxZoom = 5
+		this.cameraControls.maxPolarAngle = Math.PI / 2
 	}
 	render(dt: number) {
 		this.systems.forEach((system) => system.update(dt))
+		this.cameraControls.update()
 		this.composer.render()
 	}
 	onWindowResize() {
