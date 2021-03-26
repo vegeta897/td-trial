@@ -43,7 +43,7 @@ export class ThreeApp {
 		this.camera.lookAt(this.center)
 
 		const axesHelper = new AxesHelper(4)
-		axesHelper.position.y = -1 / 2
+		axesHelper.position.set(-2, 0, -2)
 		this.scene.add(axesHelper)
 
 		this.composer.addPass(new RenderPass(this.scene, this.camera))
