@@ -8,15 +8,14 @@ import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 const TICKS_PER_SECOND = 60
 
 const SIMULATION = {
-	ticksPerSecond: TICKS_PER_SECOND,
 	tickTime: 1000 / TICKS_PER_SECOND,
 }
 
-const gui = new GUI()
+const gui = new GUI({ width: 400 })
 const simFolder = gui.addFolder('Simulation')
 simFolder
-	.add(SIMULATION, 'ticksPerSecond', 1, 300, 1)
-	.onChange((value) => (SIMULATION.tickTime = 1000 / value))
+	.add(SIMULATION, 'tickTime', 1, 300)
+	.onChange((value) => (SIMULATION.tickTime = value))
 simFolder.open()
 
 if (WEBGL.isWebGLAvailable()) {
