@@ -3,9 +3,21 @@ import { WEBGL } from 'three/examples/jsm/WebGL'
 import { ThreeApp } from './three/three-app'
 import { ECSWorld } from './world'
 import Stats from 'three/examples/jsm/libs/stats.module'
+import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 
 const TICKS_PER_SECOND = 60
-const TICK_TIME = 1000 / TICKS_PER_SECOND
+
+const SIMULATION = {
+	ticksPerSecond: TICKS_PER_SECOND,
+	tickTime: 1000 / TICKS_PER_SECOND,
+}
+
+const gui = new GUI()
+const simFolder = gui.addFolder('Simulation')
+simFolder
+	.add(SIMULATION, 'ticksPerSecond', 1, 300, 1)
+	.onChange((value) => (SIMULATION.tickTime = 1000 / value))
+simFolder.open()
 
 if (WEBGL.isWebGLAvailable()) {
 	const app = new ThreeApp()
@@ -19,14 +31,14 @@ if (WEBGL.isWebGLAvailable()) {
 		requestAnimationFrame(update)
 		const now = performance.now()
 		let delta = now - lastUpdate
-		if (delta > 1000) delta = TICK_TIME
+		if (delta > 1000) delta = SIMULATION.tickTime
 		lag += delta
-		while (lag >= TICK_TIME) {
+		while (lag >= SIMULATION.tickTime) {
 			world.update()
-			lag -= TICK_TIME
+			lag -= SIMULATION.tickTime
 		}
 		stats.begin()
-		app.render(lag / TICK_TIME)
+		app.render(lag / SIMULATION.tickTime)
 		stats.end()
 		lastUpdate = performance.now()
 	}
