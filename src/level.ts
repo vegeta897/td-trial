@@ -9,6 +9,8 @@ import {
 } from 'three'
 import { ThreeApp } from './three/three-app'
 
+export const FLOOR_Y = -0.5
+
 export class PathNode extends Vector3 {
 	nextNode?: PathNode
 	addNode(x = 0, y = 0, z = 0): PathNode {
@@ -37,7 +39,7 @@ export class Level {
 		const plane = new PlaneGeometry(20, 20)
 		const planeMaterial = new MeshLambertMaterial({ color: 0x29264f })
 		const planeMesh = new Mesh(plane, planeMaterial)
-		planeMesh.position.y = -0.5
+		planeMesh.position.y = FLOOR_Y
 		planeMesh.position.x = threeApp.center.x
 		planeMesh.position.z = threeApp.center.z
 		planeMesh.rotateX(-Math.PI / 2)

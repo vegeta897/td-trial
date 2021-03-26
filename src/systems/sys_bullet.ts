@@ -6,6 +6,7 @@ import Velocity3D from '../components/com_velocity3d'
 import { Group, Raycaster } from 'three'
 import Health from '../components/com_health'
 import { ENEMY_SIZE } from '../archetypes/enemy'
+import { FLOOR_Y } from '../level'
 
 const MAX_DISTANCE = 100
 
@@ -19,8 +20,11 @@ export default class BulletSystem extends System {
 	}
 	update() {
 		this.view.each((entity, transform, velocity) => {
-			if (transform.position.length() > MAX_DISTANCE) this.world.destroy(entity)
-			if (velocity.vector3.length() < 0.05) {
+			if (
+				transform.position.length() > MAX_DISTANCE ||
+				transform.position.y <= FLOOR_Y - transform.scale / 2 ||
+				velocity.vector3.length() < 0.05
+			) {
 				this.world.destroy(entity)
 				return
 			}
