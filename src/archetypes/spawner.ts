@@ -3,7 +3,7 @@ import { Tag, World } from 'uecs'
 import { createCube } from '../three/cube'
 import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
-import Emitter from '../components/com_emitter'
+import Emitter, { EmitterType } from '../components/com_emitter'
 import { TagID } from '../world'
 
 export function createSpawner(
@@ -18,6 +18,6 @@ export function createSpawner(
 		Tag.for(TagID.Spawner),
 		new ThreeObject3D(spawnerCube),
 		new Transform3D(position, rotation),
-		new Emitter(60)
+		new Emitter(EmitterType.Spawner, 60, 59)
 	)
 }

@@ -1,4 +1,4 @@
-import { BoxGeometry, Mesh, MeshLambertMaterial, Object3D } from 'three'
+import { BoxGeometry, Mesh, MeshLambertMaterial } from 'three'
 
 const geometry = new BoxGeometry()
 const material = new MeshLambertMaterial({
@@ -6,8 +6,8 @@ const material = new MeshLambertMaterial({
 })
 const cube = new Mesh(geometry, material)
 
-export function createCube(scale = 1): Object3D {
-	const newCube = cube.clone()
+export function createCube(scale = 1): Mesh {
+	const newCube = <Mesh>cube.clone()
 	newCube.scale.setScalar(scale)
 	return newCube
 }

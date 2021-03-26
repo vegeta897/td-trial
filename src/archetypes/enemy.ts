@@ -8,7 +8,8 @@ import { TagID } from '../world'
 import { Level } from '../level'
 import Health from '../components/com_health'
 
-const HEALTH = 10
+export const ENEMY_SIZE = 1
+const HEALTH = 35
 
 export function createEnemy(
 	container: Object3D,
@@ -16,7 +17,7 @@ export function createEnemy(
 	level: Level,
 	location: Vector3
 ) {
-	const enemy = createCube()
+	const enemy = createCube(ENEMY_SIZE)
 	container.add(enemy)
 	enemy.userData.entity = world.create(
 		new Transform3D(location),

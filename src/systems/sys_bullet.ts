@@ -1,15 +1,17 @@
 import { System } from './system'
 import Transform3D from '../components/com_transform3d'
-import { Tag, World } from 'uecs'
+import { Entity, Tag, World } from 'uecs'
 import { TagID } from '../world'
 import Velocity3D from '../components/com_velocity3d'
 import { Group, Raycaster } from 'three'
 import Health from '../components/com_health'
+import { ENEMY_SIZE } from '../archetypes/enemy'
 
 const MAX_DISTANCE = 100
 
 export default class BulletSystem extends System {
 	view = this.world.view(Transform3D, Velocity3D, Tag.for(TagID.Bullet))
+	enemies = this.world.view(Transform3D, Velocity3D, Tag.for(TagID.Enemy))
 	enemyGroup: Group
 	constructor(world: World, enemyGroup: Group) {
 		super(world)
@@ -18,6 +20,16 @@ export default class BulletSystem extends System {
 	update() {
 		this.view.each((entity, transform, velocity) => {
 			if (transform.position.length() > MAX_DISTANCE) this.world.destroy(entity)
+			this.enemies.each((enemy, enemyTransform, enemyVelocity) => {
+				if (
+					transform.position.distanceTo(enemyTransform.position) <=
+					ENEMY_SIZE / 2
+				) {
+					this.hitEnemy(entity, enemy)
+					return false
+				}
+			})
+			if (!this.world.exists(entity)) return
 			const raycaster = new Raycaster(
 				transform.position,
 				velocity.vector3.clone().normalize(),
@@ -25,14 +37,15 @@ export default class BulletSystem extends System {
 				velocity.vector3.length()
 			)
 			const [hitEnemy] = raycaster.intersectObjects(this.enemyGroup.children)
-			if (hitEnemy) {
-				this.world.destroy(entity)
-				const health = this.world.get(hitEnemy.object.userData.entity, Health)!
-				health.current -= 1
-				if (health.current <= 0) {
-					this.world.destroy(hitEnemy.object.userData.entity)
-				}
-			}
+			if (hitEnemy) this.hitEnemy(entity, hitEnemy.object.userData.entity)
 		})
+	}
+	hitEnemy(bullet: Entity, enemy: Entity) {
+		this.world.destroy(bullet)
+		const health = this.world.get(enemy, Health)!
+		health.current -= 1
+		if (health.current <= 0) {
+			this.world.destroy(enemy)
+		}
 	}
 }
