@@ -53,14 +53,13 @@ export class ThreeApp {
 		this.onWindowResize()
 
 		this.controls.target = center
-		this.controls.enableDamping = true // an animation loop is required when either damping or auto-rotation are enabled
+		this.controls.enableDamping = true
 		this.controls.dampingFactor = 0.05
-
 		this.controls.screenSpacePanning = false
-
 		this.controls.minDistance = 100
 		this.controls.maxDistance = 500
-
+		this.controls.minZoom = 0.1
+		this.controls.maxZoom = 5
 		this.controls.maxPolarAngle = Math.PI / 2
 	}
 	render(dt: number) {
