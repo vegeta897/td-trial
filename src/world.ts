@@ -1,18 +1,16 @@
-import { Tag, World } from 'uecs'
-import ThreeObject3D from './components/com_object3d'
+import { World } from 'uecs'
 import { ThreeApp } from './three/three-app'
 import { System } from './systems/system'
 import { Level } from './level'
 import { PathSystem } from './systems/sys_path'
-import Emitter from './components/com_emitter'
-import { createCube } from './three/cube'
 import SpawnerSystem from './systems/sys_spawner'
 import RenderSystem from './systems/sys_render'
 import TransformSystem from './systems/sys_transform'
 import TurretSystem from './systems/sys_turret'
-import Transform3D from './components/com_transform3d'
-import { Group, Vector3 } from 'three'
+import { Euler, Group, Vector3 } from 'three'
 import BulletSystem from './systems/sys_bullet'
+import { createTurret } from './archetypes/turret'
+import { createSpawner } from './archetypes/spawner'
 
 export enum TagID {
 	Turret,
@@ -43,25 +41,15 @@ export class ECSWorld {
 		this.systems.push(new TransformSystem(this.world))
 		threeApp.systems.push(new RenderSystem(this.world))
 
-		// Create spawner
-		const spawnerCube = createCube()
-		threeApp.scene.add(spawnerCube)
-		this.world.create(
-			Tag.for(TagID.Spawner),
-			new ThreeObject3D(spawnerCube),
-			new Transform3D(new Vector3()),
-			new Emitter(60)
+		// Create entities
+		createSpawner(threeApp.scene, this.world)
+		createTurret(
+			threeApp.scene,
+			this.world,
+			new Vector3(2, 0, 10),
+			new Euler(0, 0.6)
 		)
-
-		// Create turret
-		const turretCube = createCube()
-		threeApp.scene.add(turretCube)
-		this.world.create(
-			Tag.for(TagID.Turret),
-			new ThreeObject3D(turretCube),
-			new Transform3D(new Vector3(2, 0, 10)),
-			new Emitter(50)
-		)
+		createTurret(threeApp.scene, this.world, new Vector3(0, 0, 10))
 	}
 	update() {
 		this.systems.forEach((system) => system.update())

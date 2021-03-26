@@ -10,13 +10,14 @@ export default class RenderSystem extends System {
 		this.transforms.each((entity, obj3d, transform) => {
 			if (!transform.dirty) return
 			transform.dirty = false
-			obj3d.object3D.position.copy(transform.vector3)
+			obj3d.object3D.position.copy(transform.position)
+			obj3d.object3D.rotation.copy(transform.rotation)
 		})
 		this.velocities.each((entity, obj3d, transform, velocity) => {
 			// If this doesn't work out, store previous position in transform and LERP
 			// See https://github.com/EverCrawl/game/blob/master/common/component.ts
 			obj3d.object3D.position.addVectors(
-				transform.vector3,
+				transform.position,
 				velocity.vector3.clone().multiplyScalar(dt)
 			)
 		})

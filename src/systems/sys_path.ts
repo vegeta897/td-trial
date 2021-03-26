@@ -11,7 +11,7 @@ export class PathSystem extends System {
 	update() {
 		this.view.each((entity, transform, path) => {
 			if (path.progress === 0) {
-				transform.vector3.copy(path.node)
+				transform.position.copy(path.node)
 				if (path.node.nextNode) {
 					path.distance = path.node.distanceTo(path.node.nextNode)
 					path.progress = 0

@@ -28,9 +28,14 @@ export default class TurretSystem extends System {
 				const bullet = createCube(0.15)
 				this.threeApp.scene.add(bullet)
 				this.world.create(
-					new Transform3D(transform.vector3.clone()),
+					new Transform3D(
+						transform.position.clone(),
+						transform.rotation.clone()
+					),
 					new ThreeObject3D(bullet),
-					new Velocity3D(new Vector3(0, 0, -BULLET_SPEED)),
+					new Velocity3D(
+						new Vector3(0, 0, -BULLET_SPEED).applyEuler(transform.rotation)
+					),
 					Tag.for(TagID.Bullet)
 				)
 			}
