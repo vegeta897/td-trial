@@ -14,7 +14,11 @@ export function createBullet(
 	world: World,
 	turretTransform: Transform3D
 ) {
-	const bullet = createCube()
+	const bullet = createCube({
+		color: 0,
+		emissive: 0xa7f070,
+		emissiveIntensity: 1,
+	})
 	container.add(bullet)
 	const transform = cloneTransform3D(turretTransform)
 	transform.scale = 0.15

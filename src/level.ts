@@ -1,4 +1,12 @@
-import { BufferGeometry, Line, LineBasicMaterial, Vector3 } from 'three'
+import {
+	BufferGeometry,
+	Line,
+	LineBasicMaterial,
+	Mesh,
+	MeshLambertMaterial,
+	PlaneGeometry,
+	Vector3,
+} from 'three'
 import { ThreeApp } from './three/three-app'
 
 export class PathNode extends Vector3 {
@@ -25,5 +33,14 @@ export class Level {
 			new LineBasicMaterial({ color: 0x990000 })
 		)
 		threeApp.scene.add(pathLine)
+
+		const plane = new PlaneGeometry(20, 20)
+		const planeMaterial = new MeshLambertMaterial({ color: 0x29264f })
+		const planeMesh = new Mesh(plane, planeMaterial)
+		planeMesh.position.y = -0.5
+		planeMesh.position.x = threeApp.center.x
+		planeMesh.position.z = threeApp.center.z
+		planeMesh.rotateX(-Math.PI / 2)
+		threeApp.scene.add(planeMesh)
 	}
 }

@@ -1,4 +1,5 @@
 import { BoxGeometry, Mesh, MeshLambertMaterial } from 'three'
+import { MeshLambertMaterialParameters } from 'three/src/materials/MeshLambertMaterial'
 
 const geometry = new BoxGeometry()
 const material = new MeshLambertMaterial({
@@ -6,8 +7,10 @@ const material = new MeshLambertMaterial({
 })
 const cube = new Mesh(geometry, material)
 
-export function createCube(scale = 1): Mesh {
+export function createCube(
+	materialParams?: MeshLambertMaterialParameters
+): Mesh {
 	const newCube = <Mesh>cube.clone()
-	newCube.scale.setScalar(scale)
+	if (materialParams) newCube.material = new MeshLambertMaterial(materialParams)
 	return newCube
 }

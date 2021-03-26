@@ -16,7 +16,7 @@ export function createTurret(
 	rotation?: Euler,
 	spin?: number
 ) {
-	const turretCube = createCube()
+	const turretCube = createCube({ color: 0x38b764 })
 	container.add(turretCube)
 	const entity = world.create(
 		Tag.for(TagID.Turret),

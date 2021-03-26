@@ -17,10 +17,10 @@ export function createEnemy(
 	level: Level,
 	location: Vector3
 ) {
-	const enemy = createCube(ENEMY_SIZE)
+	const enemy = createCube({ color: 0xb13e53, reflectivity: 1 })
 	container.add(enemy)
 	enemy.userData.entity = world.create(
-		new Transform3D(location),
+		new Transform3D(location, undefined, ENEMY_SIZE),
 		new ThreeObject3D(enemy),
 		new Path(level.startingNode),
 		new Health(HEALTH),

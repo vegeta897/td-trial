@@ -23,6 +23,7 @@ export class ThreeApp {
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
 	controls = new OrbitControls(this.camera, this.renderer.domElement)
 	systems: System[] = []
+	center = new Vector3(4, 0, 4)
 	constructor() {
 		this.renderer.setPixelRatio(window.devicePixelRatio)
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
@@ -30,17 +31,16 @@ export class ThreeApp {
 
 		const ambientLight = new AmbientLight(0x5d275d)
 		this.scene.add(ambientLight)
-		const light = new DirectionalLight(0xe0e0e0)
+		const light = new DirectionalLight(0xffffff, 1)
 		light.position.set(2, 5, 1)
 		this.scene.add(light)
 
-		const center = new Vector3(4, 0, 4)
 		this.camera.position.setFromSphericalCoords(
 			100, // Distance
 			Math.PI / 4, // Pitch
 			(Math.PI * 2) / 6 // Yaw
 		)
-		this.camera.lookAt(center)
+		this.camera.lookAt(this.center)
 
 		const axesHelper = new AxesHelper(4)
 		axesHelper.position.y = -1 / 2
@@ -52,7 +52,7 @@ export class ThreeApp {
 		window.addEventListener('resize', this.onWindowResize.bind(this))
 		this.onWindowResize()
 
-		this.controls.target = center
+		this.controls.target = this.center
 		this.controls.enableDamping = true
 		this.controls.dampingFactor = 0.05
 		this.controls.screenSpacePanning = false

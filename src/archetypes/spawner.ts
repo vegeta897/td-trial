@@ -12,12 +12,12 @@ export function createSpawner(
 	position?: Vector3,
 	rotation?: Euler
 ) {
-	const spawnerCube = createCube()
+	const spawnerCube = createCube({ color: 0xef7d57 })
 	container.add(spawnerCube)
 	world.create(
 		Tag.for(TagID.Spawner),
 		new ThreeObject3D(spawnerCube),
-		new Transform3D(position, rotation),
+		new Transform3D(position, rotation, 1.2),
 		new Emitter(EmitterType.Spawner, 60, 59)
 	)
 }
