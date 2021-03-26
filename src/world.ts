@@ -10,6 +10,7 @@ import { Euler, Group, Vector3 } from 'three'
 import BulletSystem from './systems/sys_bullet'
 import { createTurret } from './archetypes/turret'
 import { createSpawner } from './archetypes/spawner'
+import SpinSystem from './systems/sys_spin'
 
 export enum TagID {
 	Turret,
@@ -35,6 +36,7 @@ export class ECSWorld {
 		const level = new Level(threeApp)
 
 		// Create systems
+		this.systems.push(new SpinSystem(this.world))
 		this.systems.push(
 			new EmitterSystem(this.world, threeApp, enemyGroup, level)
 		)
@@ -56,7 +58,8 @@ export class ECSWorld {
 			threeApp.scene,
 			this.world,
 			new Vector3(2, 0, 4),
-			new Euler(0, (Math.PI * 3) / 2)
+			new Euler(0, (Math.PI * 3) / 2),
+			0.02
 		)
 	}
 	update() {
