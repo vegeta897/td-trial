@@ -37,6 +37,7 @@ if (WEBGL.isWebGLAvailable()) {
 			lag -= SIMULATION.tickTime
 		}
 		stats.begin()
+		app.controls.update()
 		app.render(lag / SIMULATION.tickTime)
 		stats.end()
 		lastUpdate = performance.now()

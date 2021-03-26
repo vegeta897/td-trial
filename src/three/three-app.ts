@@ -11,6 +11,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 const SCALE = 8
 const NO_AA = false
@@ -20,6 +21,7 @@ export class ThreeApp {
 	composer = new EffectComposer(this.renderer)
 	scene = new Scene()
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
+	controls = new OrbitControls(this.camera, this.renderer.domElement)
 	systems: System[] = []
 	constructor() {
 		this.renderer.setPixelRatio(window.devicePixelRatio)
@@ -49,6 +51,17 @@ export class ThreeApp {
 
 		window.addEventListener('resize', this.onWindowResize.bind(this))
 		this.onWindowResize()
+
+		this.controls.target = center
+		this.controls.enableDamping = true // an animation loop is required when either damping or auto-rotation are enabled
+		this.controls.dampingFactor = 0.05
+
+		this.controls.screenSpacePanning = false
+
+		this.controls.minDistance = 100
+		this.controls.maxDistance = 500
+
+		this.controls.maxPolarAngle = Math.PI / 2
 	}
 	render(dt: number) {
 		this.systems.forEach((system) => system.update(dt))
