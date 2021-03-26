@@ -7,17 +7,19 @@ import { Tag, World } from 'uecs'
 import { TagID } from '../world'
 import Transform3D from '../components/com_transform3d'
 
-const BULLET_SPEED = 0.3
+const BULLET_SPEED = 0.5
 
 export function createBullet(
 	container: Object3D,
 	world: World,
-	transform: Transform3D
+	turretTransform: Transform3D
 ) {
-	const bullet = createCube(0.15)
+	const bullet = createCube()
 	container.add(bullet)
+	const transform = cloneTransform3D(turretTransform)
+	transform.scale = 0.15
 	world.create(
-		cloneTransform3D(transform),
+		transform,
 		new ThreeObject3D(bullet),
 		new Velocity3D(
 			new Vector3(0, 0, -BULLET_SPEED).applyEuler(

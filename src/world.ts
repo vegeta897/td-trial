@@ -38,8 +38,8 @@ export class ECSWorld {
 		this.systems.push(
 			new EmitterSystem(this.world, threeApp, enemyGroup, level)
 		)
-		this.systems.push(new BulletSystem(this.world, enemyGroup))
 		this.systems.push(new TransformSystem(this.world))
+		this.systems.push(new BulletSystem(this.world, enemyGroup))
 		this.systems.push(new PathSystem(this.world))
 		threeApp.systems.push(new RenderSystem(this.world))
 

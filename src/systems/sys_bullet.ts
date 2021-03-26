@@ -20,6 +20,12 @@ export default class BulletSystem extends System {
 	update() {
 		this.view.each((entity, transform, velocity) => {
 			if (transform.position.length() > MAX_DISTANCE) this.world.destroy(entity)
+			if (velocity.vector3.length() < 0.05) {
+				this.world.destroy(entity)
+				return
+			}
+			velocity.vector3.multiplyScalar(0.95)
+			transform.scale *= 0.98
 			this.enemies.each((enemy, enemyTransform, enemyVelocity) => {
 				if (
 					transform.position.distanceTo(enemyTransform.position) <=
