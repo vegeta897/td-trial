@@ -28,6 +28,6 @@ export function createGameObject(
 	)
 	cube.userData.entity = entity
 	if (options.additionalComponents)
-		options.additionalComponents.forEach((c) => world.emplace(entity, c))
+		world.insert(entity, ...options.additionalComponents)
 	if (options.tagID) world.emplace(entity, Tag.for(options.tagID))
 }
