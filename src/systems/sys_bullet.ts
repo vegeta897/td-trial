@@ -54,6 +54,8 @@ export default class BulletSystem extends System {
 		this.world.destroy(bullet)
 		const health = this.world.get(enemy, Health)!
 		health.current -= 1
+		health.sprite.visible = true
+		health.sprite.scale.setComponent(0, health.current / health.max)
 		if (health.current <= 0) {
 			this.world.destroy(enemy)
 		}

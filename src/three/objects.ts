@@ -1,4 +1,4 @@
-import { BoxGeometry, Mesh, MeshLambertMaterial } from 'three'
+import { BoxGeometry, Mesh, MeshLambertMaterial, Sprite } from 'three'
 import { MeshLambertMaterialParameters } from 'three/src/materials/MeshLambertMaterial'
 
 const geometry = new BoxGeometry()
@@ -13,4 +13,11 @@ export function createCube(
 	const newCube = <Mesh>cube.clone()
 	if (materialParams) newCube.material = new MeshLambertMaterial(materialParams)
 	return newCube
+}
+
+const sprite = new Sprite()
+
+export function createSprite(): Sprite {
+	const newSprite = <Sprite>sprite.clone()
+	return newSprite
 }

@@ -1,6 +1,6 @@
 import { Euler, Object3D, Vector3 } from 'three'
 import { Component, Tag, World } from 'uecs'
-import { createCube } from '../three/cube'
+import { createCube } from '../three/objects'
 import { MeshLambertMaterialParameters } from 'three/src/materials/MeshLambertMaterial'
 import { TagID } from '../world'
 import ThreeObject3D from '../components/com_object3d'
@@ -13,6 +13,7 @@ interface IGameObject {
 	materialParams?: MeshLambertMaterialParameters
 	tagID?: TagID
 	additionalComponents?: Component[]
+	children?: Object3D[]
 }
 
 export function createGameObject(
@@ -21,6 +22,7 @@ export function createGameObject(
 	options: IGameObject = {}
 ) {
 	const cube = createCube(options.materialParams)
+	if (options.children) options.children.forEach((child) => cube.add(child))
 	container.add(cube)
 	const entity = world.create(
 		new ThreeObject3D(cube),
