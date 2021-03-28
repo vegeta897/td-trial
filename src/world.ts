@@ -46,14 +46,15 @@ export class ECSWorld {
 		threeApp.systems.push(new RenderSystem(this.world))
 
 		// Create spawners and turrets
+		// TODO: Create Game class that holds threeApp and World, has these create methods?
 		createSpawner(threeApp.scene, this.world)
+		createTurret(threeApp.scene, this.world, new Vector3(0, 0, 10))
 		createTurret(
 			threeApp.scene,
 			this.world,
 			new Vector3(2, 0, 10),
 			new Euler(0, 0.6)
 		)
-		createTurret(threeApp.scene, this.world, new Vector3(0, 0, 10))
 		createTurret(
 			threeApp.scene,
 			this.world,

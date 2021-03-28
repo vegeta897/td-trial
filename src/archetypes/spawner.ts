@@ -1,10 +1,10 @@
 import { Euler, Object3D, Vector3 } from 'three'
-import { Tag, World } from 'uecs'
-import { createCube } from '../three/cube'
-import ThreeObject3D from '../components/com_object3d'
-import Transform3D from '../components/com_transform3d'
+import { World } from 'uecs'
 import Emitter, { EmitterType } from '../components/com_emitter'
+import { createGameObject } from './game-object'
 import { TagID } from '../world'
+
+const SPAWN_INTERVAL = 60
 
 export function createSpawner(
 	container: Object3D,
@@ -12,12 +12,14 @@ export function createSpawner(
 	position?: Vector3,
 	rotation?: Euler
 ) {
-	const spawnerCube = createCube({ color: 0xef7d57 })
-	container.add(spawnerCube)
-	world.create(
-		Tag.for(TagID.Spawner),
-		new ThreeObject3D(spawnerCube),
-		new Transform3D(position, rotation, 1.2),
-		new Emitter(EmitterType.Spawner, 60, 59)
-	)
+	createGameObject(container, world, {
+		position,
+		rotation,
+		scale: 1.2,
+		materialParams: { color: 0xef7d57 },
+		additionalComponents: [
+			new Emitter(EmitterType.Spawner, SPAWN_INTERVAL, SPAWN_INTERVAL - 1),
+		],
+		tagID: TagID.Spawner,
+	})
 }
