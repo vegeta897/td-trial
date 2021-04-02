@@ -15,7 +15,7 @@ export function createSpawner(
 	createGameObject(container, world, {
 		position,
 		rotation,
-		scale: 1.2,
+		scale: new Vector3().setScalar(1.2),
 		materialParams: { color: 0xef7d57 },
 		additionalComponents: [
 			new Emitter(EmitterType.Spawner, SPAWN_INTERVAL, SPAWN_INTERVAL - 1),

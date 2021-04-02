@@ -22,14 +22,15 @@ export default class BulletSystem extends System {
 		this.view.each((entity, transform, velocity) => {
 			if (
 				transform.position.length() > MAX_DISTANCE ||
-				transform.position.y <= FLOOR_Y - transform.scale / 2 ||
+				transform.position.y <= FLOOR_Y - transform.scale.getComponent(0) / 2 ||
 				velocity.vector3.length() < 0.05
 			) {
 				this.world.destroy(entity)
 				return
 			}
 			velocity.vector3.multiplyScalar(0.95)
-			transform.scale *= 0.98
+			transform.scale.multiplyScalar(0.98)
+			transform.scale.z = velocity.vector3.length()
 			this.enemies.each((enemy, enemyTransform, enemyVelocity) => {
 				if (
 					transform.position.distanceTo(enemyTransform.position) <=

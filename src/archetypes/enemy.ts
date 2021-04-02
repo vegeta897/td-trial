@@ -23,7 +23,7 @@ export function createEnemy(
 	healthBar.visible = false
 	createGameObject(container, world, {
 		position,
-		scale: ENEMY_SIZE,
+		scale: new Vector3().setScalar(ENEMY_SIZE),
 		materialParams: { color: 0xb13e53 },
 		tagID: TagID.Enemy,
 		additionalComponents: [

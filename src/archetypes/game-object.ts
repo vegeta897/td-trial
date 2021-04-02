@@ -9,7 +9,7 @@ import Transform3D from '../components/com_transform3d'
 interface IGameObject {
 	position?: Vector3
 	rotation?: Euler
-	scale?: number
+	scale?: Vector3
 	materialParams?: MeshLambertMaterialParameters
 	tagID?: TagID
 	additionalComponents?: Component[]

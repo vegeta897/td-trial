@@ -7,7 +7,7 @@ import Transform3D from '../components/com_transform3d'
 import { createGameObject } from './game-object'
 
 const BULLET_SPEED = 0.5
-const BULLET_SCALE = 0.15
+const BULLET_SCALE = 0.12
 const BULLET_SPREAD = 0.1
 
 export function createBullet(
@@ -15,11 +15,12 @@ export function createBullet(
 	world: World,
 	turretTransform: Transform3D
 ) {
-	const transform = cloneTransform3D(turretTransform)
+	const { position, rotation } = cloneTransform3D(turretTransform)
+	const randomRotation = randomizeEuler(rotation, BULLET_SPREAD)
 	createGameObject(container, world, {
-		position: transform.position,
-		rotation: transform.rotation,
-		scale: BULLET_SCALE,
+		position,
+		rotation: randomRotation,
+		scale: new Vector3().setScalar(BULLET_SCALE),
 		materialParams: {
 			color: 0,
 			emissive: 0xa7f070,
@@ -28,9 +29,7 @@ export function createBullet(
 		tagID: TagID.Bullet,
 		additionalComponents: [
 			new Velocity3D(
-				new Vector3(0, 0, -BULLET_SPEED).applyEuler(
-					randomizeEuler(transform.rotation, BULLET_SPREAD)
-				)
+				new Vector3(0, 0, -BULLET_SPEED).applyEuler(randomRotation)
 			),
 		],
 	})
