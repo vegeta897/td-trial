@@ -2,6 +2,7 @@ import {
 	AmbientLight,
 	AxesHelper,
 	DirectionalLight,
+	Group,
 	OrthographicCamera,
 	Scene,
 	Vector3,
@@ -12,6 +13,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { GameObjectTypes } from '../game'
 
 const SCALE = 8
 
@@ -24,17 +26,21 @@ export class ThreeApp {
 	systems: System[] = []
 	center = new Vector3(4, 0, 4)
 	smaaPass = new SMAAPass(0, 0)
+	groups: Map<GameObjectTypes, Group> = new Map()
 	constructor() {
+		// Set up renderer
 		this.renderer.setPixelRatio(window.devicePixelRatio)
 		this.renderer.setSize(window.innerWidth, window.innerHeight)
 		document.body.appendChild(this.renderer.domElement)
 
+		// Set up lights
 		const ambientLight = new AmbientLight(0x5d275d)
 		this.scene.add(ambientLight)
 		const light = new DirectionalLight(0xffffff, 1)
 		light.position.set(2, 5, 1)
 		this.scene.add(light)
 
+		// Set up camera
 		this.camera.position.setFromSphericalCoords(
 			100, // Distance
 			Math.PI / 4, // Pitch
@@ -42,16 +48,20 @@ export class ThreeApp {
 		)
 		this.camera.lookAt(this.center)
 
+		// Create axes helper
 		const axesHelper = new AxesHelper(4)
 		axesHelper.position.set(-2, 0, -2)
 		this.scene.add(axesHelper)
 
+		// Render passes
 		this.composer.addPass(new RenderPass(this.scene, this.camera))
 		this.composer.addPass(this.smaaPass)
 
+		// Handle window sizing
 		window.addEventListener('resize', this.onWindowResize.bind(this))
 		this.onWindowResize()
 
+		// Set up camera controls
 		this.cameraControls.target = this.center
 		this.cameraControls.enableDamping = true
 		this.cameraControls.dampingFactor = 0.1
@@ -61,6 +71,15 @@ export class ThreeApp {
 		this.cameraControls.minZoom = 0.1
 		this.cameraControls.maxZoom = 5
 		this.cameraControls.maxPolarAngle = Math.PI / 2
+
+		// Create groups
+		for (const groupID in GameObjectTypes) {
+			if (!isNaN(Number(groupID))) {
+				const group = new Group()
+				this.groups.set(Number(groupID), group)
+				this.scene.add(group)
+			}
+		}
 	}
 	render(dt: number) {
 		this.systems.forEach((system) => system.update(dt))

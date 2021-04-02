@@ -1,15 +1,14 @@
-import { Euler, Object3D, Vector3 } from 'three'
-import { Component, World } from 'uecs'
+import { Euler, Vector3 } from 'three'
+import { Component } from 'uecs'
 import Emitter, { EmitterType } from '../components/com_emitter'
-import { TagID } from '../world'
+import { GameObjectTypes } from '../game'
 import Spin from '../components/com_spin'
-import { createGameObject } from './game-object'
+import Factory from './factory'
 
 const SHOOT_INTERVAL = 5
 
 export function createTurret(
-	container: Object3D,
-	world: World,
+	this: Factory,
 	position?: Vector3,
 	rotation?: Euler,
 	spin?: number
@@ -18,11 +17,11 @@ export function createTurret(
 		new Emitter(EmitterType.Turret, SHOOT_INTERVAL),
 	]
 	if (spin) additionalComponents.push(new Spin(spin))
-	createGameObject(container, world, {
+	this.createGameObject({
 		position,
 		rotation,
 		materialParams: { color: 0x38b764 },
-		tagID: TagID.Turret,
+		gameObjectType: GameObjectTypes.Turret,
 		additionalComponents,
 	})
 }

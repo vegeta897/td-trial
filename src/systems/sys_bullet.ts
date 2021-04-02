@@ -1,36 +1,46 @@
 import { System } from './system'
 import Transform3D from '../components/com_transform3d'
-import { Entity, Tag, World } from 'uecs'
-import { TagID } from '../world'
+import { Entity, Tag } from 'uecs'
+import { GameObjectTypes } from '../game'
 import Velocity3D from '../components/com_velocity3d'
 import { Group, Raycaster } from 'three'
 import Health from '../components/com_health'
 import { ENEMY_SIZE } from '../archetypes/enemy'
 import { FLOOR_Y } from '../level'
+import Game from '../game'
 
 const MAX_DISTANCE = 100
 
 export default class BulletSystem extends System {
-	view = this.world.view(Transform3D, Velocity3D, Tag.for(TagID.Bullet))
-	enemies = this.world.view(Transform3D, Velocity3D, Tag.for(TagID.Enemy))
+	view = this.world.view(
+		Transform3D,
+		Velocity3D,
+		Tag.for(GameObjectTypes.Bullet)
+	)
+	enemies = this.world.view(
+		Transform3D,
+		Velocity3D,
+		Tag.for(GameObjectTypes.Enemy)
+	)
 	enemyGroup: Group
-	constructor(world: World, enemyGroup: Group) {
-		super(world)
-		this.enemyGroup = enemyGroup
+	constructor(game: Game) {
+		super(game)
+		this.enemyGroup = this.threeApp.groups.get(GameObjectTypes.Enemy)!
 	}
 	update() {
 		this.view.each((entity, transform, velocity) => {
+			const velocityLength = velocity.vector3.length()
 			if (
 				transform.position.length() > MAX_DISTANCE ||
 				transform.position.y <= FLOOR_Y - transform.scale.getComponent(0) / 2 ||
-				velocity.vector3.length() < 0.05
+				velocityLength < 0.05
 			) {
 				this.world.destroy(entity)
 				return
 			}
+			transform.scale.z = velocityLength * 2
 			velocity.vector3.multiplyScalar(0.95)
 			transform.scale.multiplyScalar(0.98)
-			transform.scale.z = velocity.vector3.length()
 			this.enemies.each((enemy, enemyTransform, enemyVelocity) => {
 				if (
 					transform.position.distanceTo(enemyTransform.position) <=

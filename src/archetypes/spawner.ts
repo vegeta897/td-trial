@@ -1,18 +1,16 @@
-import { Euler, Object3D, Vector3 } from 'three'
-import { World } from 'uecs'
+import { Euler, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
-import { createGameObject } from './game-object'
-import { TagID } from '../world'
+import { GameObjectTypes } from '../game'
+import Factory from './factory'
 
 const SPAWN_INTERVAL = 60
 
 export function createSpawner(
-	container: Object3D,
-	world: World,
+	this: Factory,
 	position?: Vector3,
 	rotation?: Euler
 ) {
-	createGameObject(container, world, {
+	this.createGameObject({
 		position,
 		rotation,
 		scale: new Vector3().setScalar(1.2),
@@ -20,6 +18,6 @@ export function createSpawner(
 		additionalComponents: [
 			new Emitter(EmitterType.Spawner, SPAWN_INTERVAL, SPAWN_INTERVAL - 1),
 		],
-		tagID: TagID.Spawner,
+		gameObjectType: GameObjectTypes.Spawner,
 	})
 }

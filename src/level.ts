@@ -1,5 +1,6 @@
 import {
 	BufferGeometry,
+	Euler,
 	Line,
 	LineBasicMaterial,
 	Mesh,
@@ -7,7 +8,7 @@ import {
 	PlaneGeometry,
 	Vector3,
 } from 'three'
-import { ThreeApp } from './three/three-app'
+import Game from './game'
 
 export const FLOOR_Y = -0.5
 
@@ -21,7 +22,7 @@ export class PathNode extends Vector3 {
 
 export class Level {
 	startingNode = new PathNode()
-	constructor(threeApp: ThreeApp) {
+	constructor({ threeApp, factory }: Game) {
 		this.startingNode.addNode(0, 0, 8).addNode(4).addNode(0, 0, -4).addNode(8)
 		let node: PathNode | undefined = this.startingNode
 		const pathPoints: Vector3[] = []
@@ -44,5 +45,15 @@ export class Level {
 		planeMesh.position.z = threeApp.center.z
 		planeMesh.rotateX(-Math.PI / 2)
 		threeApp.scene.add(planeMesh)
+
+		// Create spawners and turrets
+		factory.createSpawner()
+		factory.createTurret(new Vector3(0, 0, 10))
+		factory.createTurret(new Vector3(2, 0, 10), new Euler(0, 0.6))
+		factory.createTurret(
+			new Vector3(2, 0, 4),
+			new Euler(0, (Math.PI * 3) / 2),
+			0.02
+		)
 	}
 }
