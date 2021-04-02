@@ -11,7 +11,7 @@ const BULLET_SPREAD = 0.1
 
 export function createBullet(this: Factory, turretTransform: Transform3D) {
 	const { position, rotation } = cloneTransform3D(turretTransform)
-	const randomRotation = randomizeEuler(rotation, BULLET_SPREAD)
+	const randomRotation = randomizeAim(rotation, BULLET_SPREAD)
 	this.createGameObject({
 		position,
 		rotation: randomRotation,
@@ -30,10 +30,10 @@ export function createBullet(this: Factory, turretTransform: Transform3D) {
 	})
 }
 
-function randomizeEuler(euler: Euler, maxAngle: number): Euler {
+function randomizeAim(euler: Euler, maxAngle: number): Euler {
 	return new Euler(
 		euler.x + Math.random() * maxAngle * 2 - maxAngle,
 		euler.y + Math.random() * maxAngle * 2 - maxAngle,
-		euler.z + Math.random() * maxAngle * 2 - maxAngle
+		euler.z
 	)
 }
