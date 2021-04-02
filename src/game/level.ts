@@ -8,7 +8,7 @@ import {
 	PlaneGeometry,
 	Vector3,
 } from 'three'
-import Game from './game'
+import Game from './'
 
 export const FLOOR_Y = -0.5
 

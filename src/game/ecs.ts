@@ -1,12 +1,12 @@
 import { World } from 'uecs'
-import { System } from './systems/system'
-import { PathSystem } from './systems/sys_path'
-import RenderSystem from './systems/sys_render'
-import TransformSystem from './systems/sys_transform'
-import EmitterSystem from './systems/sys_emitter'
-import BulletSystem from './systems/sys_bullet'
-import SpinSystem from './systems/sys_spin'
-import Game from './game'
+import { System } from '../systems/system'
+import { PathSystem } from '../systems/sys_path'
+import RenderSystem from '../systems/sys_render'
+import TransformSystem from '../systems/sys_transform'
+import EmitterSystem from '../systems/sys_emitter'
+import BulletSystem from '../systems/sys_bullet'
+import SpinSystem from '../systems/sys_spin'
+import Game from './'
 
 export default class ECS {
 	world = new World()

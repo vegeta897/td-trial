@@ -1,7 +1,7 @@
 import { Euler, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
-import Factory from './factory'
+import Factory from './'
 
 const SPAWN_INTERVAL = 60
 

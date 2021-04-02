@@ -3,7 +3,7 @@ import Path from '../components/com_path'
 import { GameObjectTypes } from '../game'
 import Health from '../components/com_health'
 import { createSprite } from '../three/objects'
-import Factory from './factory'
+import Factory from './'
 
 export const ENEMY_SIZE = 1
 const HEALTH = 35

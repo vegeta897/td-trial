@@ -5,8 +5,8 @@ import { GameObjectTypes } from '../game'
 import Velocity3D from '../components/com_velocity3d'
 import { Group, Raycaster } from 'three'
 import Health from '../components/com_health'
-import { ENEMY_SIZE } from '../archetypes/enemy'
-import { FLOOR_Y } from '../level'
+import { ENEMY_SIZE } from '../factory/enemy'
+import { FLOOR_Y } from '../game/level'
 import Game from '../game'
 
 const MAX_DISTANCE = 100
@@ -17,11 +17,7 @@ export default class BulletSystem extends System {
 		Velocity3D,
 		Tag.for(GameObjectTypes.Bullet)
 	)
-	enemies = this.world.view(
-		Transform3D,
-		Velocity3D,
-		Tag.for(GameObjectTypes.Enemy)
-	)
+	enemies = this.world.view(Transform3D, Tag.for(GameObjectTypes.Enemy))
 	enemyGroup: Group
 	constructor(game: Game) {
 		super(game)
@@ -41,7 +37,7 @@ export default class BulletSystem extends System {
 			transform.scale.z = velocityLength * 2
 			velocity.vector3.multiplyScalar(0.95)
 			transform.scale.multiplyScalar(0.98)
-			this.enemies.each((enemy, enemyTransform, enemyVelocity) => {
+			this.enemies.each((enemy, enemyTransform) => {
 				if (
 					transform.position.distanceTo(enemyTransform.position) <=
 					ENEMY_SIZE / 2

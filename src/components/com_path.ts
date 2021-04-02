@@ -1,4 +1,4 @@
-import { PathNode } from '../level'
+import { PathNode } from '../game/level'
 
 export default class Path {
 	constructor(

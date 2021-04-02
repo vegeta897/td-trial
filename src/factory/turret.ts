@@ -3,7 +3,7 @@ import { Component } from 'uecs'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
 import Spin from '../components/com_spin'
-import Factory from './factory'
+import Factory from './'
 
 const SHOOT_INTERVAL = 5
 

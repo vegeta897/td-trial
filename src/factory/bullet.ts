@@ -3,7 +3,7 @@ import Velocity3D from '../components/com_velocity3d'
 import { Euler, Vector3 } from 'three'
 import { GameObjectTypes } from '../game'
 import Transform3D from '../components/com_transform3d'
-import Factory from './factory'
+import Factory from './'
 
 const BULLET_SPEED = 0.5
 const BULLET_SCALE = 0.12

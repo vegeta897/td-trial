@@ -1,9 +1,9 @@
-import { ThreeApp } from './three/three-app'
+import { ThreeApp } from '../three/three-app'
 import ECS from './ecs'
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { Level } from './level'
-import Factory from './archetypes/factory'
+import Factory from '../factory'
 
 const TICKS_PER_SECOND = 60
 

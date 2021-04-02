@@ -1,8 +1,8 @@
 import { World } from 'uecs'
 import Game from '../game'
 import { ThreeApp } from '../three/three-app'
-import { Level } from '../level'
-import Factory from '../archetypes/factory'
+import { Level } from '../game/level'
+import Factory from '../factory'
 
 export abstract class System {
 	game: Game
