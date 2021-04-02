@@ -27,9 +27,9 @@ export default class BulletSystem extends System {
 		this.view.each((entity, transform, velocity) => {
 			const velocityLength = velocity.vector3.length()
 			if (
+				velocityLength < 0.05 ||
 				transform.position.length() > MAX_DISTANCE ||
-				transform.position.y <= FLOOR_Y - transform.scale.getComponent(0) / 2 ||
-				velocityLength < 0.05
+				transform.position.y <= FLOOR_Y
 			) {
 				this.world.destroy(entity)
 				return

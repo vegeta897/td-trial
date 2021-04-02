@@ -18,7 +18,7 @@ export default class EmitterSystem extends System {
 				emitter.tick = 0
 				switch (emitter.type) {
 					case EmitterType.Spawner:
-						this.game.factory.createEnemy(transform.position.clone())
+						this.factory.createEnemy(transform.position.clone())
 						break
 					case EmitterType.Turret:
 						this.factory.createBullet(transform)
