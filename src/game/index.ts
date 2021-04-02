@@ -25,12 +25,8 @@ export default class Game {
 	world = this.ecs.world
 	factory = new Factory(this)
 	level = new Level(this)
-	lastUpdate = performance.now()
-	lag = 0
-	stats = Stats()
 	constructor() {
-		document.body.appendChild(this.stats.dom)
-
+		// Create GUI
 		const gui = new GUI({ width: 400 })
 		const simFolder = gui.addFolder('Simulation')
 		simFolder
@@ -43,22 +39,27 @@ export default class Game {
 
 		this.ecs.registerSystems(this)
 
-		this.update()
-	}
-	update() {
-		// Adapted from https://gist.github.com/godwhoa/e6225ae99853aac1f633
-		requestAnimationFrame(() => this.update())
-		const now = performance.now()
-		let delta = now - this.lastUpdate
-		if (delta > 1000) delta = SIMULATION.tickTime
-		this.lag += delta
-		while (this.lag >= SIMULATION.tickTime) {
-			this.ecs.update()
-			this.lag -= SIMULATION.tickTime
+		const stats = Stats()
+		document.body.appendChild(stats.dom)
+
+		let lag = 0
+		let lastUpdate = performance.now()
+		const update = () => {
+			// Adapted from https://gist.github.com/godwhoa/e6225ae99853aac1f633
+			requestAnimationFrame(update)
+			const now = performance.now()
+			let delta = now - lastUpdate
+			if (delta > 1000) delta = SIMULATION.tickTime
+			lag += delta
+			while (lag >= SIMULATION.tickTime) {
+				this.ecs.update()
+				lag -= SIMULATION.tickTime
+			}
+			stats.begin()
+			this.threeApp.render(lag / SIMULATION.tickTime)
+			stats.end()
+			lastUpdate = performance.now()
 		}
-		this.stats.begin()
-		this.threeApp.render(this.lag / SIMULATION.tickTime)
-		this.stats.end()
-		this.lastUpdate = performance.now()
+		update()
 	}
 }
