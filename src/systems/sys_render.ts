@@ -16,6 +16,8 @@ export default class RenderSystem extends System {
 			object3D.rotation.copy(transform.rotation)
 			object3D.scale.copy(transform.scale)
 		})
+		// Do not interpolate if game is paused
+		if (this.game.paused || !this.game.interpolate) return
 		this.velocities.each((entity, { object3D }, transform, velocity) => {
 			// If this doesn't work out, store previous position in transform and LERP
 			// See https://github.com/EverCrawl/game/blob/master/common/component.ts

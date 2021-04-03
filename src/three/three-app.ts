@@ -26,6 +26,7 @@ export class ThreeApp {
 	systems: System[] = []
 	center = new Vector3(4, 0, 4)
 	smaaPass = new SMAAPass(0, 0)
+	smaa = true
 	groups: Map<GameObjectTypes, Group> = new Map()
 	constructor() {
 		// Set up renderer

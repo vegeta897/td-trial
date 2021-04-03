@@ -7,11 +7,6 @@ import Factory from '../factory'
 
 const TICKS_PER_SECOND = 60
 
-const SIMULATION = {
-	tickTime: 1000 / TICKS_PER_SECOND,
-	smaa: true,
-}
-
 export enum GameObjectTypes {
 	Turret,
 	Spawner,
@@ -25,15 +20,20 @@ export default class Game {
 	world = this.ecs.world
 	factory = new Factory(this)
 	level = new Level(this)
+	tickTime = 1000 / TICKS_PER_SECOND
+	paused = false
+	interpolate = true
 	constructor() {
 		// Create GUI
-		const gui = new GUI({ width: 400 })
+		const gui = new GUI({ width: 360 })
 		const simFolder = gui.addFolder('Simulation')
 		simFolder
-			.add(SIMULATION, 'tickTime', 1, 300)
-			.onChange((tickTime) => (SIMULATION.tickTime = tickTime))
+			.add(this, 'tickTime', 1, 300)
+			.onChange((tickTime) => (this.tickTime = tickTime))
+		simFolder.add(this, 'interpolate')
+		simFolder.add(this, 'paused')
 		simFolder
-			.add(SIMULATION, 'smaa')
+			.add(this.threeApp, 'smaa')
 			.onFinishChange((enabled) => (this.threeApp.smaaPass.enabled = enabled))
 		simFolder.open()
 
@@ -47,16 +47,18 @@ export default class Game {
 		const update = () => {
 			// Adapted from https://gist.github.com/godwhoa/e6225ae99853aac1f633
 			requestAnimationFrame(update)
-			const now = performance.now()
-			let delta = now - lastUpdate
-			if (delta > 1000) delta = SIMULATION.tickTime
-			lag += delta
-			while (lag >= SIMULATION.tickTime) {
-				this.ecs.update()
-				lag -= SIMULATION.tickTime
+			if (!this.paused) {
+				const now = performance.now()
+				let delta = now - lastUpdate
+				if (delta > 1000) delta = this.tickTime
+				lag += delta
+				while (lag >= this.tickTime) {
+					this.ecs.update()
+					lag -= this.tickTime
+				}
 			}
 			stats.begin()
-			this.threeApp.render(lag / SIMULATION.tickTime)
+			this.threeApp.render(lag / this.tickTime)
 			stats.end()
 			lastUpdate = performance.now()
 		}
