@@ -2,7 +2,7 @@ import { Euler, Vector3 } from 'three'
 import { Component } from 'uecs'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
-import Spin from '../components/com_spin'
+import Rotate3D from '../components/com_rotate3d'
 import Factory from './'
 
 const SHOOT_INTERVAL = 5
@@ -11,12 +11,12 @@ export function createTurret(
 	this: Factory,
 	position?: Vector3,
 	rotation?: Euler,
-	spin?: number
+	spin?: Euler
 ) {
 	const additionalComponents: Component[] = [
 		new Emitter(EmitterType.Turret, SHOOT_INTERVAL),
 	]
-	if (spin) additionalComponents.push(new Spin(spin))
+	if (spin) additionalComponents.push(new Rotate3D(spin))
 	this.createGameObject({
 		position,
 		rotation,

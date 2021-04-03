@@ -37,11 +37,8 @@ export default class BulletSystem extends System {
 			transform.scale.z = velocityLength * 2
 			velocity.vector3.multiplyScalar(0.95)
 			transform.scale.multiplyScalar(0.98)
-			this.enemies.each((enemy, enemyTransform) => {
-				if (
-					transform.position.distanceTo(enemyTransform.position) <=
-					ENEMY_SIZE / 2
-				) {
+			this.enemies.each((enemy, { position: enemyPos }) => {
+				if (transform.position.distanceTo(enemyPos) <= ENEMY_SIZE / 2) {
 					this.hitEnemy(entity, enemy)
 					return false
 				}

@@ -53,7 +53,7 @@ export class Level {
 		factory.createTurret(
 			new Vector3(2, 0, 4),
 			new Euler(0, (Math.PI * 3) / 2),
-			0.02
+			new Euler(0, 0.02)
 		)
 	}
 }
