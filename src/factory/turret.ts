@@ -5,6 +5,7 @@ import Factory from './'
 import Target from '../components/com_target'
 
 const SHOOT_INTERVAL = 5
+const TARGET_DISTANCE = 5
 
 export function createTurret(
 	this: Factory,
@@ -18,7 +19,7 @@ export function createTurret(
 		gameObjectType: GameObjectTypes.Turret,
 		additionalComponents: [
 			new Emitter(EmitterType.Turret, SHOOT_INTERVAL, 0, false),
-			new Target(GameObjectTypes.Enemy, 4),
+			new Target(GameObjectTypes.Enemy, TARGET_DISTANCE),
 		],
 	})
 }

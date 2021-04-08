@@ -24,7 +24,7 @@ export function createBullet(this: Factory, turretTransform: Transform3D) {
 		gameObjectType: GameObjectTypes.Bullet,
 		additionalComponents: [
 			new Velocity3D(
-				new Vector3(0, 0, -BULLET_SPEED).applyQuaternion(randomRotation)
+				new Vector3(0, 0, BULLET_SPEED).applyQuaternion(randomRotation)
 			),
 		],
 	})

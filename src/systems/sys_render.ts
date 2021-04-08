@@ -4,11 +4,13 @@ import Transform3D from '../components/com_transform3d'
 import Velocity3D from '../components/com_velocity3d'
 import Rotate3D from '../components/com_rotate3d'
 import { Quaternion } from 'three'
+import Target from '../components/com_target'
 
 export default class RenderSystem extends System {
 	transforms = this.world.view(ThreeObject3D, Transform3D)
 	velocities = this.world.view(ThreeObject3D, Transform3D, Velocity3D)
 	rotations = this.world.view(ThreeObject3D, Transform3D, Rotate3D)
+	targets = this.world.view(ThreeObject3D, Target)
 	update(dt: number) {
 		this.transforms.each((entity, { object3D }, transform) => {
 			if (!transform.dirty) return
@@ -32,6 +34,11 @@ export default class RenderSystem extends System {
 				rotation,
 				new Quaternion().slerp(rotate.quaternion, dt)
 			)
+		})
+		this.targets.each((entity, { object3D }, target) => {
+			if (!target.entity) return
+			const targetObject = this.world.get(target.entity, ThreeObject3D)
+			if (targetObject) object3D.lookAt(targetObject.object3D.position)
 		})
 	}
 }

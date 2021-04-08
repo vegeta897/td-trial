@@ -49,7 +49,7 @@ export class Level {
 		// Create spawners and turrets
 		factory.createSpawner()
 		factory.createTurret(new Vector3(0, 0, 10))
-		factory.createTurret(new Vector3(2, 0, 10))
 		factory.createTurret(new Vector3(2, 0, 4))
+		factory.createTurret(new Vector3(8, 0, 2))
 	}
 }
