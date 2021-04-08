@@ -1,4 +1,4 @@
-import { Euler, Vector3 } from 'three'
+import { Quaternion, Vector3 } from 'three'
 import { Component } from 'uecs'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
@@ -10,8 +10,8 @@ const SHOOT_INTERVAL = 5
 export function createTurret(
 	this: Factory,
 	position?: Vector3,
-	rotation?: Euler,
-	spin?: Euler
+	rotation?: Quaternion,
+	spin?: Quaternion
 ) {
 	const additionalComponents: Component[] = [
 		new Emitter(EmitterType.Turret, SHOOT_INTERVAL),

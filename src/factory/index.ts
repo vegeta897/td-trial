@@ -3,7 +3,7 @@ import { createSpawner } from './spawner'
 import { createEnemy } from './enemy'
 import { createTurret } from './turret'
 import { createBullet } from './bullet'
-import { Euler, Object3D, Vector3 } from 'three'
+import { Object3D, Quaternion, Vector3 } from 'three'
 import { MeshLambertMaterialParameters } from 'three/src/materials/MeshLambertMaterial'
 import { Component, Tag } from 'uecs'
 import { createCube } from '../three/objects'
@@ -29,7 +29,7 @@ export default class Factory {
 	}: {
 		container?: Object3D
 		position?: Vector3
-		rotation?: Euler
+		rotation?: Quaternion
 		scale?: Vector3
 		materialParams?: MeshLambertMaterialParameters
 		gameObjectType?: GameObjectTypes

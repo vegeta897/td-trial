@@ -37,10 +37,10 @@ export default class Game {
 			.onFinishChange((enabled) => (this.threeApp.smaaPass.enabled = enabled))
 		simFolder.open()
 
-		this.ecs.registerSystems(this)
-
 		const stats = Stats()
 		document.body.appendChild(stats.dom)
+
+		this.ecs.registerSystems(this)
 
 		let lag = 0
 		let lastUpdate = performance.now()

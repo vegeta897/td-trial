@@ -3,6 +3,7 @@ import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
 import Velocity3D from '../components/com_velocity3d'
 import Rotate3D from '../components/com_rotate3d'
+import { Quaternion } from 'three'
 
 export default class RenderSystem extends System {
 	transforms = this.world.view(ThreeObject3D, Transform3D)
@@ -13,7 +14,7 @@ export default class RenderSystem extends System {
 			if (!transform.dirty) return
 			transform.dirty = false
 			object3D.position.copy(transform.position)
-			object3D.rotation.copy(transform.rotation)
+			object3D.quaternion.copy(transform.rotation)
 			object3D.scale.copy(transform.scale)
 		})
 		// Do not interpolate if game is paused
@@ -26,12 +27,11 @@ export default class RenderSystem extends System {
 				velocity.vector3.clone().multiplyScalar(dt)
 			)
 		})
-		this.rotations.each(
-			(entity, { object3D }, { rotation }, { euler: { x, y, z } }) => {
-				object3D.rotation.x = rotation.x + x * dt
-				object3D.rotation.y = rotation.y + y * dt
-				object3D.rotation.z = rotation.z + z * dt
-			}
-		)
+		this.rotations.each((entity, { object3D }, { rotation }, rotate) => {
+			object3D.quaternion.multiplyQuaternions(
+				rotation,
+				new Quaternion().slerp(rotate.quaternion, dt)
+			)
+		})
 	}
 }

@@ -1,4 +1,4 @@
-import { Euler, Vector3 } from 'three'
+import { Quaternion, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
 import Factory from './'
@@ -8,7 +8,7 @@ const SPAWN_INTERVAL = 60
 export function createSpawner(
 	this: Factory,
 	position?: Vector3,
-	rotation?: Euler
+	rotation?: Quaternion
 ) {
 	this.createGameObject({
 		position,

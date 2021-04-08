@@ -1,11 +1,11 @@
 import {
 	BufferGeometry,
-	Euler,
 	Line,
 	LineBasicMaterial,
 	Mesh,
 	MeshLambertMaterial,
 	PlaneGeometry,
+	Quaternion,
 	Vector3,
 } from 'three'
 import Game from './'
@@ -49,11 +49,14 @@ export class Level {
 		// Create spawners and turrets
 		factory.createSpawner()
 		factory.createTurret(new Vector3(0, 0, 10))
-		factory.createTurret(new Vector3(2, 0, 10), new Euler(0, 0.6))
+		factory.createTurret(
+			new Vector3(2, 0, 10),
+			new Quaternion().setFromAxisAngle(new Vector3(0, 1), 0.6)
+		)
 		factory.createTurret(
 			new Vector3(2, 0, 4),
-			new Euler(0, (Math.PI * 3) / 2),
-			new Euler(0, 0.02)
+			new Quaternion(),
+			new Quaternion().setFromAxisAngle(new Vector3(0, 1), 0.02)
 		)
 	}
 }
