@@ -6,6 +6,7 @@ import TransformSystem from '../systems/sys_transform'
 import EmitterSystem from '../systems/sys_emitter'
 import BulletSystem from '../systems/sys_bullet'
 import RotateSystem from '../systems/sys_rotate'
+import TargetSystem from '../systems/sys_target'
 import Game from './'
 
 export default class ECS {
@@ -16,6 +17,7 @@ export default class ECS {
 	}
 	registerSystems(game: Game) {
 		this.systems.push(new TransformSystem(game))
+		this.systems.push(new TargetSystem(game))
 		this.systems.push(new RotateSystem(game))
 		this.systems.push(new EmitterSystem(game))
 		this.systems.push(new BulletSystem(game))

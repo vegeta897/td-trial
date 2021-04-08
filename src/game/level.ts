@@ -5,7 +5,7 @@ import {
 	Mesh,
 	MeshLambertMaterial,
 	PlaneGeometry,
-	Quaternion,
+	// Quaternion,
 	Vector3,
 } from 'three'
 import Game from './'
@@ -49,14 +49,7 @@ export class Level {
 		// Create spawners and turrets
 		factory.createSpawner()
 		factory.createTurret(new Vector3(0, 0, 10))
-		factory.createTurret(
-			new Vector3(2, 0, 10),
-			new Quaternion().setFromAxisAngle(new Vector3(0, 1), 0.6)
-		)
-		factory.createTurret(
-			new Vector3(2, 0, 4),
-			new Quaternion(),
-			new Quaternion().setFromAxisAngle(new Vector3(0, 1), 0.02)
-		)
+		factory.createTurret(new Vector3(2, 0, 10))
+		factory.createTurret(new Vector3(2, 0, 4))
 	}
 }
