@@ -16,6 +16,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"dependencies": {
+		"camera-controls": "^1.28.0",
 		"three": "^0.126.1",
 		"uecs": "^0.3.0"
 	},

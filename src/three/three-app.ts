@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import {
 	AmbientLight,
 	AxesHelper,
@@ -12,8 +13,10 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { GameObjectTypes } from '../game'
+import CameraControls from 'camera-controls'
+
+CameraControls.install({ THREE })
 
 const SCALE = 8
 
@@ -22,7 +25,7 @@ export class ThreeApp {
 	composer = new EffectComposer(this.renderer)
 	scene = new Scene()
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
-	cameraControls = new OrbitControls(this.camera, this.renderer.domElement)
+	cameraControls = new CameraControls(this.camera, this.renderer.domElement)
 	systems: System[] = []
 	center = new Vector3(4, 0, 4)
 	smaaPass = new SMAAPass(0, 0)
@@ -63,15 +66,19 @@ export class ThreeApp {
 		this.onWindowResize()
 
 		// Set up camera controls
-		this.cameraControls.target = this.center
-		this.cameraControls.enableDamping = true
-		this.cameraControls.dampingFactor = 0.1
-		this.cameraControls.screenSpacePanning = false
-		this.cameraControls.minDistance = 100
-		this.cameraControls.maxDistance = 500
+		this.cameraControls.distance = 100
 		this.cameraControls.minZoom = 0.1
-		this.cameraControls.maxZoom = 5
-		this.cameraControls.maxPolarAngle = Math.PI / 2
+		this.cameraControls.maxZoom = 7
+		this.cameraControls.setTarget(this.center.x, this.center.y, this.center.z)
+		this.cameraControls.polarAngle = Math.PI / 4
+		this.cameraControls.azimuthAngle = (Math.PI * 2) / 6
+		this.cameraControls.mouseButtons.left = CameraControls.ACTION.NONE
+		this.cameraControls.mouseButtons.right = CameraControls.ACTION.ROTATE
+		this.cameraControls.mouseButtons.middle = CameraControls.ACTION.TRUCK
+		this.cameraControls.polarRotateSpeed = 0.5
+		this.cameraControls.azimuthRotateSpeed = 0.7
+		this.cameraControls.dampingFactor = 0.01
+		this.cameraControls.draggingDampingFactor = 0.02
 
 		// Create groups
 		for (const groupID in GameObjectTypes) {
@@ -84,7 +91,7 @@ export class ThreeApp {
 	}
 	render(dt: number) {
 		this.systems.forEach((system) => system.update(dt))
-		this.cameraControls.update()
+		this.cameraControls.update(1)
 		this.composer.render()
 	}
 	onWindowResize() {
