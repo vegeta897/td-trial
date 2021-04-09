@@ -7,11 +7,19 @@ const material = new MeshLambertMaterial({
 })
 const cube = new Mesh(geometry, material)
 
-export function createCube(
+export function createCube({
+	materialParams,
+	shadows = true,
+}: {
 	materialParams?: MeshLambertMaterialParameters
-): Mesh {
+	shadows?: boolean
+}): Mesh {
 	const newCube = <Mesh>cube.clone()
 	if (materialParams) newCube.material = new MeshLambertMaterial(materialParams)
+	if (shadows) {
+		newCube.castShadow = true
+		newCube.receiveShadow = true
+	}
 	return newCube
 }
 

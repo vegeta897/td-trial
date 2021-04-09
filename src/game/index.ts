@@ -34,7 +34,7 @@ export default class Game {
 	}
 	constructor() {
 		// Create GUI
-		const gui = new GUI({ width: 360 })
+		const gui = new GUI({ width: 300 })
 		const simFolder = gui.addFolder('Simulation')
 		simFolder
 			.add(this, 'tickTime', 1, 300)

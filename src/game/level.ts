@@ -43,6 +43,7 @@ export class Level {
 		const plane = new PlaneGeometry(20, 20)
 		const planeMaterial = new MeshLambertMaterial({ color: 0x29264f })
 		const planeMesh = new Mesh(plane, planeMaterial)
+		planeMesh.receiveShadow = true
 		planeMesh.position.y = FLOOR_Y
 		planeMesh.position.x = threeApp.center.x
 		planeMesh.position.z = threeApp.center.z

@@ -23,6 +23,7 @@ export default class Factory {
 		rotation,
 		scale,
 		materialParams,
+		shadows,
 		gameObjectType,
 		additionalComponents,
 		children,
@@ -32,11 +33,12 @@ export default class Factory {
 		rotation?: Quaternion
 		scale?: Vector3
 		materialParams?: MeshLambertMaterialParameters
+		shadows?: boolean
 		gameObjectType?: GameObjectTypes
 		additionalComponents?: Component[]
 		children?: Object3D[]
 	} = {}) {
-		const cube = createCube(materialParams)
+		const cube = createCube({ materialParams, shadows })
 		if (children) children.forEach((child) => cube.add(child))
 		;(container || this.game.threeApp.scene).add(cube)
 		const entity = this.game.world.create(
