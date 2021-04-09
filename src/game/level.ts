@@ -22,7 +22,9 @@ export class PathNode extends Vector3 {
 
 export class Level {
 	startingNode = new PathNode()
+	ground: Mesh
 	constructor({ threeApp, factory }: Game) {
+		// Create enemy path
 		this.startingNode.addNode(0, 0, 8).addNode(4).addNode(0, 0, -4).addNode(8)
 		let node: PathNode | undefined = this.startingNode
 		const pathPoints: Vector3[] = []
@@ -37,6 +39,7 @@ export class Level {
 		)
 		threeApp.scene.add(pathLine)
 
+		// Create ground plane
 		const plane = new PlaneGeometry(20, 20)
 		const planeMaterial = new MeshLambertMaterial({ color: 0x29264f })
 		const planeMesh = new Mesh(plane, planeMaterial)
@@ -45,11 +48,9 @@ export class Level {
 		planeMesh.position.z = threeApp.center.z
 		planeMesh.rotateX(-Math.PI / 2)
 		threeApp.scene.add(planeMesh)
+		this.ground = planeMesh
 
-		// Create spawners and turrets
+		// Create spawner
 		factory.createSpawner()
-		factory.createTurret(new Vector3(0, 0, 10))
-		factory.createTurret(new Vector3(2, 0, 4))
-		factory.createTurret(new Vector3(8, 0, 2))
 	}
 }

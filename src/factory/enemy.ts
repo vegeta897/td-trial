@@ -6,7 +6,7 @@ import { createSprite } from '../three/objects'
 import Factory from './'
 
 export const ENEMY_SIZE = 1
-const HEALTH = 35
+const HEALTH = 100
 
 export function createEnemy(this: Factory, position: Vector3) {
 	const healthBar = createSprite()

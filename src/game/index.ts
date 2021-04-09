@@ -4,6 +4,7 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import { Level } from './level'
 import Factory from '../factory'
+import { Raycaster } from 'three'
 
 const TICKS_PER_SECOND = 60
 
@@ -41,6 +42,22 @@ export default class Game {
 		document.body.appendChild(stats.dom)
 
 		this.ecs.registerSystems(this)
+
+		const raycaster = new Raycaster()
+
+		this.threeApp.renderer.domElement.addEventListener('mousedown', (event) => {
+			if (event.button !== 0) return
+			const mouse = {
+				x: (event.clientX / window.innerWidth) * 2 - 1,
+				y: -(event.clientY / window.innerHeight) * 2 + 1,
+			}
+			raycaster.setFromCamera(mouse, this.threeApp.camera)
+			const intersect = raycaster
+				.intersectObjects(this.threeApp.scene.children)
+				.find((i) => i.object === this.level.ground)
+			if (!intersect) return
+			this.factory.createTurret(intersect.point.setComponent(1, 0))
+		})
 
 		let lag = 0
 		let lastUpdate = performance.now()

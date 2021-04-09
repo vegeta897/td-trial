@@ -5,7 +5,7 @@ import { Entity, Tag } from 'uecs'
 import { Object3D, Vector3 } from 'three'
 import Emitter from '../components/com_emitter'
 
-const objectProxy = new Object3D()
+const objectProxy = new Object3D() // Could use a Matrix4 but the API is more complex
 
 export default class TargetSystem extends System {
 	view = this.world.view(Transform3D, Target)

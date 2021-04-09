@@ -17,8 +17,8 @@ export default class ECS {
 	}
 	registerSystems(game: Game) {
 		this.systems.push(new TransformSystem(game))
-		this.systems.push(new TargetSystem(game))
 		this.systems.push(new RotateSystem(game))
+		this.systems.push(new TargetSystem(game))
 		this.systems.push(new EmitterSystem(game))
 		this.systems.push(new BulletSystem(game))
 		this.systems.push(new PathSystem(game))
