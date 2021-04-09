@@ -46,6 +46,7 @@ export default class Factory {
 		cube.userData.entity = entity
 		if (additionalComponents)
 			this.game.world.insert(entity, ...additionalComponents)
-		if (gameObjectType) this.game.world.emplace(entity, Tag.for(gameObjectType))
+		if (gameObjectType !== undefined)
+			this.game.world.emplace(entity, Tag.for(gameObjectType))
 	}
 }

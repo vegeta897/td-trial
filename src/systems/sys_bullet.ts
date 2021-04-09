@@ -34,7 +34,8 @@ export default class BulletSystem extends System {
 				this.world.destroy(entity)
 				return
 			}
-			transform.scale.z = velocityLength * 2
+			transform.scale.z =
+				velocityLength / this.game.turretProperties.bulletSpeed
 			velocity.vector3.multiplyScalar(0.95)
 			transform.scale.multiplyScalar(0.98)
 			this.enemies.each((enemy, { position: enemyPos }) => {

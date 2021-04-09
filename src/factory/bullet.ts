@@ -5,13 +5,14 @@ import { GameObjectTypes } from '../game'
 import Transform3D from '../components/com_transform3d'
 import Factory from './'
 
-const BULLET_SPEED = 0.5
 const BULLET_SCALE = 0.12
-const BULLET_SPREAD = MathUtils.degToRad(5)
 
 export function createBullet(this: Factory, turretTransform: Transform3D) {
 	const { position, rotation } = cloneTransform3D(turretTransform)
-	const randomRotation = randomizeAim(rotation, BULLET_SPREAD)
+	const randomRotation = randomizeAim(
+		rotation,
+		MathUtils.degToRad(this.game.turretProperties.bulletSpread)
+	)
 	this.createGameObject({
 		position,
 		rotation: randomRotation,
@@ -24,7 +25,11 @@ export function createBullet(this: Factory, turretTransform: Transform3D) {
 		gameObjectType: GameObjectTypes.Bullet,
 		additionalComponents: [
 			new Velocity3D(
-				new Vector3(0, 0, BULLET_SPEED).applyQuaternion(randomRotation)
+				new Vector3(
+					0,
+					0,
+					this.game.turretProperties.bulletSpeed
+				).applyQuaternion(randomRotation)
 			),
 		],
 	})

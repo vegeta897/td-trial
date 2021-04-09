@@ -15,7 +15,7 @@ export default class EmitterSystem extends System {
 	update() {
 		this.view.each((entity, emitter, transform) => {
 			if (!emitter.active) return
-			if (++emitter.tick === emitter.interval) {
+			if (++emitter.tick >= emitter.interval) {
 				emitter.tick = 0
 				switch (emitter.type) {
 					case EmitterType.Spawner:

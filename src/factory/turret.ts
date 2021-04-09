@@ -4,9 +4,6 @@ import { GameObjectTypes } from '../game'
 import Factory from './'
 import Target from '../components/com_target'
 
-const SHOOT_INTERVAL = 5
-const TARGET_DISTANCE = 5
-
 export function createTurret(
 	this: Factory,
 	position?: Vector3,
@@ -18,8 +15,16 @@ export function createTurret(
 		materialParams: { color: 0x38b764 },
 		gameObjectType: GameObjectTypes.Turret,
 		additionalComponents: [
-			new Emitter(EmitterType.Turret, SHOOT_INTERVAL, 0, false),
-			new Target(GameObjectTypes.Enemy, TARGET_DISTANCE),
+			new Emitter(
+				EmitterType.Turret,
+				Math.round(this.game.tickRate / this.game.turretProperties.fireRate),
+				0,
+				false
+			),
+			new Target(
+				GameObjectTypes.Enemy,
+				this.game.turretProperties.targetDistance
+			),
 		],
 	})
 }
