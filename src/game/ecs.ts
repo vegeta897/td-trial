@@ -12,9 +12,6 @@ import Game from './'
 export default class ECS {
 	world = new World()
 	systems: System[] = []
-	constructor() {
-		// TODO: Create global entity with component that holds threeApp, level, enemyGroup, etc.
-	}
 	registerSystems(game: Game) {
 		this.systems.push(new TransformSystem(game))
 		this.systems.push(new RotateSystem(game))

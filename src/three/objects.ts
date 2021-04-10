@@ -1,26 +1,29 @@
-import { BoxGeometry, Mesh, MeshLambertMaterial, Sprite } from 'three'
+import {
+	BoxGeometry,
+	BufferGeometry,
+	Mesh,
+	MeshLambertMaterial,
+	Sprite,
+} from 'three'
 import { MeshLambertMaterialParameters } from 'three/src/materials/MeshLambertMaterial'
 
 const geometry = new BoxGeometry()
-const material = new MeshLambertMaterial({
-	color: 0x00ff00,
-})
+const material = new MeshLambertMaterial({ color: 0x00ff00 })
 const cube = new Mesh(geometry, material)
 
-export function createCube({
+export function createMesh({
 	materialParams,
-	shadows = true,
+	geometry,
+	meshOptions,
 }: {
 	materialParams?: MeshLambertMaterialParameters
-	shadows?: boolean
+	geometry?: BufferGeometry
+	meshOptions?: Partial<Mesh>
 }): Mesh {
-	const newCube = <Mesh>cube.clone()
-	if (materialParams) newCube.material = new MeshLambertMaterial(materialParams)
-	if (shadows) {
-		newCube.castShadow = true
-		newCube.receiveShadow = true
-	}
-	return newCube
+	const newMesh = geometry ? new Mesh(geometry, material) : <Mesh>cube.clone()
+	if (materialParams) newMesh.material = new MeshLambertMaterial(materialParams)
+	if (meshOptions) Object.assign(newMesh, meshOptions)
+	return newMesh
 }
 
 const sprite = new Sprite()

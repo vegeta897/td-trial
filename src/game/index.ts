@@ -6,13 +6,6 @@ import Factory from '../factory'
 import { Raycaster } from 'three'
 import { createDebugGUI } from './debug'
 
-export enum GameObjectTypes {
-	Turret,
-	Spawner,
-	Bullet,
-	Enemy,
-}
-
 export default class Game {
 	threeApp = new ThreeApp()
 	ecs = new ECS()
@@ -29,10 +22,9 @@ export default class Game {
 		bulletSpeed: 0.5,
 		bulletSpread: 5,
 	}
-	constructor() {
-		createDebugGUI(this)
-		const stats = Stats()
-		document.body.appendChild(stats.dom)
+	async init() {
+		await this.threeApp.loadAssets()
+		this.level.create()
 
 		this.ecs.registerSystems(this)
 
@@ -51,6 +43,10 @@ export default class Game {
 			if (!groundClick) return
 			this.factory.createTurret(groundClick.point.setComponent(1, 0))
 		})
+
+		createDebugGUI(this)
+		const stats = Stats()
+		document.body.appendChild(stats.dom)
 
 		// Main loop
 		let lag = 0
@@ -75,4 +71,11 @@ export default class Game {
 		}
 		update()
 	}
+}
+
+export enum GameObjectTypes {
+	Turret,
+	Spawner,
+	Bullet,
+	Enemy,
 }

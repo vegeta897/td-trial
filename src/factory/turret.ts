@@ -3,6 +3,8 @@ import Emitter, { EmitterType } from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
 import Factory from './'
 import Target from '../components/com_target'
+import { createMesh } from '../three/objects'
+import { AssetNames } from '../three/assets'
 
 export function createTurret(
 	this: Factory,
@@ -12,7 +14,11 @@ export function createTurret(
 	this.createGameObject({
 		position,
 		rotation,
-		materialParams: { color: 0x38b764 },
+		object3D: createMesh({
+			geometry: this.game.threeApp.assets.get(AssetNames.TurretGeometry),
+			materialParams: { color: 0x38b764 },
+			meshOptions: { castShadow: true },
+		}),
 		gameObjectType: GameObjectTypes.Turret,
 		additionalComponents: [
 			new Emitter(

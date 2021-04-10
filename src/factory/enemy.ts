@@ -19,6 +19,7 @@ export function createEnemy(this: Factory, position: Vector3) {
 		position,
 		scale: new Vector3().setScalar(ENEMY_SIZE),
 		materialParams: { color: 0xb13e53 },
+		meshOptions: { castShadow: true },
 		gameObjectType: GameObjectTypes.Enemy,
 		additionalComponents: [
 			new Path(this.game.level.startingNode),

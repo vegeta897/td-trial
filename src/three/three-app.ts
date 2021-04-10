@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import {
 	AxesHelper,
+	BufferGeometry,
 	Group,
 	OrthographicCamera,
 	Scene,
@@ -15,6 +16,7 @@ import { GameObjectTypes } from '../game'
 import CameraControls from 'camera-controls'
 import { setupLights } from './light'
 import { setupCamera, updateCamera } from './camera'
+import { AssetNames, loadAssets } from './assets'
 
 CameraControls.install({ THREE })
 
@@ -30,6 +32,7 @@ export class ThreeApp {
 	center = new Vector3(4, 0, 4)
 	smaaPass = new SMAAPass(0, 0)
 	smaa = true
+	assets: Map<AssetNames, BufferGeometry> = new Map()
 	groups: Map<GameObjectTypes, Group> = new Map()
 	constructor() {
 		// Set up renderer
@@ -64,6 +67,7 @@ export class ThreeApp {
 			}
 		}
 	}
+	loadAssets = loadAssets
 	render(dt: number) {
 		this.systems.forEach((system) => system.update(dt))
 		this.cameraControls.update(1)

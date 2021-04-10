@@ -22,7 +22,6 @@ export function createBullet(this: Factory, turretTransform: Transform3D) {
 			emissive: 0xa7f070,
 			emissiveIntensity: 1,
 		},
-		shadows: false,
 		gameObjectType: GameObjectTypes.Bullet,
 		additionalComponents: [
 			new Velocity3D(

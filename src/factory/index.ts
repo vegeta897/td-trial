@@ -3,10 +3,10 @@ import { createSpawner } from './spawner'
 import { createEnemy } from './enemy'
 import { createTurret } from './turret'
 import { createBullet } from './bullet'
-import { Object3D, Quaternion, Vector3 } from 'three'
+import { Mesh, Object3D, Quaternion, Vector3 } from 'three'
 import { MeshLambertMaterialParameters } from 'three/src/materials/MeshLambertMaterial'
 import { Component, Tag } from 'uecs'
-import { createCube } from '../three/objects'
+import { createMesh } from '../three/objects'
 import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
 
@@ -23,7 +23,8 @@ export default class Factory {
 		rotation,
 		scale,
 		materialParams,
-		shadows,
+		object3D,
+		meshOptions,
 		gameObjectType,
 		additionalComponents,
 		children,
@@ -33,19 +34,20 @@ export default class Factory {
 		rotation?: Quaternion
 		scale?: Vector3
 		materialParams?: MeshLambertMaterialParameters
-		shadows?: boolean
+		object3D?: Object3D
+		meshOptions?: Partial<Mesh>
 		gameObjectType?: GameObjectTypes
 		additionalComponents?: Component[]
 		children?: Object3D[]
 	} = {}) {
-		const cube = createCube({ materialParams, shadows })
-		if (children) children.forEach((child) => cube.add(child))
-		;(container || this.game.threeApp.scene).add(cube)
+		const newObject = object3D || createMesh({ materialParams, meshOptions })
+		if (children) children.forEach((child) => newObject.add(child))
+		;(container || this.game.threeApp.scene).add(newObject)
 		const entity = this.game.world.create(
-			new ThreeObject3D(cube),
+			new ThreeObject3D(newObject),
 			new Transform3D(position, rotation, scale)
 		)
-		cube.userData.entity = entity
+		newObject.userData.entity = entity
 		if (additionalComponents)
 			this.game.world.insert(entity, ...additionalComponents)
 		if (gameObjectType !== undefined)
