@@ -11,9 +11,7 @@ export function createSpawner(
 	rotation?: Quaternion
 ) {
 	this.createGameObject({
-		position,
-		rotation,
-		scale: new Vector3().setScalar(1.2),
+		transform: { position, rotation, scale: new Vector3().setScalar(1.2) },
 		materialParams: { color: 0xef7d57 },
 		meshProperties: { castShadow: true },
 		additionalComponents: [

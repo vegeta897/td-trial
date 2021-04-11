@@ -11,8 +11,7 @@ export function createTurret(
 	rotation?: Quaternion
 ) {
 	this.createGameObject({
-		position,
-		rotation,
+		transform: { position, rotation },
 		geometry: this.game.threeApp.assets.get(AssetNames.TurretGeometry),
 		materialParams: { color: 0x38b764 },
 		meshProperties: { castShadow: true },

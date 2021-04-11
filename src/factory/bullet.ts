@@ -14,9 +14,11 @@ export function createBullet(this: Factory, turretTransform: Transform3D) {
 		MathUtils.degToRad(this.game.turretProperties.bulletSpread)
 	)
 	this.createGameObject({
-		position,
-		rotation: randomRotation,
-		scale: new Vector3().setScalar(BULLET_SCALE),
+		transform: {
+			position,
+			rotation: randomRotation,
+			scale: new Vector3().setScalar(BULLET_SCALE),
+		},
 		materialParams: {
 			color: 0,
 			emissive: 0xa7f070,

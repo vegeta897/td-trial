@@ -16,8 +16,7 @@ export function createEnemy(this: Factory, position: Vector3) {
 	healthBar.visible = false
 	this.createGameObject({
 		container: this.game.threeApp.groups.get(GameObjectTypes.Enemy),
-		position,
-		scale: new Vector3().setScalar(ENEMY_SIZE),
+		transform: { position, scale: new Vector3().setScalar(ENEMY_SIZE) },
 		materialParams: { color: 0xb13e53 },
 		meshProperties: { castShadow: true },
 		gameObjectType: GameObjectTypes.Enemy,

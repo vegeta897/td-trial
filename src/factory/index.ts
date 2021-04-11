@@ -3,7 +3,7 @@ import { createSpawner } from './spawner'
 import { createEnemy } from './enemy'
 import { createTurret } from './turret'
 import { createBullet } from './bullet'
-import { Object3D, Quaternion, Vector3 } from 'three'
+import { Object3D } from 'three'
 import { Component, Tag } from 'uecs'
 import { createMesh, IMeshOptions } from '../three/objects'
 import ThreeObject3D from '../components/com_object3d'
@@ -11,9 +11,7 @@ import Transform3D from '../components/com_transform3d'
 
 interface IGameObjectOptions {
 	container?: Object3D
-	position?: Vector3
-	rotation?: Quaternion
-	scale?: Vector3
+	transform?: Partial<Transform3D>
 	object3D?: Object3D
 	gameObjectType?: GameObjectTypes
 	additionalComponents?: Component[]
@@ -29,9 +27,7 @@ export default class Factory {
 	createBullet = createBullet
 	createGameObject({
 		container,
-		position,
-		rotation,
-		scale,
+		transform,
 		geometry,
 		materialParams,
 		meshProperties,
@@ -46,7 +42,7 @@ export default class Factory {
 		;(container || this.game.threeApp.scene).add(newObject)
 		const entity = this.game.world.create(
 			new ThreeObject3D(newObject),
-			new Transform3D({ position, rotation, scale })
+			new Transform3D(transform)
 		)
 		newObject.userData.entity = entity
 		if (additionalComponents)
