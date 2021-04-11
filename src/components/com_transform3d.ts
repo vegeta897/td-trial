@@ -1,10 +1,12 @@
 import { Quaternion, Vector3 } from 'three'
+import { assignDefined } from '../util'
 
 export default class Transform3D {
-	constructor(
-		public position: Vector3 = new Vector3(),
-		public rotation: Quaternion = new Quaternion(),
-		public scale: Vector3 = new Vector3().setScalar(1),
-		public dirty: boolean = true
-	) {}
+	position: Vector3 = new Vector3()
+	rotation: Quaternion = new Quaternion()
+	scale: Vector3 = new Vector3().setScalar(1)
+	dirty: boolean = true
+	constructor(options: Partial<Transform3D>) {
+		assignDefined(this, options)
+	}
 }

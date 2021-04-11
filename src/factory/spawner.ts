@@ -15,7 +15,7 @@ export function createSpawner(
 		rotation,
 		scale: new Vector3().setScalar(1.2),
 		materialParams: { color: 0xef7d57 },
-		meshOptions: { castShadow: true },
+		meshProperties: { castShadow: true },
 		additionalComponents: [
 			new Emitter(EmitterType.Spawner, SPAWN_INTERVAL, SPAWN_INTERVAL - 1),
 		],

@@ -11,18 +11,20 @@ const geometry = new BoxGeometry()
 const material = new MeshLambertMaterial({ color: 0x00ff00 })
 const cube = new Mesh(geometry, material)
 
+export interface IMeshOptions {
+	materialParams?: MeshLambertMaterialParameters
+	geometry?: BufferGeometry
+	meshProperties?: Partial<Mesh>
+}
+
 export function createMesh({
 	materialParams,
 	geometry,
-	meshOptions,
-}: {
-	materialParams?: MeshLambertMaterialParameters
-	geometry?: BufferGeometry
-	meshOptions?: Partial<Mesh>
-}): Mesh {
+	meshProperties,
+}: IMeshOptions): Mesh {
 	const newMesh = geometry ? new Mesh(geometry, material) : <Mesh>cube.clone()
 	if (materialParams) newMesh.material = new MeshLambertMaterial(materialParams)
-	if (meshOptions) Object.assign(newMesh, meshOptions)
+	if (meshProperties) Object.assign(newMesh, meshProperties)
 	return newMesh
 }
 

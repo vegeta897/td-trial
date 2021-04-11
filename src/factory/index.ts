@@ -3,12 +3,22 @@ import { createSpawner } from './spawner'
 import { createEnemy } from './enemy'
 import { createTurret } from './turret'
 import { createBullet } from './bullet'
-import { Mesh, Object3D, Quaternion, Vector3 } from 'three'
-import { MeshLambertMaterialParameters } from 'three/src/materials/MeshLambertMaterial'
+import { Object3D, Quaternion, Vector3 } from 'three'
 import { Component, Tag } from 'uecs'
-import { createMesh } from '../three/objects'
+import { createMesh, IMeshOptions } from '../three/objects'
 import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
+
+interface IGameObjectOptions {
+	container?: Object3D
+	position?: Vector3
+	rotation?: Quaternion
+	scale?: Vector3
+	object3D?: Object3D
+	gameObjectType?: GameObjectTypes
+	additionalComponents?: Component[]
+	children?: Object3D[]
+}
 
 export default class Factory {
 	constructor(public game: Game) {}
@@ -22,30 +32,21 @@ export default class Factory {
 		position,
 		rotation,
 		scale,
+		geometry,
 		materialParams,
+		meshProperties,
 		object3D,
-		meshOptions,
 		gameObjectType,
 		additionalComponents,
 		children,
-	}: {
-		container?: Object3D
-		position?: Vector3
-		rotation?: Quaternion
-		scale?: Vector3
-		materialParams?: MeshLambertMaterialParameters
-		object3D?: Object3D
-		meshOptions?: Partial<Mesh>
-		gameObjectType?: GameObjectTypes
-		additionalComponents?: Component[]
-		children?: Object3D[]
-	} = {}) {
-		const newObject = object3D || createMesh({ materialParams, meshOptions })
+	}: IGameObjectOptions & IMeshOptions = {}) {
+		const newObject =
+			object3D || createMesh({ geometry, materialParams, meshProperties })
 		if (children) children.forEach((child) => newObject.add(child))
 		;(container || this.game.threeApp.scene).add(newObject)
 		const entity = this.game.world.create(
 			new ThreeObject3D(newObject),
-			new Transform3D(position, rotation, scale)
+			new Transform3D({ position, rotation, scale })
 		)
 		newObject.userData.entity = entity
 		if (additionalComponents)
