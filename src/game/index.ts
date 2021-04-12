@@ -3,8 +3,9 @@ import ECS from './ecs'
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { Level } from './level'
 import Factory from '../factory'
-import { Raycaster } from 'three'
 import { createDebugGUI } from './debug'
+import GUI from './gui'
+import Interaction from './interaction'
 
 export default class Game {
 	threeApp = new ThreeApp()
@@ -12,6 +13,8 @@ export default class Game {
 	world = this.ecs.world
 	factory = new Factory(this)
 	level = new Level(this)
+	interaction = new Interaction(this)
+	gui = new GUI(this)
 	tickRate = 60
 	tickTime = 1000 / this.tickRate
 	paused = false
@@ -27,22 +30,6 @@ export default class Game {
 		this.level.create()
 
 		this.ecs.registerSystems(this)
-
-		// Handle mouse clicks
-		const raycaster = new Raycaster()
-		this.threeApp.renderer.domElement.addEventListener('mousedown', (event) => {
-			if (event.button !== 0) return
-			const mouse = {
-				x: (event.clientX / window.innerWidth) * 2 - 1,
-				y: -(event.clientY / window.innerHeight) * 2 + 1,
-			}
-			raycaster.setFromCamera(mouse, this.threeApp.camera)
-			const groundClick = raycaster
-				.intersectObjects(this.threeApp.scene.children)
-				.find((i) => i.object === this.level.ground)
-			if (!groundClick) return
-			this.factory.createTurret(groundClick.point.setComponent(1, 0))
-		})
 
 		createDebugGUI(this)
 		const stats = Stats()

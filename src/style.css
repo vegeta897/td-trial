@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@600&display=swap');
+
 * {
     padding: 0;
     margin: 0;
@@ -7,3 +9,29 @@ body  {
     background: #191919;
 }
 
+#gui-container {
+    opacity: 0.9;
+    font-family: 'Source Sans Pro', sans-serif;
+    position: fixed;
+    top: 50%;
+    transform: translate(0, -50%);
+    padding: 1em;
+    width: 120px;
+    margin-left: 8px;
+    text-align: center;
+    background: rgba(26, 28, 44, 0.4);
+}
+
+#gui-container h2 {
+    font-size: 30px;
+    color: aliceblue;
+    margin: 0 0 8px;
+}
+
+#gui-container button {
+    display: block;
+    font-size: 32px;
+    padding: 0.3em;
+    margin-bottom: 0.2em;
+    width: 100%;
+}
