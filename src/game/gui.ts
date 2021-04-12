@@ -25,7 +25,6 @@ export default class GUI {
 
 		this.buttons.cancel.innerText = 'cancel'
 		this.buttons.cancel.addEventListener('click', () => {
-			console.log('click cancel')
 			this.game.interaction.state = InteractionState.NONE
 			this.update()
 		})

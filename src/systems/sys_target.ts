@@ -2,7 +2,7 @@ import { System } from './system'
 import Target from '../components/com_target'
 import Transform3D from '../components/com_transform3d'
 import { Entity, Tag } from 'uecs'
-import { Object3D, Vector3 } from 'three'
+import { Object3D } from 'three'
 import Emitter from '../components/com_emitter'
 
 const objectProxy = new Object3D() // Could use a Matrix4 but the API is more complex
@@ -11,9 +11,19 @@ export default class TargetSystem extends System {
 	view = this.world.view(Transform3D, Target)
 	update() {
 		this.view.each((entity, transform, target) => {
-			const emitter = this.world.get(entity, Emitter)
-			// Keep target if still in range?
-			let closest: [Entity, Vector3, number] | undefined
+			// Retain existing target if in range
+			const targetTransform =
+				target.entity && this.world.get(target.entity, Transform3D)
+			if (
+				targetTransform &&
+				targetTransform.position.distanceTo(transform.position) <=
+					target.maxDistance
+			) {
+				lookAtTarget(transform, targetTransform)
+				return
+			}
+			// Acquire closest target
+			let closest: [Entity, Transform3D, number] | undefined
 			this.world
 				.view(Transform3D, Tag.for(target.type))
 				.each((targetEntity, targetTransform) => {
@@ -22,20 +32,24 @@ export default class TargetSystem extends System {
 					)
 					if (distance <= target.maxDistance) {
 						if (!closest || distance < closest[2])
-							closest = [targetEntity, targetTransform.position, distance]
+							closest = [targetEntity, targetTransform, distance]
 					}
 				})
+			const emitter = this.world.get(entity, Emitter)
+			if (emitter) emitter.active = !!closest
 			if (closest) {
 				target.entity = closest[0]
-				if (emitter) emitter.active = true
-				objectProxy.position.copy(transform.position)
-				objectProxy.lookAt(closest[1])
-				transform.rotation.copy(objectProxy.quaternion)
-				transform.dirty = true
+				lookAtTarget(transform, closest[1])
 			} else {
 				target.entity = null
-				if (emitter) emitter.active = false
 			}
 		})
 	}
+}
+
+function lookAtTarget(transform: Transform3D, targetTransform: Transform3D) {
+	objectProxy.position.copy(transform.position)
+	objectProxy.lookAt(targetTransform.position)
+	transform.rotation.copy(objectProxy.quaternion)
+	transform.dirty = true
 }
