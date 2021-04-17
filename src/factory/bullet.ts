@@ -4,8 +4,22 @@ import { Euler, MathUtils, Quaternion, Vector3 } from 'three'
 import { GameObjectTypes } from '../game'
 import Transform3D from '../components/com_transform3d'
 import Factory from './'
+import { createMesh } from '../three/objects'
 
 const BULLET_SCALE = 0.12
+
+export function createBulletPrototype(factory: Factory) {
+	factory.prototypes.set(
+		GameObjectTypes.Bullet,
+		createMesh({
+			materialParams: {
+				color: 0,
+				emissive: 0xa7f070,
+				emissiveIntensity: 1,
+			},
+		})
+	)
+}
 
 export function createBullet(this: Factory, turretTransform: Transform3D) {
 	const { position, rotation } = cloneTransform3D(turretTransform)
@@ -18,11 +32,6 @@ export function createBullet(this: Factory, turretTransform: Transform3D) {
 			position,
 			rotation: randomRotation,
 			scale: new Vector3().setScalar(BULLET_SCALE),
-		},
-		materialParams: {
-			color: 0,
-			emissive: 0xa7f070,
-			emissiveIntensity: 1,
 		},
 		gameObjectType: GameObjectTypes.Bullet,
 		additionalComponents: [

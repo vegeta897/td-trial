@@ -4,6 +4,18 @@ import { GameObjectTypes } from '../game'
 import Factory from './'
 import Target from '../components/com_target'
 import { AssetNames } from '../three/assets'
+import { createMesh } from '../three/objects'
+
+export function createTurretPrototype(factory: Factory) {
+	factory.prototypes.set(
+		GameObjectTypes.Turret,
+		createMesh({
+			geometry: factory.game.threeApp.assets.get(AssetNames.TurretGeometry),
+			materialParams: { color: 0x38b764 },
+			meshProperties: { castShadow: true },
+		})
+	)
+}
 
 export function createTurret(
 	this: Factory,
@@ -12,9 +24,6 @@ export function createTurret(
 ) {
 	this.createGameObject({
 		transform: { position, rotation },
-		geometry: this.game.threeApp.assets.get(AssetNames.TurretGeometry),
-		materialParams: { color: 0x38b764 },
-		meshProperties: { castShadow: true },
 		gameObjectType: GameObjectTypes.Turret,
 		additionalComponents: [
 			new Emitter(

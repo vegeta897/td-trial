@@ -1,11 +1,10 @@
 import Game, { GameObjectTypes } from '../game'
-import { createSpawner } from './spawner'
-import { createEnemy } from './enemy'
-import { createTurret } from './turret'
-import { createBullet } from './bullet'
+import { createSpawner, createSpawnerPrototype } from './spawner'
+import { createEnemy, createEnemyPrototype } from './enemy'
+import { createTurret, createTurretPrototype } from './turret'
+import { createBullet, createBulletPrototype } from './bullet'
 import { Object3D } from 'three'
 import { Component, Tag } from 'uecs'
-import { createMesh, IMeshOptions } from '../three/objects'
 import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
 
@@ -19,7 +18,13 @@ interface IGameObjectOptions {
 }
 
 export default class Factory {
-	constructor(public game: Game) {}
+	prototypes: Map<GameObjectTypes, Object3D> = new Map()
+	constructor(public game: Game) {
+		createTurretPrototype(this)
+		createBulletPrototype(this)
+		createEnemyPrototype(this)
+		createSpawnerPrototype(this)
+	}
 
 	createSpawner = createSpawner
 	createEnemy = createEnemy
@@ -28,16 +33,18 @@ export default class Factory {
 	createGameObject({
 		container,
 		transform,
-		geometry,
-		materialParams,
-		meshProperties,
 		object3D,
 		gameObjectType,
 		additionalComponents,
 		children,
-	}: IGameObjectOptions & IMeshOptions = {}) {
+	}: IGameObjectOptions = {}) {
 		const newObject =
-			object3D || createMesh({ geometry, materialParams, meshProperties })
+			object3D ||
+			(gameObjectType !== undefined &&
+				this.prototypes.has(gameObjectType) &&
+				this.prototypes.get(gameObjectType)!.clone())
+		if (!newObject)
+			throw `Object3D was not provided and prototype does not exist for game object type ${gameObjectType}`
 		if (children) children.forEach((child) => newObject.add(child))
 		;(container || this.game.threeApp.scene).add(newObject)
 		const entity = this.game.world.create(
