@@ -1,11 +1,12 @@
 import { System } from './system'
-import Target from '../components/com_target'
+import Target, { TargetPriority } from '../components/com_target'
 import Transform3D from '../components/com_transform3d'
 import { Entity, Tag, View } from 'uecs'
 import { Object3D } from 'three'
 import Emitter from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
 import { Constructor } from 'uecs/dist/util'
+import Ammo from '../components/com_ammo'
 
 const objectProxy = new Object3D() // Could use a Matrix4 but the API is more complex
 
@@ -19,19 +20,21 @@ export default class TargetSystem extends System {
 		this.view.each((entity, transform, target) => {
 			const maxDistanceSquared = target.maxDistance ** 2
 			const emitter = this.world.get(entity, Emitter)
-			// Retain existing target if in range
-			const targetTransform =
-				target.entity && this.world.get(target.entity, Transform3D)
-			if (
-				targetTransform &&
-				targetTransform.position.distanceToSquared(transform.position) <=
-					maxDistanceSquared
-			) {
-				setTarget(transform, targetTransform, target, emitter)
-				return
+			if (target.preferExisting) {
+				// Retain existing target if in range
+				const targetTransform =
+					target.entity && this.world.get(target.entity, Transform3D)
+				if (
+					targetTransform &&
+					targetTransform.position.distanceToSquared(transform.position) <=
+						maxDistanceSquared
+				) {
+					setTarget(transform, targetTransform, target, emitter)
+					return
+				}
 			}
-			// Acquire closest target
-			let closest: [Entity, Transform3D, number] | undefined
+			// Acquire highest priority target
+			let bestTarget: [Entity, Transform3D, number] | undefined
 			if (!this.targetViews.has(target.type))
 				this.targetViews.set(
 					target.type,
@@ -43,15 +46,25 @@ export default class TargetSystem extends System {
 					const distanceSquared = targetTransform.position.distanceToSquared(
 						transform.position
 					)
-					if (distanceSquared <= maxDistanceSquared) {
-						if (!closest || distanceSquared < closest[2])
-							closest = [targetEntity, targetTransform, distanceSquared]
+					if (distanceSquared > maxDistanceSquared) return
+					let score = 0
+					switch (target.priority) {
+						case TargetPriority.Nearest:
+							score =
+								(maxDistanceSquared - distanceSquared) / maxDistanceSquared
+							break
+						case TargetPriority.LowestAmmo:
+							const ammo = this.world.get(targetEntity, Ammo)!
+							score = (ammo.max - ammo.current) / ammo.max
+							break
 					}
+					if (!bestTarget || score > bestTarget[2])
+						bestTarget = [targetEntity, targetTransform, score]
 				})
-			if (emitter) emitter.active = !!closest
-			if (closest) {
-				target.entity = closest[0]
-				setTarget(transform, closest[1], target, emitter)
+			if (emitter) emitter.active = !!bestTarget
+			if (bestTarget) {
+				target.entity = bestTarget[0]
+				setTarget(transform, bestTarget[1], target, emitter)
 			} else {
 				target.entity = null
 			}

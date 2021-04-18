@@ -4,7 +4,7 @@ import { createMesh } from '../three/objects'
 import { AssetNames } from '../three/assets'
 import { Quaternion, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
-import Target from '../components/com_target'
+import Target, { TargetPriority } from '../components/com_target'
 
 const MAX_DISTANCE = 5
 const EMITTER_HEIGHT = 0.9
@@ -36,7 +36,13 @@ export function createLoader(
 				0,
 				false
 			),
-			new Target(GameObjectTypes.Turret, MAX_DISTANCE, false),
+			new Target(
+				GameObjectTypes.Turret,
+				MAX_DISTANCE,
+				false,
+				TargetPriority.LowestAmmo,
+				false
+			),
 		],
 	})
 }
