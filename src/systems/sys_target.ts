@@ -65,13 +65,13 @@ function setTarget(
 	target: Target,
 	emitter?: Emitter
 ) {
+	objectProxy.position.copy(transform.position)
 	if (emitter) {
-		objectProxy.position.copy(transform.position.clone().add(emitter.origin))
+		if (emitter.origin.lengthSq() > 0) objectProxy.position.add(emitter.origin)
 		objectProxy.lookAt(targetTransform.position)
 		emitter.direction.copy(objectProxy.quaternion)
 	}
 	if (target.faceTarget) {
-		objectProxy.position.copy(transform.position)
 		objectProxy.lookAt(targetTransform.position)
 		transform.rotation.copy(objectProxy.quaternion)
 		transform.dirty = true
