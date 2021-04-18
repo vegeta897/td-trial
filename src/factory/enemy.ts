@@ -1,4 +1,4 @@
-import { Vector3 } from 'three'
+import { SpriteMaterial, Vector3 } from 'three'
 import Path from '../components/com_path'
 import { GameObjectTypes } from '../game'
 import Health from '../components/com_health'
@@ -7,6 +7,8 @@ import Factory from './'
 
 export const ENEMY_SIZE = 1
 const HEALTH = 100
+
+const healthSpriteMaterial = new SpriteMaterial({ color: 0xffcd75 })
 
 export function createEnemyPrototype(factory: Factory) {
 	factory.prototypes.set(
@@ -22,7 +24,7 @@ export function createEnemy(this: Factory, position: Vector3) {
 	const healthBar = createSprite()
 	healthBar.position.set(0, 0.8, 0)
 	healthBar.scale.setComponent(1, 0.2)
-	healthBar.material.color.setHex(0xffcd75)
+	healthBar.material = healthSpriteMaterial
 	healthBar.visible = false
 	this.createGameObject({
 		container: this.game.threeApp.groups.get(GameObjectTypes.Enemy),

@@ -4,6 +4,7 @@ import Transform3D from '../components/com_transform3d'
 import { Group } from 'three'
 import Game from '../game'
 import { GameObjectTypes } from '../game'
+import Ammo from '../components/com_ammo'
 
 export default class EmitterSystem extends System {
 	view = this.world.view(Emitter, Transform3D)
@@ -22,6 +23,13 @@ export default class EmitterSystem extends System {
 						this.factory.createEnemy(transform.position.clone())
 						break
 					case EmitterType.Turret:
+						if (emitter.useAmmo) {
+							const ammo = this.world.get(entity, Ammo)
+							if (!ammo) throw 'Turret missing ammo component'
+							if (ammo.current === 0) return
+							ammo.current--
+							ammo.sprite.scale.setComponent(0, ammo.current / ammo.max)
+						}
 						this.factory.createBullet(transform)
 						break
 				}
