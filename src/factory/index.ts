@@ -19,13 +19,13 @@ interface IGameObjectOptions {
 
 export default class Factory {
 	prototypes: Map<GameObjectTypes, Object3D> = new Map()
-	constructor(public game: Game) {
+	constructor(public game: Game) {}
+	init() {
 		createTurretPrototype(this)
 		createBulletPrototype(this)
 		createEnemyPrototype(this)
 		createSpawnerPrototype(this)
 	}
-
 	createSpawner = createSpawner
 	createEnemy = createEnemy
 	createTurret = createTurret

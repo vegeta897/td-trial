@@ -27,6 +27,7 @@ export default class Game {
 	}
 	async init() {
 		await this.threeApp.loadAssets()
+		this.factory.init()
 		this.level.create()
 
 		this.ecs.registerSystems(this)
