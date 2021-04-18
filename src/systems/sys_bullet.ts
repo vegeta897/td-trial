@@ -21,6 +21,7 @@ export default class BulletSystem extends System {
 	)
 	enemies = this.world.view(Transform3D, Tag.for(GameObjectTypes.Enemy))
 	enemyGroup: Group
+	raycaster = new Raycaster()
 	constructor(game: Game) {
 		super(game)
 		this.enemyGroup = this.threeApp.groups.get(GameObjectTypes.Enemy)!
@@ -43,13 +44,14 @@ export default class BulletSystem extends System {
 				}
 			})
 			if (!this.world.exists(entity)) return
-			const raycaster = new Raycaster(
+			this.raycaster.set(
 				transform.position,
-				velocity.vector3.clone().normalize(),
-				0,
-				velocityLength
+				velocity.vector3.clone().normalize()
 			)
-			const [hitEnemy] = raycaster.intersectObjects(this.enemyGroup.children)
+			this.raycaster.far = velocityLength
+			const [hitEnemy] = this.raycaster.intersectObjects(
+				this.enemyGroup.children
+			)
 			if (hitEnemy) this.hitEnemy(entity, hitEnemy.object.userData.entity)
 			if (!this.world.exists(entity)) return
 			transform.scale.z =
