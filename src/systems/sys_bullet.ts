@@ -10,6 +10,8 @@ import { FLOOR_Y } from '../game/level'
 import Game from '../game'
 
 const MAX_DISTANCE = 100
+const MAX_DISTANCE_SQ = MAX_DISTANCE ** 2
+const ENEMY_SIZE_SQ = (ENEMY_SIZE / 2) ** 2
 
 export default class BulletSystem extends System {
 	view = this.world.view(
@@ -28,18 +30,14 @@ export default class BulletSystem extends System {
 			const velocityLength = velocity.vector3.length()
 			if (
 				velocityLength < 0.05 ||
-				transform.position.length() > MAX_DISTANCE ||
+				transform.position.lengthSq() > MAX_DISTANCE_SQ ||
 				transform.position.y <= FLOOR_Y
 			) {
 				this.world.destroy(entity)
 				return
 			}
-			transform.scale.z =
-				velocityLength / this.game.turretProperties.bulletSpeed
-			velocity.vector3.multiplyScalar(0.95)
-			transform.scale.multiplyScalar(0.98)
 			this.enemies.each((enemy, { position: enemyPos }) => {
-				if (transform.position.distanceTo(enemyPos) <= ENEMY_SIZE / 2) {
+				if (transform.position.distanceToSquared(enemyPos) <= ENEMY_SIZE_SQ) {
 					this.hitEnemy(entity, enemy)
 					return false
 				}
@@ -49,10 +47,15 @@ export default class BulletSystem extends System {
 				transform.position,
 				velocity.vector3.clone().normalize(),
 				0,
-				velocity.vector3.length()
+				velocityLength
 			)
 			const [hitEnemy] = raycaster.intersectObjects(this.enemyGroup.children)
 			if (hitEnemy) this.hitEnemy(entity, hitEnemy.object.userData.entity)
+			if (!this.world.exists(entity)) return
+			transform.scale.z =
+				velocityLength / this.game.turretProperties.bulletSpeed
+			velocity.vector3.multiplyScalar(0.95)
+			transform.scale.multiplyScalar(0.98)
 		})
 	}
 	hitEnemy(bullet: Entity, enemy: Entity) {

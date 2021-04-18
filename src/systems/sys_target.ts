@@ -1,38 +1,50 @@
 import { System } from './system'
 import Target from '../components/com_target'
 import Transform3D from '../components/com_transform3d'
-import { Entity, Tag } from 'uecs'
+import { Entity, Tag, View } from 'uecs'
 import { Object3D } from 'three'
 import Emitter from '../components/com_emitter'
+import { GameObjectTypes } from '../game'
+import { Constructor } from 'uecs/dist/util'
 
 const objectProxy = new Object3D() // Could use a Matrix4 but the API is more complex
 
 export default class TargetSystem extends System {
 	view = this.world.view(Transform3D, Target)
+	targetViews: Map<
+		GameObjectTypes,
+		View<[Constructor<Transform3D>]>
+	> = new Map()
 	update() {
 		this.view.each((entity, transform, target) => {
+			const maxDistanceSquared = target.maxDistance ** 2
 			// Retain existing target if in range
 			const targetTransform =
 				target.entity && this.world.get(target.entity, Transform3D)
 			if (
 				targetTransform &&
-				targetTransform.position.distanceTo(transform.position) <=
-					target.maxDistance
+				targetTransform.position.distanceToSquared(transform.position) <=
+					maxDistanceSquared
 			) {
 				lookAtTarget(transform, targetTransform)
 				return
 			}
 			// Acquire closest target
 			let closest: [Entity, Transform3D, number] | undefined
-			this.world
-				.view(Transform3D, Tag.for(target.type))
+			if (!this.targetViews.has(target.type))
+				this.targetViews.set(
+					target.type,
+					this.world.view(Transform3D, Tag.for(target.type))
+				)
+			this.targetViews
+				.get(target.type)!
 				.each((targetEntity, targetTransform) => {
-					const distance = targetTransform.position.distanceTo(
+					const distanceSquared = targetTransform.position.distanceToSquared(
 						transform.position
 					)
-					if (distance <= target.maxDistance) {
-						if (!closest || distance < closest[2])
-							closest = [targetEntity, targetTransform, distance]
+					if (distanceSquared <= maxDistanceSquared) {
+						if (!closest || distanceSquared < closest[2])
+							closest = [targetEntity, targetTransform, distanceSquared]
 					}
 				})
 			const emitter = this.world.get(entity, Emitter)
