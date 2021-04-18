@@ -47,14 +47,14 @@ export default class Game {
 				if (delta > 1000) delta = this.tickTime
 				lag += delta
 				while (lag >= this.tickTime) {
+					stats.begin()
 					this.ecs.update()
+					stats.end()
 					lag -= this.tickTime
 				}
 			}
-			stats.begin()
-			this.threeApp.render(lag / this.tickTime)
-			stats.end()
 			lastUpdate = performance.now()
+			this.threeApp.render(lag / this.tickTime)
 		}
 		update()
 	}
