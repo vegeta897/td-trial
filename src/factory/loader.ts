@@ -6,7 +6,8 @@ import { Quaternion, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import Target from '../components/com_target'
 
-const MAX_DISTANCE = 4
+const MAX_DISTANCE = 5
+const EMITTER_HEIGHT = 0.9
 
 export function createLoaderPrototype(factory: Factory) {
 	factory.prototypes.set(
@@ -28,7 +29,13 @@ export function createLoader(
 		transform: { position, rotation },
 		gameObjectType: GameObjectTypes.Loader,
 		additionalComponents: [
-			new Emitter(EmitterType.Loader, 10, new Vector3(0, 1, 0), 0, false),
+			new Emitter(
+				EmitterType.Loader,
+				10,
+				new Vector3(0, EMITTER_HEIGHT, 0),
+				0,
+				false
+			),
 			new Target(GameObjectTypes.Turret, MAX_DISTANCE, false),
 		],
 	})

@@ -22,10 +22,10 @@ export function createBulletPrototype(factory: Factory) {
 export function createBullet(
 	this: Factory,
 	turretPosition: Vector3,
-	emitterDirection: Vector3
+	emitterDirection: Quaternion
 ) {
 	const randomRotation = randomizeAim(
-		new Quaternion().setFromUnitVectors(new Vector3(0, 0, 1), emitterDirection),
+		emitterDirection,
 		MathUtils.degToRad(this.game.turretProperties.bulletSpread)
 	)
 	this.createGameObject({
@@ -48,14 +48,16 @@ export function createBullet(
 }
 
 function randomizeAim(quaternion: Quaternion, maxAngle: number): Quaternion {
-	return quaternion.multiply(
-		new Quaternion().setFromEuler(
-			new Euler(
-				MathUtils.randFloat(-maxAngle, maxAngle),
-				MathUtils.randFloat(-maxAngle, maxAngle),
-				0,
-				'YXZ'
+	return quaternion
+		.clone()
+		.multiply(
+			new Quaternion().setFromEuler(
+				new Euler(
+					MathUtils.randFloat(-maxAngle, maxAngle),
+					MathUtils.randFloat(-maxAngle, maxAngle),
+					0,
+					'YXZ'
+				)
 			)
 		)
-	)
 }

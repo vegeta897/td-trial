@@ -65,12 +65,11 @@ function setTarget(
 	target: Target,
 	emitter?: Emitter
 ) {
-	if (emitter)
-		emitter.direction = targetTransform.position
-			.clone()
-
-			.sub(transform.position.clone().add(emitter.origin))
-			.normalize()
+	if (emitter) {
+		objectProxy.position.copy(transform.position.clone().add(emitter.origin))
+		objectProxy.lookAt(targetTransform.position)
+		emitter.direction.copy(objectProxy.quaternion)
+	}
 	if (target.faceTarget) {
 		objectProxy.position.copy(transform.position)
 		objectProxy.lookAt(targetTransform.position)

@@ -20,12 +20,9 @@ export function createAmmoPrototype(factory: Factory) {
 export function createAmmo(
 	this: Factory,
 	loaderPosition: Vector3,
-	loaderDirection: Vector3
+	loaderDirection: Quaternion
 ) {
-	const rotation = new Quaternion().setFromUnitVectors(
-		new Vector3(0, 0, 1),
-		loaderDirection
-	)
+	const rotation = loaderDirection.clone()
 	this.createGameObject({
 		transform: {
 			position: loaderPosition,
