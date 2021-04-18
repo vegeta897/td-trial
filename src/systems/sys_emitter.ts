@@ -2,8 +2,7 @@ import Emitter, { EmitterType } from '../components/com_emitter'
 import { System } from './system'
 import Transform3D from '../components/com_transform3d'
 import { Group } from 'three'
-import Game from '../game'
-import { GameObjectTypes } from '../game'
+import Game, { GameObjectTypes } from '../game'
 import Ammo from '../components/com_ammo'
 
 export default class EmitterSystem extends System {
@@ -30,7 +29,13 @@ export default class EmitterSystem extends System {
 							ammo.current--
 							ammo.sprite.scale.setComponent(0, ammo.current / ammo.max)
 						}
-						this.factory.createBullet(transform)
+						this.factory.createBullet(transform.position, emitter.direction)
+						break
+					case EmitterType.Loader:
+						this.factory.createAmmo(
+							transform.position.clone().add(emitter.origin),
+							emitter.direction
+						)
 						break
 				}
 			}

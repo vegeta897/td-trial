@@ -6,6 +6,7 @@ export default class GUI {
 	container = document.createElement('div')
 	buttons = {
 		turret: document.createElement('button'),
+		loader: document.createElement('button'),
 		cancel: document.createElement('button'),
 	}
 	constructor(game: Game) {
@@ -23,6 +24,13 @@ export default class GUI {
 		})
 		this.container.appendChild(this.buttons.turret)
 
+		this.buttons.loader.innerText = 'Loader'
+		this.buttons.loader.addEventListener('click', () => {
+			this.game.interaction.state = InteractionState.BUILD_LOADER
+			this.update()
+		})
+		this.container.appendChild(this.buttons.loader)
+
 		this.buttons.cancel.innerText = 'cancel'
 		this.buttons.cancel.addEventListener('click', () => {
 			this.game.interaction.state = InteractionState.NONE
@@ -34,6 +42,8 @@ export default class GUI {
 	update() {
 		this.buttons.turret.disabled =
 			this.game.interaction.state === InteractionState.BUILD_TURRET
+		this.buttons.loader.disabled =
+			this.game.interaction.state === InteractionState.BUILD_LOADER
 		this.buttons.cancel.style.visibility =
 			this.game.interaction.state === InteractionState.NONE
 				? 'hidden'

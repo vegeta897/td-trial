@@ -20,7 +20,7 @@ export function createTurretPrototype(factory: Factory) {
 	)
 }
 
-const ammoSpriteMaterial = new SpriteMaterial({ color: 0xa7f070 })
+const ammoSpriteMaterial = new SpriteMaterial({ color: 0xa5ffc4 })
 
 export function createTurret(
 	this: Factory,
@@ -38,6 +38,7 @@ export function createTurret(
 			new Emitter(
 				EmitterType.Turret,
 				Math.round(this.game.tickRate / this.game.turretProperties.fireRate),
+				new Vector3(),
 				0,
 				false,
 				true

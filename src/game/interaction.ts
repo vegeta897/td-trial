@@ -4,6 +4,7 @@ import { Raycaster } from 'three'
 export enum InteractionState {
 	NONE,
 	BUILD_TURRET,
+	BUILD_LOADER,
 }
 
 export default class Interaction {
@@ -23,15 +24,23 @@ export default class Interaction {
 					x: (event.clientX / window.innerWidth) * 2 - 1,
 					y: -(event.clientY / window.innerHeight) * 2 + 1,
 				}
-				switch (this.state) {
-					case InteractionState.BUILD_TURRET:
-						raycaster.setFromCamera(mouse, this.game.threeApp.camera)
-						const groundClick = raycaster
-							.intersectObjects(this.game.threeApp.scene.children)
-							.find((i) => i.object === this.game.level.ground)
-						if (!groundClick) return
-						this.game.factory.createTurret(groundClick.point.setComponent(1, 0))
-						break
+				raycaster.setFromCamera(mouse, this.game.threeApp.camera)
+				const groundClick = raycaster
+					.intersectObjects(this.game.threeApp.scene.children)
+					.find((i) => i.object === this.game.level.ground)
+				if (groundClick) {
+					switch (this.state) {
+						case InteractionState.BUILD_TURRET:
+							this.game.factory.createTurret(
+								groundClick.point.setComponent(1, 0)
+							)
+							break
+						case InteractionState.BUILD_LOADER:
+							this.game.factory.createLoader(
+								groundClick.point.setComponent(1, 0)
+							)
+							break
+					}
 				}
 				this.game.gui.update()
 			}

@@ -8,6 +8,7 @@ import BulletSystem from '../systems/sys_bullet'
 import RotateSystem from '../systems/sys_rotate'
 import TargetSystem from '../systems/sys_target'
 import Game from './'
+import AmmoSystem from '../systems/sys_ammo'
 
 export default class ECS {
 	world = new World()
@@ -18,6 +19,7 @@ export default class ECS {
 		this.systems.push(new TargetSystem(game))
 		this.systems.push(new EmitterSystem(game))
 		this.systems.push(new BulletSystem(game))
+		this.systems.push(new AmmoSystem(game))
 		this.systems.push(new PathSystem(game))
 		game.threeApp.systems.push(new RenderSystem(game))
 	}

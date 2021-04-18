@@ -18,6 +18,7 @@ export default class TargetSystem extends System {
 	update() {
 		this.view.each((entity, transform, target) => {
 			const maxDistanceSquared = target.maxDistance ** 2
+			const emitter = this.world.get(entity, Emitter)
 			// Retain existing target if in range
 			const targetTransform =
 				target.entity && this.world.get(target.entity, Transform3D)
@@ -26,7 +27,7 @@ export default class TargetSystem extends System {
 				targetTransform.position.distanceToSquared(transform.position) <=
 					maxDistanceSquared
 			) {
-				lookAtTarget(transform, targetTransform)
+				setTarget(transform, targetTransform, target, emitter)
 				return
 			}
 			// Acquire closest target
@@ -47,11 +48,10 @@ export default class TargetSystem extends System {
 							closest = [targetEntity, targetTransform, distanceSquared]
 					}
 				})
-			const emitter = this.world.get(entity, Emitter)
 			if (emitter) emitter.active = !!closest
 			if (closest) {
 				target.entity = closest[0]
-				lookAtTarget(transform, closest[1])
+				setTarget(transform, closest[1], target, emitter)
 			} else {
 				target.entity = null
 			}
@@ -59,9 +59,22 @@ export default class TargetSystem extends System {
 	}
 }
 
-function lookAtTarget(transform: Transform3D, targetTransform: Transform3D) {
-	objectProxy.position.copy(transform.position)
-	objectProxy.lookAt(targetTransform.position)
-	transform.rotation.copy(objectProxy.quaternion)
-	transform.dirty = true
+function setTarget(
+	transform: Transform3D,
+	targetTransform: Transform3D,
+	target: Target,
+	emitter?: Emitter
+) {
+	if (emitter)
+		emitter.direction = targetTransform.position
+			.clone()
+
+			.sub(transform.position.clone().add(emitter.origin))
+			.normalize()
+	if (target.faceTarget) {
+		objectProxy.position.copy(transform.position)
+		objectProxy.lookAt(targetTransform.position)
+		transform.rotation.copy(objectProxy.quaternion)
+		transform.dirty = true
+	}
 }

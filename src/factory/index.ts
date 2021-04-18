@@ -7,6 +7,8 @@ import { Object3D } from 'three'
 import { Component, Tag } from 'uecs'
 import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
+import { createLoader, createLoaderPrototype } from './loader'
+import { createAmmo, createAmmoPrototype } from './ammo'
 
 interface IGameObjectOptions {
 	container?: Object3D
@@ -25,11 +27,15 @@ export default class Factory {
 		createBulletPrototype(this)
 		createEnemyPrototype(this)
 		createSpawnerPrototype(this)
+		createLoaderPrototype(this)
+		createAmmoPrototype(this)
 	}
 	createSpawner = createSpawner
 	createEnemy = createEnemy
 	createTurret = createTurret
 	createBullet = createBullet
+	createLoader = createLoader
+	createAmmo = createAmmo
 	createGameObject({
 		container,
 		transform,

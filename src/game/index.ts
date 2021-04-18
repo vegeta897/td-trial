@@ -66,4 +66,6 @@ export enum GameObjectTypes {
 	Spawner,
 	Bullet,
 	Enemy,
+	Loader,
+	Ammo,
 }

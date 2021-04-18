@@ -24,7 +24,12 @@ export function createSpawner(
 	this.createGameObject({
 		transform: { position, rotation, scale: new Vector3().setScalar(1.2) },
 		additionalComponents: [
-			new Emitter(EmitterType.Spawner, SPAWN_INTERVAL, SPAWN_INTERVAL - 1),
+			new Emitter(
+				EmitterType.Spawner,
+				SPAWN_INTERVAL,
+				new Vector3(),
+				SPAWN_INTERVAL - 1
+			),
 		],
 		gameObjectType: GameObjectTypes.Spawner,
 	})

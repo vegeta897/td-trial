@@ -37,7 +37,7 @@ export default class RenderSystem extends System {
 		})
 		this.targets.each((entity, { object3D }, target) => {
 			// TODO: This is slow, try to optimize
-			if (!target.entity) return
+			if (!target.entity || !target.faceTarget) return
 			const targetObject = this.world.get(target.entity, ThreeObject3D)
 			if (targetObject) object3D.lookAt(targetObject.object3D.position)
 		})
