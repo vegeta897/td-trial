@@ -6,15 +6,10 @@ import { createMesh } from '../three/objects'
 
 const SPAWN_INTERVAL = 60
 
-export function createSpawnerPrototype(factory: Factory) {
-	factory.prototypes.set(
-		GameObjectTypes.Spawner,
-		createMesh({
-			materialParams: { color: 0xef7d57 },
-			meshProperties: { castShadow: true },
-		})
-	)
-}
+const spawnerPrototype = createMesh({
+	materialParams: { color: 0xef7d57 },
+	meshProperties: { castShadow: true },
+})
 
 export function createSpawner(
 	this: Factory,
@@ -23,6 +18,7 @@ export function createSpawner(
 ) {
 	this.createGameObject({
 		transform: { position, rotation, scale: new Vector3().setScalar(1.2) },
+		object3D: spawnerPrototype.clone(),
 		additionalComponents: [
 			new Emitter(
 				EmitterType.Spawner,

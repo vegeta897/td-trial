@@ -2,32 +2,31 @@ import Factory from './index'
 import { GameObjectTypes } from '../game'
 import { createMesh } from '../three/objects'
 import { AssetNames } from '../three/assets'
-import { Quaternion, Vector3 } from 'three'
+import { Mesh, Quaternion, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import Target, { TargetPriority } from '../components/com_target'
 
 const MAX_DISTANCE = 5
 const EMITTER_HEIGHT = 0.9
 
-export function createLoaderPrototype(factory: Factory) {
-	factory.prototypes.set(
-		GameObjectTypes.Loader,
-		createMesh({
-			geometry: factory.game.threeApp.assets.get(AssetNames.LoaderGeometry),
-			materialParams: { color: 0x2da5b1 },
-			meshProperties: { castShadow: true },
-		})
-	)
-}
+let loaderPrototype: Mesh
 
 export function createLoader(
 	this: Factory,
 	position?: Vector3,
 	rotation?: Quaternion
 ) {
+	loaderPrototype =
+		loaderPrototype ||
+		createMesh({
+			geometry: this.game.threeApp.assets.get(AssetNames.LoaderGeometry),
+			materialParams: { color: 0x2da5b1 },
+			meshProperties: { castShadow: true },
+		})
 	this.createGameObject({
 		transform: { position, rotation },
 		gameObjectType: GameObjectTypes.Loader,
+		object3D: loaderPrototype.clone(),
 		additionalComponents: [
 			new Emitter(
 				EmitterType.Loader,

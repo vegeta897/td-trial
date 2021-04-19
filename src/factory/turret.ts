@@ -1,4 +1,4 @@
-import { Quaternion, SpriteMaterial, Vector3 } from 'three'
+import { Mesh, Quaternion, SpriteMaterial, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
 import Factory from './'
@@ -9,16 +9,7 @@ import Ammo from '../components/com_ammo'
 
 const MAX_AMMO = 100
 
-export function createTurretPrototype(factory: Factory) {
-	factory.prototypes.set(
-		GameObjectTypes.Turret,
-		createMesh({
-			geometry: factory.game.threeApp.assets.get(AssetNames.TurretGeometry),
-			materialParams: { color: 0x38b764 },
-			meshProperties: { castShadow: true },
-		})
-	)
-}
+let turretPrototype: Mesh
 
 const ammoSpriteMaterial = new SpriteMaterial({ color: 0xa5ffc4 })
 
@@ -27,13 +18,21 @@ export function createTurret(
 	position?: Vector3,
 	rotation?: Quaternion
 ) {
+	turretPrototype =
+		turretPrototype ||
+		createMesh({
+			geometry: this.game.threeApp.assets.get(AssetNames.TurretGeometry),
+			materialParams: { color: 0x38b764 },
+			meshProperties: { castShadow: true },
+		})
 	const ammoBar = createSprite()
-	ammoBar.position.set(0, 0.6, 0)
+	ammoBar.position.set(0, 0.4, 0)
 	ammoBar.scale.setComponent(1, 0.2)
 	ammoBar.material = ammoSpriteMaterial
 	this.createGameObject({
 		transform: { position, rotation },
 		gameObjectType: GameObjectTypes.Turret,
+		object3D: turretPrototype.clone(),
 		additionalComponents: [
 			new Emitter(
 				EmitterType.Turret,

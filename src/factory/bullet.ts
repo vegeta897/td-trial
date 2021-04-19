@@ -6,18 +6,13 @@ import { createMesh } from '../three/objects'
 
 const BULLET_SCALE = 0.12
 
-export function createBulletPrototype(factory: Factory) {
-	factory.prototypes.set(
-		GameObjectTypes.Bullet,
-		createMesh({
-			materialParams: {
-				color: 0,
-				emissive: 0xa7f070,
-				emissiveIntensity: 1,
-			},
-		})
-	)
-}
+const bulletPrototype = createMesh({
+	materialParams: {
+		color: 0,
+		emissive: 0xa7f070,
+		emissiveIntensity: 1,
+	},
+})
 
 export function createBullet(
 	this: Factory,
@@ -34,6 +29,7 @@ export function createBullet(
 			rotation: randomRotation,
 			scale: new Vector3().setScalar(BULLET_SCALE),
 		},
+		object3D: bulletPrototype.clone(),
 		gameObjectType: GameObjectTypes.Bullet,
 		additionalComponents: [
 			new Velocity3D(
