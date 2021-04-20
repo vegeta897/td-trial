@@ -15,6 +15,7 @@ export function setupCamera(threeApp: ThreeApp) {
 	threeApp.cameraControls.distance = 100
 	threeApp.cameraControls.minZoom = 0.1
 	threeApp.cameraControls.maxZoom = 7
+	threeApp.cameraControls.maxPolarAngle = Math.PI * 0.45
 	threeApp.cameraControls.setTarget(
 		threeApp.center.x,
 		threeApp.center.y,
