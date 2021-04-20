@@ -41,20 +41,20 @@ export default class Game {
 		const update = () => {
 			// Adapted from https://gist.github.com/godwhoa/e6225ae99853aac1f633
 			requestAnimationFrame(update)
+			const now = performance.now()
 			if (!this.paused) {
-				const now = performance.now()
 				let delta = now - lastUpdate
 				if (delta > 1000) delta = this.tickTime
 				lag += delta
 				while (lag >= this.tickTime) {
-					stats.begin()
 					this.ecs.update()
-					stats.end()
 					lag -= this.tickTime
 				}
 			}
-			lastUpdate = performance.now()
+			lastUpdate = now
+			stats.begin()
 			this.threeApp.render(lag / this.tickTime)
+			stats.end()
 		}
 		update()
 	}
