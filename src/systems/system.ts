@@ -19,5 +19,5 @@ export abstract class System {
 		this.factory = game.factory
 	}
 
-	abstract update(dt?: number): void
+	abstract update(tick?: number, dt?: number): void
 }

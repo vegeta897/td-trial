@@ -1,4 +1,4 @@
-import Game from './index'
+import Game from './'
 import { InteractionState } from './interaction'
 
 export default class GUI {

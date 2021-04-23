@@ -16,7 +16,7 @@ export default class TargetSystem extends System {
 		GameObjectTypes,
 		View<[Constructor<Transform3D>]>
 	> = new Map()
-	update() {
+	update(tick: number) {
 		this.view.each((entity, transform, target) => {
 			const maxDistanceSquared = target.maxDistance ** 2
 			const emitter = this.world.get(entity, Emitter)
@@ -29,7 +29,7 @@ export default class TargetSystem extends System {
 					targetTransform.position.distanceToSquared(transform.position) <=
 						maxDistanceSquared
 				) {
-					setTarget(transform, targetTransform, target, emitter)
+					setTarget(tick, transform, targetTransform, target, emitter)
 					return
 				}
 			}
@@ -64,7 +64,7 @@ export default class TargetSystem extends System {
 			if (emitter) emitter.active = !!bestTarget
 			if (bestTarget) {
 				target.entity = bestTarget[0]
-				setTarget(transform, bestTarget[1], target, emitter)
+				setTarget(tick, transform, bestTarget[1], target, emitter)
 			} else {
 				target.entity = null
 			}
@@ -73,6 +73,7 @@ export default class TargetSystem extends System {
 }
 
 function setTarget(
+	tick: number,
 	transform: Transform3D,
 	targetTransform: Transform3D,
 	target: Target,
@@ -87,6 +88,6 @@ function setTarget(
 	if (target.faceTarget) {
 		objectProxy.lookAt(targetTransform.position)
 		transform.rotation.copy(objectProxy.quaternion)
-		transform.dirty = true
+		transform.lastUpdated = tick
 	}
 }

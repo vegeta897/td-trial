@@ -26,7 +26,7 @@ export default class BulletSystem extends System {
 		super(game)
 		this.enemyGroup = this.threeApp.groups.get(GameObjectTypes.Enemy)!
 	}
-	update() {
+	update(tick: number) {
 		this.view.each((entity, transform, velocity) => {
 			const velocityLength = velocity.vector3.length()
 			if (
@@ -58,6 +58,7 @@ export default class BulletSystem extends System {
 				velocityLength / this.game.turretProperties.bulletSpeed
 			velocity.vector3.multiplyScalar(0.95)
 			transform.scale.multiplyScalar(0.98)
+			transform.lastUpdated = tick
 		})
 	}
 	hitEnemy(bullet: Entity, enemy: Entity) {

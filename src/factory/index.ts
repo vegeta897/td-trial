@@ -9,11 +9,15 @@ import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
 import { createLoader } from './loader'
 import { createAmmo } from './ammo'
+import { Body } from 'cannon-es'
+import PhysicsBody from '../components/com_physicsbody'
+import { createBox } from './box'
 
 interface IGameObjectOptions {
 	container?: Object3D
 	transform?: Partial<Transform3D>
 	object3D: Object3D
+	body?: Body
 	gameObjectType?: GameObjectTypes
 	additionalComponents?: Component[]
 	children?: Object3D[]
@@ -27,10 +31,12 @@ export default class Factory {
 	createBullet = createBullet
 	createLoader = createLoader
 	createAmmo = createAmmo
+	createBox = createBox
 	createGameObject({
 		container,
 		transform,
 		object3D,
+		body,
 		gameObjectType,
 		additionalComponents,
 		children,
@@ -42,6 +48,10 @@ export default class Factory {
 			new Transform3D(transform)
 		)
 		object3D.userData.entity = entity
+		if (body) {
+			this.game.world.emplace(entity, new PhysicsBody(body))
+			this.game.physics.world.addBody(body)
+		}
 		if (additionalComponents)
 			this.game.world.insert(entity, ...additionalComponents)
 		if (gameObjectType !== undefined)

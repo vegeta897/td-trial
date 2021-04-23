@@ -1,4 +1,4 @@
-import Game from './index'
+import Game from './'
 import { Raycaster } from 'three'
 
 export enum InteractionState {

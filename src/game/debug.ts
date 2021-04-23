@@ -1,4 +1,4 @@
-import Game, { GameObjectTypes } from './index'
+import Game, { GameObjectTypes } from './'
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module'
 import Emitter from '../components/com_emitter'
 import { Tag } from 'uecs'

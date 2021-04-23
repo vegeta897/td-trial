@@ -1,39 +1,41 @@
 import { System } from './system'
 import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
-import Velocity3D from '../components/com_velocity3d'
-import Rotate3D from '../components/com_rotate3d'
-import { Quaternion } from 'three'
 import Target from '../components/com_target'
 
 export default class RenderSystem extends System {
 	transforms = this.world.view(ThreeObject3D, Transform3D)
-	velocities = this.world.view(ThreeObject3D, Transform3D, Velocity3D)
-	rotations = this.world.view(ThreeObject3D, Transform3D, Rotate3D)
 	targets = this.world.view(ThreeObject3D, Target)
-	update(dt: number) {
-		this.transforms.each((entity, { object3D }, transform) => {
-			if (!transform.dirty) return
-			transform.dirty = false
-			object3D.position.copy(transform.position)
-			object3D.quaternion.copy(transform.rotation)
-			object3D.scale.copy(transform.scale)
-		})
-		// Do not interpolate if game is paused
-		if (this.game.paused || !this.game.interpolate) return
-		this.velocities.each((entity, { object3D }, transform, velocity) => {
-			// If this doesn't work out, store previous position in transform and LERP
-			// See https://github.com/EverCrawl/game/blob/master/common/component.ts
-			object3D.position.addVectors(
-				transform.position,
-				velocity.vector3.clone().multiplyScalar(dt)
-			)
-		})
-		this.rotations.each((entity, { object3D }, { rotation }, rotate) => {
-			object3D.quaternion.multiplyQuaternions(
-				rotation,
-				new Quaternion().slerp(rotate.quaternion, dt)
-			)
+	update(tick: number, dt: number) {
+		// TODO: Disable/enable LERPing in real time based on framerate/tickrate?
+		this.transforms.each((entity, threeObject3D, transform) => {
+			const { position, quaternion, scale } = threeObject3D.object3D
+			const { prevPosition, prevRotation, prevScale } = transform
+			if (threeObject3D.lastUpdated === -1) {
+				// Initialize Object3D
+				threeObject3D.lastUpdated = tick
+				position.copy(prevPosition)
+				quaternion.copy(prevRotation)
+				scale.copy(prevScale)
+			}
+			if (this.game.paused) return
+			if (this.game.interpolate && transform.lastUpdated === tick) {
+				// Interpolating and transform was updated in this tick
+				threeObject3D.lastUpdated = tick
+				if (!prevPosition.equals(transform.position))
+					position.lerpVectors(prevPosition, transform.position, dt)
+				if (!prevRotation.equals(transform.rotation))
+					quaternion.slerpQuaternions(prevRotation, transform.rotation, dt)
+				if (!prevScale.equals(transform.scale))
+					scale.lerpVectors(prevScale, transform.scale, dt)
+			} else if (transform.lastUpdated > threeObject3D.lastUpdated) {
+				// Not interpolating and Object3D is outdated
+				// This will also catch any outdated objects didn't render during an updated tick
+				threeObject3D.lastUpdated = tick
+				position.copy(transform.position)
+				quaternion.copy(transform.rotation)
+				scale.copy(transform.scale)
+			}
 		})
 		this.targets.each((entity, { object3D }, target) => {
 			// TODO: This is slow, try to optimize

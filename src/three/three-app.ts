@@ -68,8 +68,8 @@ export class ThreeApp {
 		}
 	}
 	loadAssets = loadAssets
-	render(dt: number) {
-		this.systems.forEach((system) => system.update(dt))
+	render(tick: number, dt: number) {
+		this.systems.forEach((system) => system.update(tick, dt))
 		this.cameraControls.update(1)
 		this.composer.render()
 	}

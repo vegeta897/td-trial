@@ -8,6 +8,7 @@ import {
 	Vector3,
 } from 'three'
 import Game from './'
+import { Body, Plane } from 'cannon-es'
 
 export const FLOOR_Y = -0.5
 
@@ -43,10 +44,21 @@ export class Level {
 		planeMesh.rotateX(-Math.PI / 2)
 		this.game.threeApp.scene.add(planeMesh)
 		this.ground = planeMesh
+		const groundBody = new Body({
+			type: Body.STATIC,
+			shape: new Plane(),
+		})
+		groundBody.position.y = FLOOR_Y
+		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0) // make it face up
+		this.game.physics.world.addBody(groundBody)
 	}
 	create() {
 		// Create spawner
 		this.game.factory.createSpawner()
+		this.game.factory.createBox(new Vector3(0, 7, 2))
+		this.game.factory.createBox(new Vector3(6, 2, 2))
+		this.game.factory.createBox(new Vector3(6, 4, 2.5))
+		this.game.factory.createBox(new Vector3(6, 6, 3))
 	}
 }
 

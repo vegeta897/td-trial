@@ -4,10 +4,10 @@ import Rotate3D from '../components/com_rotate3d'
 
 export default class RotateSystem extends System {
 	view = this.world.view(Transform3D, Rotate3D)
-	update() {
+	update(tick: number) {
 		this.view.each((entity, transform, rotation) => {
 			transform.rotation.multiply(rotation.quaternion)
-			transform.dirty = true
+			transform.lastUpdated = tick
 		})
 	}
 }
