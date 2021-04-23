@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import {
 	AxesHelper,
 	BufferGeometry,
+	Color,
 	Group,
 	OrthographicCamera,
 	Scene,
@@ -44,6 +45,10 @@ export class ThreeApp {
 		// Set up lights & camera
 		setupLights(this.scene)
 		setupCamera(this)
+
+		// Add background color and fog
+		this.scene.background = new Color(0x38286b)
+		this.scene.fog = new THREE.Fog(0x38286b, 100, 150)
 
 		// Create axes helper
 		const axesHelper = new AxesHelper(4)

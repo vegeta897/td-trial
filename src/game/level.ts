@@ -34,7 +34,7 @@ export class Level {
 		this.game.threeApp.scene.add(pathLine)
 
 		// Create ground plane
-		const plane = new PlaneGeometry(20, 20)
+		const plane = new PlaneGeometry(10 ** 3, 10 ** 3)
 		const planeMaterial = new MeshLambertMaterial({ color: 0x29264f })
 		const planeMesh = new Mesh(plane, planeMaterial)
 		planeMesh.receiveShadow = true

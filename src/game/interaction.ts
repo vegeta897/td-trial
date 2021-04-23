@@ -29,6 +29,7 @@ export default class Interaction {
 					.intersectObjects(this.game.threeApp.scene.children)
 					.find((i) => i.object === this.game.level.ground)
 				if (groundClick) {
+					if (groundClick.point.manhattanLength() > 50) return
 					switch (this.state) {
 						case InteractionState.BUILD_TURRET:
 							this.game.factory.createTurret(
