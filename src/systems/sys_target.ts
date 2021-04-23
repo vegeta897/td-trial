@@ -58,7 +58,7 @@ export default class TargetSystem extends System {
 							score = (ammo.max - ammo.current) / ammo.max
 							break
 					}
-					if (!bestTarget || score > bestTarget[2])
+					if (score > 0 && (!bestTarget || score > bestTarget[2]))
 						bestTarget = [targetEntity, targetTransform, score]
 				})
 			if (emitter) emitter.active = !!bestTarget
