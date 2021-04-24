@@ -14,6 +14,7 @@ import PhysicsBody from '../components/com_physicsbody'
 import { createBox } from './box'
 import { createRiverSpawner } from './river_spawner'
 import { createTumbler } from './tumbler'
+import { createHQ } from './hq'
 
 export type GameObject = {
 	entity: Entity
@@ -33,6 +34,7 @@ interface IGameObjectOptions {
 }
 
 export default class Factory {
+	createHQ = createHQ
 	createSpawner = createSpawner
 	createEnemy = createEnemy
 	createTurret = createTurret

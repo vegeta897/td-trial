@@ -1,7 +1,6 @@
 import { World } from 'uecs'
 import Game from './'
 import { System } from '../systems/system'
-import { PathSystem } from '../systems/sys_path'
 import RenderSystem from '../systems/sys_render'
 import VelocitySystem from '../systems/sys_velocity'
 import EmitterSystem from '../systems/sys_emitter'
@@ -23,7 +22,7 @@ export default class ECS {
 		this.systems.push(new EmitterSystem(game))
 		this.systems.push(new BulletSystem(game))
 		this.systems.push(new AmmoSystem(game))
-		this.systems.push(new PathSystem(game))
+		// this.systems.push(new PathSystem(game))
 		this.systems.push(new PhysicsSystem(game))
 		game.threeApp.systems.push(new RenderSystem(game))
 	}

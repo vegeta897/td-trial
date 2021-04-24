@@ -1,4 +1,4 @@
-import Factory from './index'
+import Factory from './'
 import { GameObjectTypes } from '../game'
 import { createMesh } from '../three/objects'
 import { AssetNames } from '../three/assets'

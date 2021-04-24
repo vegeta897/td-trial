@@ -1,37 +1,14 @@
-import {
-	BufferGeometry,
-	Line,
-	LineBasicMaterial,
-	Mesh,
-	MeshLambertMaterial,
-	PlaneGeometry,
-	Vector3,
-} from 'three'
+import { Euler, Mesh, MeshLambertMaterial, PlaneGeometry, Vector3 } from 'three'
 import Game from './'
 import { Body, Plane } from 'cannon-es'
 
-export const FLOOR_Y = -0.5
+export const FLOOR_Y = 0
 
 export class Level {
-	startingNode = new PathNode()
 	ground: Mesh
 	game: Game
 	constructor(game: Game) {
 		this.game = game
-		// Create enemy path
-		this.startingNode.addNode(0, 0, 8).addNode(4).addNode(0, 0, -4).addNode(8)
-		let node: PathNode | undefined = this.startingNode
-		const pathPoints: Vector3[] = []
-		do {
-			pathPoints.push(node)
-			node = node.nextNode
-		} while (node)
-		const pathGeometry = new BufferGeometry().setFromPoints(pathPoints)
-		const pathLine = new Line(
-			pathGeometry,
-			new LineBasicMaterial({ color: 0x990000 })
-		)
-		this.game.threeApp.scene.add(pathLine)
 
 		// Create ground plane
 		const plane = new PlaneGeometry(10 ** 3, 10 ** 3)
@@ -53,11 +30,16 @@ export class Level {
 		this.game.physics.world.addBody(groundBody)
 	}
 	create() {
-		// Create spawner
-		this.game.factory.createSpawner()
+		this.game.factory.createHQ(
+			new Vector3(0, FLOOR_Y + 1.5, 10),
+			new Euler(0, 0.2)
+		)
 
-		// Create river spawner
-		this.game.factory.createRiverSpawner(new Vector3(4, -0.25), 5, -Math.PI / 3)
+		this.game.factory.createRiverSpawner(
+			new Vector3(-18, FLOOR_Y + 0.25, -10),
+			12,
+			0
+		)
 	}
 }
 

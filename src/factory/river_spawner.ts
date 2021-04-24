@@ -1,4 +1,4 @@
-import Factory from './index'
+import Factory from './'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import {
 	BufferGeometry,
@@ -10,7 +10,7 @@ import {
 	Vector3,
 } from 'three'
 
-const SPAWN_INTERVAL = 150
+const SPAWN_INTERVAL = 100
 
 export function createRiverSpawner(
 	this: Factory,

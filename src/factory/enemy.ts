@@ -1,5 +1,4 @@
 import { SpriteMaterial, Vector3 } from 'three'
-import Path from '../components/com_path'
 import { GameObjectTypes } from '../game'
 import Health from '../components/com_health'
 import { createMesh, createSprite } from '../three/objects'
@@ -34,7 +33,7 @@ export function createEnemy(this: Factory, position: Vector3) {
 		body,
 		gameObjectType: GameObjectTypes.Enemy,
 		additionalComponents: [
-			new Path(this.game.level.startingNode),
+			// new Path(this.game.level.startingNode),
 			new Health(HEALTH, healthBar),
 		],
 		children: [healthBar],

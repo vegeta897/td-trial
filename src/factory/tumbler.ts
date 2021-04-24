@@ -1,5 +1,5 @@
 import { createMesh } from '../three/objects'
-import Factory from './index'
+import Factory from './'
 import { BoxGeometry, Quaternion, Vector3 } from 'three'
 import * as CANNON from 'cannon-es'
 import { GameObjectTypes } from '../game'

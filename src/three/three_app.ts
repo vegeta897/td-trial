@@ -18,16 +18,17 @@ import CameraControls from 'camera-controls'
 import { setupLights } from './light'
 import { setupCamera, updateCamera } from './camera'
 import { AssetNames, loadAssets } from './assets'
+import { FLOOR_Y } from '../game/level'
 
 CameraControls.install({ THREE })
 
-const SCALE = 8
+const SCALE = 16
 
 export class ThreeApp {
 	renderer = new WebGLRenderer()
 	composer = new EffectComposer(this.renderer)
 	scene = new Scene()
-	camera = new OrthographicCamera(0, 0, 0, 0, 0, 200)
+	camera = new OrthographicCamera(0, 0, 0, 0, 0, 300)
 	cameraControls = new CameraControls(this.camera, this.renderer.domElement)
 	systems: System[] = []
 	center = new Vector3(4, 0, 4)
@@ -43,16 +44,16 @@ export class ThreeApp {
 		document.body.appendChild(this.renderer.domElement)
 
 		// Set up lights & camera
-		setupLights(this.scene)
+		setupLights(this)
 		setupCamera(this)
 
 		// Add background color and fog
 		this.scene.background = new Color(0x38286b)
-		this.scene.fog = new THREE.Fog(0x38286b, 100, 150)
+		this.scene.fog = new THREE.Fog(0x38286b, 100, 130)
 
 		// Create axes helper
-		const axesHelper = new AxesHelper(4)
-		axesHelper.position.set(-2, 0, -2)
+		const axesHelper = new AxesHelper(3)
+		axesHelper.position.set(0, FLOOR_Y + 0.05, 0)
 		this.scene.add(axesHelper)
 
 		// Render passes

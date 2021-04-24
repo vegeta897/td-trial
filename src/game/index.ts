@@ -73,4 +73,5 @@ export enum GameObjectTypes {
 	Ammo,
 	Box,
 	Tumbler,
+	HQ,
 }
