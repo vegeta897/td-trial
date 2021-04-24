@@ -7,11 +7,28 @@
 
 body  {
     background: #191919;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
-#gui-container {
+#gui-stats-container {
+    opacity: 0.8;
+    position: fixed;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%,0);
+    color: aliceblue;
+    padding: 2px;
+    width: 100px;
+    text-align: center;
+    background: rgba(26, 28, 44, 0.4);
+}
+
+#gui-stats-container span {
+    display: inline-block;
+}
+
+#gui-build-container {
     opacity: 0.9;
-    font-family: 'Source Sans Pro', sans-serif;
     position: fixed;
     top: 50%;
     transform: translate(0, -50%);
@@ -22,14 +39,14 @@ body  {
     background: rgba(26, 28, 44, 0.4);
 }
 
-#gui-container h2 {
+#gui-build-container h2 {
     font-size: 24px;
     text-transform: uppercase;
     color: aliceblue;
     margin: 0 0 4px;
 }
 
-#gui-container button {
+#gui-build-container button {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 32px;
     display: block;
