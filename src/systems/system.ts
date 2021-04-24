@@ -1,6 +1,6 @@
 import { World } from 'uecs'
 import Game from '../game'
-import { ThreeApp } from '../three/three-app'
+import { ThreeApp } from '../three/three_app'
 import { Level } from '../game/level'
 import Factory from '../factory'
 

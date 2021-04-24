@@ -1,4 +1,4 @@
-import { ThreeApp } from '../three/three-app'
+import { ThreeApp } from '../three/three_app'
 import ECS from './ecs'
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { Level } from './level'
@@ -64,6 +64,7 @@ export default class Game {
 }
 
 export enum GameObjectTypes {
+	None,
 	Turret,
 	Spawner,
 	Bullet,

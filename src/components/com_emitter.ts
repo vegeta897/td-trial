@@ -1,7 +1,8 @@
-import { Quaternion, Vector3 } from 'three'
+import { Line3, Quaternion, Vector3 } from 'three'
 
 export enum EmitterType {
 	Spawner,
+	RiverSpawner,
 	Turret,
 	Loader,
 }
@@ -14,7 +15,8 @@ export default class Emitter {
 		public tick: number = 0,
 		public active: boolean = true,
 		public useAmmo: boolean = false,
-		public direction: Quaternion = new Quaternion()
+		public direction: Quaternion = new Quaternion(),
+		public spawnArea: Line3 = new Line3()
 	) {
 		if (interval < 1) throw 'Emitter interval must be at least 1'
 	}

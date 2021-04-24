@@ -1,5 +1,5 @@
 import CameraControls from 'camera-controls'
-import { ThreeApp } from './three-app'
+import { ThreeApp } from './three_app'
 import { OrthographicCamera } from 'three'
 
 export function setupCamera({ camera, cameraControls, center }: ThreeApp) {

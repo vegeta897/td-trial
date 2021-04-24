@@ -1,5 +1,5 @@
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { ThreeApp } from './three-app'
+import { ThreeApp } from './three_app'
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils'
 import { Mesh } from 'three'
 import turretObj from '../assets/turret.obj'
