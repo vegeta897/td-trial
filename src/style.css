@@ -11,20 +11,17 @@ body  {
 }
 
 #gui-stats-container {
-    opacity: 0.8;
+    display: flex;
+    font-size: 14px;
     position: fixed;
     left: 50%;
     top: 0;
     transform: translate(-50%,0);
     color: aliceblue;
-    padding: 2px;
-    width: 100px;
-    text-align: center;
-    background: rgba(26, 28, 44, 0.4);
 }
 
 #gui-stats-container span {
-    display: inline-block;
+    width: 100px;
 }
 
 #gui-build-container {
