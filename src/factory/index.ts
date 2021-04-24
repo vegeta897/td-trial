@@ -13,6 +13,7 @@ import { Body } from 'cannon-es'
 import PhysicsBody from '../components/com_physicsbody'
 import { createBox } from './box'
 import { createRiverSpawner } from './river_spawner'
+import { createTumbler } from './tumbler'
 
 export type GameObject = {
 	entity: Entity
@@ -32,7 +33,6 @@ interface IGameObjectOptions {
 }
 
 export default class Factory {
-	constructor(public game: Game) {}
 	createSpawner = createSpawner
 	createEnemy = createEnemy
 	createTurret = createTurret
@@ -41,6 +41,7 @@ export default class Factory {
 	createAmmo = createAmmo
 	createBox = createBox
 	createRiverSpawner = createRiverSpawner
+	createTumbler = createTumbler
 	createGameObject({
 		container = this.game.threeApp.scene,
 		transform,
@@ -71,4 +72,5 @@ export default class Factory {
 			body,
 		}
 	}
+	constructor(public game: Game) {}
 }

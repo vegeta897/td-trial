@@ -56,14 +56,8 @@ export class Level {
 		// Create spawner
 		this.game.factory.createSpawner()
 
-		// Create boxes?
-		this.game.factory.createBox(new Vector3(0, 7, 2))
-		this.game.factory.createBox(new Vector3(6, 2, 2))
-		this.game.factory.createBox(new Vector3(6, 4, 2.5))
-		this.game.factory.createBox(new Vector3(6, 6, 3))
-
 		// Create river spawner
-		this.game.factory.createRiverSpawner(new Vector3(4), 5)
+		this.game.factory.createRiverSpawner(new Vector3(4, -0.25), 5, -Math.PI / 3)
 	}
 }
 

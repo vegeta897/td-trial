@@ -1,7 +1,7 @@
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { System } from './system'
 import Transform3D from '../components/com_transform3d'
-import { Group } from 'three'
+import { Group, Vector3 } from 'three'
 import Game, { GameObjectTypes } from '../game'
 import Ammo from '../components/com_ammo'
 
@@ -34,6 +34,12 @@ export default class EmitterSystem extends System {
 					case EmitterType.Loader:
 						this.factory.createAmmo(
 							transform.position.clone().add(emitter.origin),
+							emitter.direction
+						)
+						break
+					case EmitterType.RiverSpawner:
+						this.factory.createTumbler(
+							emitter.spawnArea.at(Math.random(), new Vector3()),
 							emitter.direction
 						)
 						break
