@@ -3,7 +3,7 @@ import Emitter, { EmitterType } from '../components/com_emitter'
 import Game, { GameObjectTypes } from '../game'
 import GameObject from './game_object'
 import Target from '../components/com_target'
-import { AssetNames } from '../three/assets'
+import Assets, { AssetNames } from '../three/assets'
 import { createMesh, createSprite } from '../three/objects'
 import Ammo from '../components/com_ammo'
 
@@ -13,7 +13,14 @@ const ammoSpriteMaterial = new SpriteMaterial({ color: 0xa5ffc4 })
 
 export default class Turret extends GameObject {
 	constructor(position: Vector3, rotation?: Quaternion) {
-		super(GameObjectTypes.Turret)
+		super(
+			GameObjectTypes.Turret,
+			createMesh({
+				geometry: Assets.get(AssetNames.TurretGeometry),
+				materialParams: { color: 0x38b764 },
+				meshProperties: { castShadow: true },
+			})
+		)
 		this.transform = { position, rotation }
 		const ammoBar = createSprite()
 		ammoBar.position.set(0, 0.4, 0)
@@ -32,13 +39,5 @@ export default class Turret extends GameObject {
 			new Target(GameObjectTypes.Tumbler, Game.turretProperties.targetDistance),
 			new Ammo(MAX_AMMO, ammoBar),
 		]
-	}
-	addToGame(game: Game) {
-		this.object3D = createMesh({
-			geometry: game.threeApp.assets.get(AssetNames.TurretGeometry),
-			materialParams: { color: 0x38b764 },
-			meshProperties: { castShadow: true },
-		})
-		super.addToGame(game)
 	}
 }

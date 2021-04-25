@@ -6,6 +6,7 @@ import { createDebugGUI } from './debug'
 import GUI from './gui'
 import Interaction from './interaction'
 import { Physics } from './physics'
+import { loadAssets } from '../three/assets'
 
 // TODO: Change as many properties as possible to static, including in ThreeApp
 // Like the Discord class in D-Bot-TS
@@ -30,7 +31,7 @@ export default class Game {
 		bulletSpread: 5,
 	}
 	async init() {
-		await this.threeApp.loadAssets()
+		await loadAssets()
 		this.level.create()
 
 		this.ecs.registerSystems(this)

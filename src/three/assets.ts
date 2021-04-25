@@ -1,7 +1,6 @@
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
-import { ThreeApp } from './three_app'
 import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils'
-import { Mesh } from 'three'
+import { BufferGeometry, Mesh } from 'three'
 import turretObj from '../assets/turret.obj'
 import loaderObj from '../assets/loader.obj'
 
@@ -15,7 +14,10 @@ const assetList: [AssetNames, string][] = [
 	[AssetNames.LoaderGeometry, loaderObj],
 ]
 
-export async function loadAssets(this: ThreeApp) {
+const Assets: Map<AssetNames, BufferGeometry> = new Map()
+export default Assets
+
+export async function loadAssets() {
 	const loader = new OBJLoader()
 	await Promise.all(
 		assetList.map(async ([assetName, objPath]) => {
@@ -25,7 +27,7 @@ export async function loadAssets(this: ThreeApp) {
 				0.01
 			)
 			geometry.translate(0, -0.5, 0)
-			this.assets.set(assetName, geometry)
+			Assets.set(assetName, geometry)
 		})
 	)
 }

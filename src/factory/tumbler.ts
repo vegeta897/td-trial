@@ -1,5 +1,5 @@
 import { createMesh } from '../three/objects'
-import { BoxGeometry, Quaternion, Vector3 } from 'three'
+import { Quaternion, Vector3 } from 'three'
 import * as CANNON from 'cannon-es'
 import { GameObjectTypes } from '../game'
 import ForceComponent from '../components/com_force'
@@ -12,16 +12,13 @@ const SPEED_LIMIT = 2
 
 export default class Tumbler extends GameObject {
 	constructor(position: Vector3, tumbleDirection: Quaternion) {
-		super(GameObjectTypes.Tumbler)
-		this.object3D = createMesh({
-			materialParams: { color: 0x73eff7 },
-			meshProperties: { castShadow: true },
-			geometry: new BoxGeometry(
-				TUMBLER_CUBE_SIZE,
-				TUMBLER_CUBE_SIZE,
-				TUMBLER_CUBE_SIZE
-			),
-		})
+		super(
+			GameObjectTypes.Tumbler,
+			createMesh({
+				materialParams: { color: 0x73eff7 },
+				meshProperties: { castShadow: true },
+			})
+		)
 		this.body = new CANNON.Body({
 			mass: MASS,
 			shape: new CANNON.Box(
@@ -30,7 +27,11 @@ export default class Tumbler extends GameObject {
 			position: new CANNON.Vec3(position.x, position.y, position.z),
 			quaternion: <CANNON.Quaternion>(<unknown>tumbleDirection.clone()),
 		})
-		this.transform = { position, rotation: tumbleDirection.clone() }
+		this.transform = {
+			position,
+			rotation: tumbleDirection.clone(),
+			scale: new Vector3(1, 1, 1).setScalar(TUMBLER_CUBE_SIZE),
+		}
 		this.additionalComponents = [
 			new ForceComponent(
 				new Vector3(FORCE).applyQuaternion(tumbleDirection),

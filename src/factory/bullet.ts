@@ -16,9 +16,8 @@ const bulletPrototype = createMesh({
 
 export default class Bullet extends GameObject {
 	constructor(turretPosition: Vector3, emitterDirection: Quaternion) {
-		super(GameObjectTypes.Bullet)
+		super(GameObjectTypes.Bullet, bulletPrototype.clone())
 		const rotation = emitterDirection.clone()
-		this.object3D = bulletPrototype.clone()
 		const randomRotation = randomizeAim(
 			emitterDirection,
 			MathUtils.degToRad(Game.turretProperties.bulletSpread)

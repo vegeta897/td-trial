@@ -12,9 +12,8 @@ const ammoPrototype = createMesh({
 
 export default class Ammo extends GameObject {
 	constructor(loaderPosition: Vector3, loaderDirection: Quaternion) {
-		super(GameObjectTypes.Ammo)
+		super(GameObjectTypes.Ammo, ammoPrototype.clone())
 		const rotation = loaderDirection.clone()
-		this.object3D = ammoPrototype.clone()
 		this.transform = {
 			position: loaderPosition,
 			rotation,

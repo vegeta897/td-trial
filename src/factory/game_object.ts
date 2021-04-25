@@ -16,8 +16,9 @@ export default abstract class GameObject {
 	protected container?: Object3D
 	protected additionalComponents?: Component[]
 	protected transform: Partial<Transform3D>
-	protected constructor(type = 0) {
+	protected constructor(type = 0, object3D: Object3D) {
 		this.type = type
+		this.object3D = object3D
 	}
 	addToGame(game: Game) {
 		this.game = game
