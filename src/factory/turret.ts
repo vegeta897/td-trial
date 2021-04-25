@@ -32,13 +32,13 @@ export default class Turret extends GameObject {
 		this.additionalComponents = [
 			new Emitter(
 				EmitterType.Turret,
-				Math.round(Game.tickRate / Game.turretProperties.fireRate),
+				Math.round(Game.TickRate / Game.TurretProperties.fireRate),
 				new Vector3(),
 				0,
 				false,
 				true
 			),
-			new Target(GameObjectTypes.Tumbler, Game.turretProperties.targetDistance),
+			new Target(GameObjectTypes.Tumbler, Game.TurretProperties.targetDistance),
 			new AmmoComponent(MAX_AMMO, ammoBar),
 		]
 	}

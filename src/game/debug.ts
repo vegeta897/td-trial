@@ -6,8 +6,8 @@ export function createDebugGUI(game: Game) {
 
 	const simFolder = gui.addFolder('Simulation')
 	simFolder
-		.add(Game, 'tickTime', 1, 400)
-		.onChange((tickTime) => (Game.tickTime = tickTime))
+		.add(Game, 'TickTime', 1, 400)
+		.onChange((tickTime) => (Game.TickTime = tickTime))
 	simFolder.add(game, 'interpolate')
 	simFolder.add(game, 'paused')
 	simFolder
@@ -17,19 +17,19 @@ export function createDebugGUI(game: Game) {
 
 	// const turretFolder = gui.addFolder('Turrets')
 	// turretFolder
-	// 	.add(game.turretProperties, 'fireRate', 1, 60)
+	// 	.add(game.TurretProperties, 'fireRate', 1, 60)
 	// 	.onChange((shootInterval) => {
-	// 		game.turretProperties.fireRate = Math.round(shootInterval)
+	// 		game.TurretProperties.fireRate = Math.round(shootInterval)
 	// 		game.world
 	// 			.view(Emitter, Tag.for(GameObjectTypes.Turret))
 	// 			.each((e, emitter) => {
 	// 				emitter.interval = Math.round(
-	// 					game.tickRate / game.turretProperties.fireRate
+	// 					game.TickRate / game.TurretProperties.fireRate
 	// 				)
 	// 			})
 	// 	})
 	// turretFolder
-	// 	.add(game.turretProperties, 'targetDistance', 0, 30)
+	// 	.add(game.TurretProperties, 'targetDistance', 0, 30)
 	// 	.onChange((targetDistance) => {
 	// 		game.world
 	// 			.view(Target, Tag.for(GameObjectTypes.Turret))
@@ -37,7 +37,7 @@ export function createDebugGUI(game: Game) {
 	// 				target.maxDistance = targetDistance
 	// 			})
 	// 	})
-	// turretFolder.add(game.turretProperties, 'bulletSpeed', 0.1, 1.2)
-	// turretFolder.add(game.turretProperties, 'bulletSpread', 0, 60)
+	// turretFolder.add(game.TurretProperties, 'bulletSpeed', 0.1, 1.2)
+	// turretFolder.add(game.TurretProperties, 'bulletSpread', 0, 60)
 	// turretFolder.open()
 }

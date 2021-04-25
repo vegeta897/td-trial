@@ -20,12 +20,12 @@ export default class Game {
 	interaction = new Interaction(this)
 	gui = new GUI(this)
 	tick = 0
-	static tickRate = 60
-	static tickTime = 1000 / Game.tickRate
+	static TickRate = 60
+	static TickTime = 1000 / Game.TickRate
 	static preloadTicks = 2000
 	paused = false
 	interpolate = true
-	static turretProperties = {
+	static TurretProperties = {
 		fireRate: 12,
 		targetDistance: 5,
 		bulletSpeed: 0.5,
@@ -50,16 +50,16 @@ export default class Game {
 			const now = performance.now()
 			if (!this.paused) {
 				let delta = now - lastUpdate
-				if (delta > 1000) delta = Game.tickTime
+				if (delta > 1000) delta = Game.TickTime
 				lag += delta
-				while (lag >= Game.tickTime) {
+				while (lag >= Game.TickTime) {
 					this.ecs.update(++this.tick)
-					lag -= Game.tickTime
+					lag -= Game.TickTime
 				}
 			}
 			lastUpdate = now
 			stats.begin()
-			this.threeApp.render(this.tick, lag / Game.tickTime)
+			this.threeApp.render(this.tick, lag / Game.TickTime)
 			stats.end()
 		}
 		while (this.tick < Game.preloadTicks) {
@@ -67,6 +67,7 @@ export default class Game {
 		}
 		update()
 	}
+	update() {}
 }
 
 export enum GameObjectTypes {

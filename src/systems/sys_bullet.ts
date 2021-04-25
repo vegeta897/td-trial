@@ -53,7 +53,7 @@ export default class BulletSystem extends System {
 			)
 			if (hitEnemy) this.hitEnemy(entity, hitEnemy.object.userData.entity)
 			if (!this.world.exists(entity)) return
-			transform.scale.z = velocityLength / Game.turretProperties.bulletSpeed
+			transform.scale.z = velocityLength / Game.TurretProperties.bulletSpeed
 			velocity.vector3.multiplyScalar(0.95)
 			transform.scale.multiplyScalar(0.98)
 			transform.lastUpdated = tick

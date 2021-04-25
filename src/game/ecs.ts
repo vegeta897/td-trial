@@ -10,6 +10,8 @@ import TargetSystem from '../systems/sys_target'
 import AmmoSystem from '../systems/sys_ammo'
 import PhysicsSystem from '../systems/sys_physics'
 import TransformSystem from '../systems/sys_transform'
+import OrbitSystem from '../systems/sys_orbit'
+import ForceSystem from '../systems/sys_force'
 
 export default class ECS {
 	world = new World()
@@ -23,6 +25,8 @@ export default class ECS {
 		this.systems.push(new BulletSystem(game))
 		this.systems.push(new AmmoSystem(game))
 		// this.systems.push(new PathSystem(game))
+		this.systems.push(new OrbitSystem(game))
+		this.systems.push(new ForceSystem(game))
 		this.systems.push(new PhysicsSystem(game))
 		game.threeApp.systems.push(new RenderSystem(game))
 	}

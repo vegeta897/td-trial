@@ -4,10 +4,13 @@ import * as CANNON from 'cannon-es'
 import { GameObjectTypes } from '../game'
 import ForceComponent from '../components/com_force'
 import GameObject from './game_object'
+import Orbit from '../components/com_orbit'
+import { Physics } from '../game/physics'
+import { Level } from '../game/level'
 
-export const TUMBLER_CUBE_SIZE = 0.5
+export const TUMBLER_CUBE_SIZE = 0.3
 const MASS = TUMBLER_CUBE_SIZE ** 3
-const FORCE = 5
+const FORCE = 3
 const SPEED_LIMIT = 2
 
 const tumblerPrototype = createMesh({
@@ -25,6 +28,7 @@ export default class Tumbler extends GameObject {
 			),
 			position: new CANNON.Vec3(position.x, position.y, position.z),
 			quaternion: <CANNON.Quaternion>(<unknown>tumbleDirection.clone()),
+			material: Physics.Materials.tumbler,
 		})
 		this.transform = {
 			position,
@@ -32,10 +36,8 @@ export default class Tumbler extends GameObject {
 			scale: new Vector3(1, 1, 1).setScalar(TUMBLER_CUBE_SIZE),
 		}
 		this.additionalComponents = [
-			new ForceComponent(
-				new Vector3(FORCE).applyQuaternion(tumbleDirection),
-				SPEED_LIMIT
-			),
+			new Orbit(Level.Origin),
+			new ForceComponent(tumbleDirection.clone(), FORCE, SPEED_LIMIT),
 		]
 	}
 }

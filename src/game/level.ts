@@ -1,14 +1,23 @@
-import { Euler, Mesh, MeshLambertMaterial, PlaneGeometry, Vector3 } from 'three'
+import {
+	Euler,
+	Mesh,
+	MeshLambertMaterial,
+	PlaneGeometry,
+	Vector2,
+	Vector3,
+} from 'three'
 import Game from './'
 import { Body, Plane } from 'cannon-es'
 import HQ from '../factory/hq'
 import RiverSpawner from '../factory/river_spawner'
+import { Physics } from './physics'
 
 export const FLOOR_Y = 0
 
 export class Level {
 	ground: Mesh
 	game: Game
+	static Origin = new Vector2(0, 10)
 	constructor(game: Game) {
 		this.game = game
 
@@ -26,17 +35,19 @@ export class Level {
 		const groundBody = new Body({
 			type: Body.STATIC,
 			shape: new Plane(),
+			material: Physics.Materials.ground,
 		})
 		groundBody.position.y = FLOOR_Y
 		groundBody.quaternion.setFromEuler(-Math.PI / 2, 0, 0) // make it face up
 		this.game.physics.world.addBody(groundBody)
 	}
 	create() {
-		new HQ(new Vector3(0, FLOOR_Y + 1.5, 10), new Euler(0, 0.2)).addToGame(
-			this.game
-		)
+		new HQ(
+			new Vector3(Level.Origin.x, FLOOR_Y + 1.5, Level.Origin.y),
+			new Euler(0, 0.2)
+		).addToGame(this.game)
 
-		new RiverSpawner(new Vector3(-18, FLOOR_Y + 0.25, -10), 12, 0).addToGame(
+		new RiverSpawner(new Vector3(0, FLOOR_Y + 0.25, -8), 12, 0).addToGame(
 			this.game
 		)
 	}

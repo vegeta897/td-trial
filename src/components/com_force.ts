@@ -1,5 +1,11 @@
-import { Vector3 } from 'three'
+import { Quaternion, Vector3 } from 'three'
 
 export default class ForceComponent {
-	constructor(public velocity = new Vector3(), public limit = 0) {}
+	velocity = new Vector3()
+	dirty = true
+	constructor(
+		public direction: Quaternion,
+		public magnitude: number,
+		public limit = 0
+	) {}
 }

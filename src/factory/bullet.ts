@@ -20,7 +20,7 @@ export default class Bullet extends GameObject {
 		const rotation = emitterDirection.clone()
 		const randomRotation = randomizeAim(
 			emitterDirection,
-			MathUtils.degToRad(Game.turretProperties.bulletSpread)
+			MathUtils.degToRad(Game.TurretProperties.bulletSpread)
 		)
 		this.transform = {
 			position: turretPosition.clone(),
@@ -29,7 +29,7 @@ export default class Bullet extends GameObject {
 		}
 		this.additionalComponents = [
 			new Velocity3D(
-				new Vector3(0, 0, Game.turretProperties.bulletSpeed).applyQuaternion(
+				new Vector3(0, 0, Game.TurretProperties.bulletSpeed).applyQuaternion(
 					rotation
 				)
 			),

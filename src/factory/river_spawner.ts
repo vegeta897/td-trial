@@ -23,8 +23,9 @@ const riverSpawnerPrototype = new Line(
 )
 
 export default class RiverSpawner extends GameObject {
-	constructor(position: Vector3, width = 1, angle = 0) {
+	constructor(position: Vector3, width = 1, direction: 0 | 1 | 2 | 3 = 0) {
 		super(GameObjectTypes.RiverSpawner, riverSpawnerPrototype.clone())
+		const angle = direction * (Math.PI / 2)
 		const lineAngle = new Euler(0, angle + Math.PI / 2)
 		const halfWidth = new Vector3(width / 2).applyEuler(lineAngle)
 		this.transform = {
@@ -32,6 +33,8 @@ export default class RiverSpawner extends GameObject {
 			rotation: new Quaternion().setFromEuler(lineAngle),
 			scale: new Vector3(width),
 		}
+		const lineStart = position.clone().sub(halfWidth)
+		const lineEnd = position.clone().add(halfWidth)
 		this.additionalComponents = [
 			new Emitter(
 				EmitterType.RiverSpawner,
@@ -41,10 +44,7 @@ export default class RiverSpawner extends GameObject {
 				true,
 				false,
 				new Quaternion().setFromEuler(new Euler(0, angle)),
-				new Line3(
-					position.clone().add(halfWidth),
-					position.clone().sub(halfWidth)
-				)
+				new Line3(lineStart, lineEnd)
 			),
 		]
 	}
