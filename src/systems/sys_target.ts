@@ -6,7 +6,7 @@ import { Object3D } from 'three'
 import Emitter from '../components/com_emitter'
 import { GameObjectTypes } from '../game'
 import { Constructor } from 'uecs/dist/util'
-import Ammo from '../components/com_ammo'
+import AmmoComponent from '../components/com_ammo'
 
 const objectProxy = new Object3D() // Could use a Matrix4 but the API is more complex
 
@@ -54,7 +54,7 @@ export default class TargetSystem extends System {
 								(maxDistanceSquared - distanceSquared) / maxDistanceSquared
 							break
 						case TargetPriority.LowestAmmo:
-							const ammo = this.world.get(targetEntity, Ammo)!
+							const ammo = this.world.get(targetEntity, AmmoComponent)!
 							score = (ammo.max - ammo.current) / ammo.max
 							break
 					}

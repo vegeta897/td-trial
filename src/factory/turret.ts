@@ -1,26 +1,28 @@
-import { Quaternion, SpriteMaterial, Vector3 } from 'three'
+import { Object3D, Quaternion, SpriteMaterial, Vector3 } from 'three'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import Game, { GameObjectTypes } from '../game'
 import GameObject from './game_object'
 import Target from '../components/com_target'
 import Assets, { AssetNames } from '../three/assets'
 import { createMesh, createSprite } from '../three/objects'
-import Ammo from '../components/com_ammo'
+import AmmoComponent from '../components/com_ammo'
 
 const MAX_AMMO = 100
 
 const ammoSpriteMaterial = new SpriteMaterial({ color: 0xa5ffc4 })
 
+let turretPrototype: Object3D
+
 export default class Turret extends GameObject {
 	constructor(position: Vector3, rotation?: Quaternion) {
-		super(
-			GameObjectTypes.Turret,
+		turretPrototype =
+			turretPrototype ||
 			createMesh({
 				geometry: Assets.get(AssetNames.TurretGeometry),
 				materialParams: { color: 0x38b764 },
 				meshProperties: { castShadow: true },
 			})
-		)
+		super(GameObjectTypes.Turret, turretPrototype.clone())
 		this.transform = { position, rotation }
 		const ammoBar = createSprite()
 		ammoBar.position.set(0, 0.4, 0)
@@ -37,7 +39,7 @@ export default class Turret extends GameObject {
 				true
 			),
 			new Target(GameObjectTypes.Tumbler, Game.turretProperties.targetDistance),
-			new Ammo(MAX_AMMO, ammoBar),
+			new AmmoComponent(MAX_AMMO, ammoBar),
 		]
 	}
 }

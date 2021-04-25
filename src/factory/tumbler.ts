@@ -10,15 +10,14 @@ const MASS = TUMBLER_CUBE_SIZE ** 3
 const FORCE = 5
 const SPEED_LIMIT = 2
 
+const tumblerPrototype = createMesh({
+	materialParams: { color: 0x73eff7 },
+	meshProperties: { castShadow: true },
+})
+
 export default class Tumbler extends GameObject {
 	constructor(position: Vector3, tumbleDirection: Quaternion) {
-		super(
-			GameObjectTypes.Tumbler,
-			createMesh({
-				materialParams: { color: 0x73eff7 },
-				meshProperties: { castShadow: true },
-			})
-		)
+		super(GameObjectTypes.Tumbler, tumblerPrototype.clone())
 		this.body = new CANNON.Body({
 			mass: MASS,
 			shape: new CANNON.Box(

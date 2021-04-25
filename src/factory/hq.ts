@@ -8,23 +8,22 @@ import { createLineCircleGeometry } from '../util'
 const HQ_CUBE_SIZE = 3
 const HQ_ZONE_RADIUS = 8
 
+const hqPrototype = createMesh({
+	materialParams: { color: 0x38b764 },
+	meshProperties: { castShadow: true },
+})
+const hqZoneLineGeometry = createLineCircleGeometry(
+	HQ_ZONE_RADIUS / HQ_CUBE_SIZE
+)
+const hqZoneMaterial = new LineBasicMaterial({ color: 0x00eeaa })
+const hqZoneLine = new LineLoop(hqZoneLineGeometry, hqZoneMaterial)
+hqZoneLine.translateY(-1 / 2 + 0.05)
+hqZoneLine.rotateX(Math.PI / 2)
+hqPrototype.add(hqZoneLine)
+
 export default class HQ extends GameObject {
 	constructor(position: Vector3, rotation = new Euler()) {
-		super(
-			GameObjectTypes.HQ,
-			createMesh({
-				materialParams: { color: 0x38b764 },
-				meshProperties: { castShadow: true },
-			})
-		)
-		const hqZoneLineGeometry = createLineCircleGeometry(
-			HQ_ZONE_RADIUS / HQ_CUBE_SIZE
-		)
-		const hqZoneMaterial = new LineBasicMaterial({ color: 0x00eeaa })
-		const hqZoneLine = new LineLoop(hqZoneLineGeometry, hqZoneMaterial)
-		hqZoneLine.translateY(-1 / 2 + 0.05)
-		hqZoneLine.rotateX(Math.PI / 2)
-		this.object3D.add(hqZoneLine)
+		super(GameObjectTypes.HQ, hqPrototype.clone())
 		const quaternion = new Quaternion().setFromEuler(rotation)
 		this.body = new CANNON.Body({
 			type: CANNON.Body.STATIC,
