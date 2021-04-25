@@ -22,6 +22,7 @@ export default class Game {
 	tick = 0
 	static tickRate = 60
 	static tickTime = 1000 / Game.tickRate
+	static preloadTicks = 2000
 	paused = false
 	interpolate = true
 	static turretProperties = {
@@ -60,6 +61,9 @@ export default class Game {
 			stats.begin()
 			this.threeApp.render(this.tick, lag / Game.tickTime)
 			stats.end()
+		}
+		while (this.tick < Game.preloadTicks) {
+			this.ecs.update(++this.tick)
 		}
 		update()
 	}
