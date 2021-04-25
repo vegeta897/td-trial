@@ -1,4 +1,5 @@
 import Transform3D from './components/com_transform3d'
+import { BufferGeometry, CircleGeometry, Vector3 } from 'three'
 
 export function cloneTransform3D(transform: Transform3D): Transform3D {
 	return new Transform3D({
@@ -6,6 +7,20 @@ export function cloneTransform3D(transform: Transform3D): Transform3D {
 		rotation: transform.rotation.clone(),
 		scale: transform.scale.clone(),
 	})
+}
+
+export function createLineCircleGeometry(
+	radius = 1,
+	segments = 64
+): BufferGeometry {
+	const points: Vector3[] = []
+	const positions = new CircleGeometry(radius, segments).getAttribute(
+		'position'
+	).array
+	for (let p = 3; p < positions.length; p += 3) {
+		points.push(new Vector3(positions[p], positions[p + 1], positions[p + 2]))
+	}
+	return new BufferGeometry().setFromPoints(points)
 }
 
 // https://stackoverflow.com/a/39514270/2612679
