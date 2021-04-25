@@ -7,7 +7,7 @@ import Velocity3D from '../components/com_velocity3d'
 import Game from '../game'
 
 // TODO: Create unified three/cannon Vector3 and Quaternion?
-const MAX_DISTANCE = 100
+const MAX_DISTANCE = 50
 const MAX_DISTANCE_SQ = MAX_DISTANCE ** 2
 
 export default class PhysicsSystem extends System {
