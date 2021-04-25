@@ -1,5 +1,6 @@
 import Game from './'
 import { Raycaster } from 'three'
+import { FLOOR_Y } from './level'
 
 export enum InteractionState {
 	NONE,
@@ -33,12 +34,12 @@ export default class Interaction {
 					switch (this.state) {
 						case InteractionState.BUILD_TURRET:
 							this.game.factory.createTurret(
-								groundClick.point.setComponent(1, 0)
+								groundClick.point.setComponent(1, FLOOR_Y + 0.5)
 							)
 							break
 						case InteractionState.BUILD_LOADER:
 							this.game.factory.createLoader(
-								groundClick.point.setComponent(1, 0)
+								groundClick.point.setComponent(1, FLOOR_Y + 0.5)
 							)
 							break
 					}

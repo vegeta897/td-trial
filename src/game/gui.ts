@@ -5,27 +5,19 @@ export default class GUI {
 	game: Game
 	statsContainer = document.createElement('div')
 	buildContainer = document.createElement('div')
-	buttons = {
-		turret: document.createElement('button'),
-		loader: document.createElement('button'),
-		cancel: document.createElement('button'),
-	}
+	displays: Display[] = []
+	buttons: Button[] = []
 	constructor(game: Game) {
 		this.game = game
 
 		this.statsContainer.id = 'gui-stats-container'
 		document.body.appendChild(this.statsContainer)
-		const tickDisplay = document.createElement('span')
-		const entityDisplay = document.createElement('span')
-		const bodyDisplay = document.createElement('span')
-		this.statsContainer.appendChild(tickDisplay)
-		this.statsContainer.appendChild(entityDisplay)
-		this.statsContainer.appendChild(bodyDisplay)
-		setInterval(() => {
-			tickDisplay.innerText = `Tick: ${this.game.tick}`
-			entityDisplay.innerText = `Entities: ${this.game.world.size()}`
-			bodyDisplay.innerText = `Bodies: ${this.game.physics.world.bodies.length}`
-		}, 200)
+		this.createDisplay('Tick', () => this.game.tick),
+			this.createDisplay('Entities', () => this.game.world.size()),
+			this.createDisplay('Bodies', () => this.game.physics.world.bodies.length),
+			setInterval(() => {
+				this.displays.forEach((d) => d.update())
+			}, 200)
 
 		this.buildContainer.id = 'gui-build-container'
 		document.body.appendChild(this.buildContainer)
@@ -33,38 +25,51 @@ export default class GUI {
 		heading.innerText = 'Build'
 		this.buildContainer.appendChild(heading)
 
-		this.buttons.turret.innerText = 'Turret'
-		this.buttons.turret.addEventListener('click', () => {
-			this.game.interaction.state = InteractionState.BUILD_TURRET
-			this.update()
-		})
-		this.buildContainer.appendChild(this.buttons.turret)
-
-		this.buttons.loader.innerText = 'Loader'
-		this.buttons.loader.addEventListener('click', () => {
-			this.game.interaction.state = InteractionState.BUILD_LOADER
-			this.update()
-		})
-		this.buildContainer.appendChild(this.buttons.loader)
-
-		this.buttons.cancel.innerText = 'cancel'
-		this.buttons.cancel.addEventListener('click', () => {
-			this.game.interaction.state = InteractionState.NONE
-			this.update()
-		})
-		this.buildContainer.appendChild(this.buttons.cancel)
+		this.createButton('Turret', InteractionState.BUILD_TURRET)
+		this.createButton('Loader', InteractionState.BUILD_LOADER)
+		this.createButton('cancel', InteractionState.NONE, true)
 		this.update()
 	}
+
 	update() {
-		this.buttons.turret.disabled =
-			this.game.interaction.state === InteractionState.BUILD_TURRET
-		this.buttons.loader.disabled =
-			this.game.interaction.state === InteractionState.BUILD_LOADER
-		this.buttons.cancel.style.visibility =
-			this.game.interaction.state === InteractionState.NONE
-				? 'hidden'
-				: 'visible'
-		this.buttons.cancel.disabled =
-			this.game.interaction.state === InteractionState.NONE
+		this.buttons.forEach(({ element, state, hideOnState }) => {
+			element.disabled = this.game.interaction.state === state
+			if (hideOnState)
+				element.style.visibility =
+					this.game.interaction.state === state ? 'hidden' : 'visible'
+		})
 	}
+
+	createDisplay(name: string, getValue: () => string | number) {
+		const element = document.createElement('span')
+		this.statsContainer.appendChild(element)
+		this.displays.push({
+			name,
+			update: () => (element.innerText = `${name}: ${getValue()}`),
+			element,
+		})
+	}
+
+	createButton(label: string, state: InteractionState, hideOnState = false) {
+		const element = document.createElement('button')
+		element.innerText = label
+		element.addEventListener('click', () => {
+			this.game.interaction.state = state
+			this.update()
+		})
+		this.buildContainer.appendChild(element)
+		this.buttons.push({ element, state, hideOnState })
+	}
+}
+
+declare type Display = {
+	name: string
+	update: () => void
+	element: HTMLElement
+}
+
+declare type Button = {
+	element: HTMLButtonElement
+	state: InteractionState
+	hideOnState: boolean
 }
