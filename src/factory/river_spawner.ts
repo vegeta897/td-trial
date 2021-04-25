@@ -1,4 +1,3 @@
-import Factory from './'
 import Emitter, { EmitterType } from '../components/com_emitter'
 import {
 	BufferGeometry,
@@ -9,30 +8,26 @@ import {
 	Quaternion,
 	Vector3,
 } from 'three'
+import { GameObjectTypes } from '../game'
+import GameObject from './game_object'
 
 const SPAWN_INTERVAL = 100
 
-export function createRiverSpawner(
-	this: Factory,
-	position: Vector3,
-	width = 1,
-	angle = 0
-) {
-	const lineAngle = new Euler(0, angle + Math.PI / 2)
-	const halfWidth = new Vector3(width / 2).applyEuler(lineAngle)
-	const lineGeometry = new BufferGeometry().setFromPoints([
-		new Vector3().add(halfWidth),
-		new Vector3().sub(halfWidth),
-	])
-	const lineObject = new Line(
-		lineGeometry,
-		new LineBasicMaterial({ color: 0x00ffff })
-	)
-	// halfWidth.applyEuler(lineAngle) // Rotate for global spawn line points
-	this.createGameObject({
-		transform: { position },
-		object3D: lineObject,
-		additionalComponents: [
+export default class RiverSpawner extends GameObject {
+	constructor(position: Vector3, width = 1, angle = 0) {
+		super(GameObjectTypes.RiverSpawner)
+		const lineAngle = new Euler(0, angle + Math.PI / 2)
+		const halfWidth = new Vector3(width / 2).applyEuler(lineAngle)
+		const lineGeometry = new BufferGeometry().setFromPoints([
+			new Vector3().add(halfWidth),
+			new Vector3().sub(halfWidth),
+		])
+		this.object3D = new Line(
+			lineGeometry,
+			new LineBasicMaterial({ color: 0x00ffff })
+		)
+		this.transform = { position }
+		this.additionalComponents = [
 			new Emitter(
 				EmitterType.RiverSpawner,
 				SPAWN_INTERVAL,
@@ -46,6 +41,6 @@ export function createRiverSpawner(
 					position.clone().sub(halfWidth)
 				)
 			),
-		],
-	})
+		]
+	}
 }

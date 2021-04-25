@@ -1,47 +1,43 @@
 import Emitter, { EmitterType } from '../components/com_emitter'
 import { System } from './system'
 import Transform3D from '../components/com_transform3d'
-import { Group, Vector3 } from 'three'
-import Game, { GameObjectTypes } from '../game'
-import Ammo from '../components/com_ammo'
+import { Vector3 } from 'three'
+import Tumbler from '../factory/tumbler'
+import Ammo from '../factory/ammo'
+import AmmoComponent from '../components/com_ammo'
+import Bullet from '../factory/bullet'
 
 export default class EmitterSystem extends System {
 	view = this.world.view(Emitter, Transform3D)
-	enemyGroup: Group
-	constructor(game: Game) {
-		super(game)
-		this.enemyGroup = this.threeApp.groups.get(GameObjectTypes.Enemy)!
-	}
 	update() {
 		this.view.each((entity, emitter, transform) => {
 			if (!emitter.active) return
 			if (++emitter.tick >= emitter.interval) {
 				emitter.tick = 0
 				switch (emitter.type) {
-					case EmitterType.Spawner:
-						this.factory.createEnemy(transform.position.clone())
-						break
 					case EmitterType.Turret:
 						if (emitter.useAmmo) {
-							const ammo = this.world.get(entity, Ammo)
+							const ammo = this.world.get(entity, AmmoComponent)
 							if (!ammo) throw 'Turret missing ammo component'
 							if (ammo.current === 0) return
 							ammo.current--
 							ammo.sprite.scale.setComponent(0, ammo.current / ammo.max)
 						}
-						this.factory.createBullet(transform.position, emitter.direction)
+						new Bullet(transform.position, emitter.direction).addToGame(
+							this.game
+						)
 						break
 					case EmitterType.Loader:
-						this.factory.createAmmo(
+						new Ammo(
 							transform.position.clone().add(emitter.origin),
 							emitter.direction
-						)
+						).addToGame(this.game)
 						break
 					case EmitterType.RiverSpawner:
-						this.factory.createTumbler(
+						new Tumbler(
 							emitter.spawnArea.at(Math.random(), new Vector3()),
 							emitter.direction
-						)
+						).addToGame(this.game)
 						break
 				}
 			}

@@ -5,6 +5,7 @@ import * as CANNON from 'cannon-es'
 import { Quaternion, Vector3 } from 'three'
 import Velocity3D from '../components/com_velocity3d'
 import ForceComponent from '../components/com_force'
+import Game from '../game'
 
 // TODO: Create unified three/cannon Vector3 and Quaternion?
 const MAX_DISTANCE = 50
@@ -48,15 +49,13 @@ export default class PhysicsSystem extends System {
 				if (velocity)
 					body.velocity.copy(
 						<CANNON.Vec3>(
-							(<unknown>(
-								velocity.vector3.clone().multiplyScalar(this.game.tickRate)
-							))
+							(<unknown>velocity.vector3.clone().multiplyScalar(Game.tickRate))
 						)
 					)
 				else body.velocity.setZero()
 			}
 		)
-		this.game.physics.world.step(1 / this.game.tickRate)
+		this.game.physics.world.step(1 / Game.tickRate)
 		this.bodies.each((entity, { body }, transform) => {
 			if (body.position.lengthSquared() > MAX_DISTANCE_SQ) {
 				this.world.destroy(entity)

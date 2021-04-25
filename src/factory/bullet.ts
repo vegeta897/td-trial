@@ -1,7 +1,7 @@
 import Velocity3D from '../components/com_velocity3d'
 import { Euler, MathUtils, Quaternion, Vector3 } from 'three'
-import { GameObjectTypes } from '../game'
-import Factory from './'
+import Game, { GameObjectTypes } from '../game'
+import GameObject from './game_object'
 import { createMesh } from '../three/objects'
 
 const BULLET_SCALE = 0.12
@@ -14,33 +14,28 @@ const bulletPrototype = createMesh({
 	},
 })
 
-export function createBullet(
-	this: Factory,
-	turretPosition: Vector3,
-	emitterDirection: Quaternion
-) {
-	const randomRotation = randomizeAim(
-		emitterDirection,
-		MathUtils.degToRad(this.game.turretProperties.bulletSpread)
-	)
-	this.createGameObject({
-		transform: {
+export default class Bullet extends GameObject {
+	constructor(turretPosition: Vector3, emitterDirection: Quaternion) {
+		super(GameObjectTypes.Bullet)
+		const rotation = emitterDirection.clone()
+		this.object3D = bulletPrototype.clone()
+		const randomRotation = randomizeAim(
+			emitterDirection,
+			MathUtils.degToRad(Game.turretProperties.bulletSpread)
+		)
+		this.transform = {
 			position: turretPosition.clone(),
 			rotation: randomRotation,
 			scale: new Vector3().setScalar(BULLET_SCALE),
-		},
-		object3D: bulletPrototype.clone(),
-		gameObjectType: GameObjectTypes.Bullet,
-		additionalComponents: [
+		}
+		this.additionalComponents = [
 			new Velocity3D(
-				new Vector3(
-					0,
-					0,
-					this.game.turretProperties.bulletSpeed
-				).applyQuaternion(randomRotation)
+				new Vector3(0, 0, Game.turretProperties.bulletSpeed).applyQuaternion(
+					rotation
+				)
 			),
-		],
-	})
+		]
+	}
 }
 
 function randomizeAim(quaternion: Quaternion, maxAngle: number): Quaternion {

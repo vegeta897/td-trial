@@ -1,7 +1,6 @@
 import { Line3, Quaternion, Vector3 } from 'three'
 
 export enum EmitterType {
-	Spawner,
 	RiverSpawner,
 	Turret,
 	Loader,

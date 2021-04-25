@@ -6,8 +6,8 @@ export function createDebugGUI(game: Game) {
 
 	const simFolder = gui.addFolder('Simulation')
 	simFolder
-		.add(game, 'tickTime', 1, 400)
-		.onChange((tickTime) => (game.tickTime = tickTime))
+		.add(Game, 'tickTime', 1, 400)
+		.onChange((tickTime) => (Game.tickTime = tickTime))
 	simFolder.add(game, 'interpolate')
 	simFolder.add(game, 'paused')
 	simFolder

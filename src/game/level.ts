@@ -1,6 +1,8 @@
 import { Euler, Mesh, MeshLambertMaterial, PlaneGeometry, Vector3 } from 'three'
 import Game from './'
 import { Body, Plane } from 'cannon-es'
+import HQ from '../factory/hq'
+import RiverSpawner from '../factory/river_spawner'
 
 export const FLOOR_Y = 0
 
@@ -30,15 +32,12 @@ export class Level {
 		this.game.physics.world.addBody(groundBody)
 	}
 	create() {
-		this.game.factory.createHQ(
-			new Vector3(0, FLOOR_Y + 1.5, 10),
-			new Euler(0, 0.2)
+		new HQ(new Vector3(0, FLOOR_Y + 1.5, 10), new Euler(0, 0.2)).addToGame(
+			this.game
 		)
 
-		this.game.factory.createRiverSpawner(
-			new Vector3(-18, FLOOR_Y + 0.25, -10),
-			12,
-			0
+		new RiverSpawner(new Vector3(-18, FLOOR_Y + 0.25, -10), 12, 0).addToGame(
+			this.game
 		)
 	}
 }

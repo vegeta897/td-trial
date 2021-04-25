@@ -4,14 +4,13 @@ import { Entity, Tag } from 'uecs'
 import { GameObjectTypes } from '../game'
 import Velocity3D from '../components/com_velocity3d'
 import { Group, Raycaster } from 'three'
-import Health from '../components/com_health'
-import { ENEMY_SIZE } from '../factory/enemy'
 import { FLOOR_Y } from '../game/level'
 import Game from '../game'
+import { TUMBLER_CUBE_SIZE } from '../factory/tumbler'
 
 const MAX_DISTANCE = 100
 const MAX_DISTANCE_SQ = MAX_DISTANCE ** 2
-const ENEMY_SIZE_SQ = (ENEMY_SIZE / 2) ** 2
+const ENEMY_SIZE_SQ = (TUMBLER_CUBE_SIZE / 2) ** 2
 
 export default class BulletSystem extends System {
 	view = this.world.view(
@@ -19,12 +18,12 @@ export default class BulletSystem extends System {
 		Velocity3D,
 		Tag.for(GameObjectTypes.Bullet)
 	)
-	enemies = this.world.view(Transform3D, Tag.for(GameObjectTypes.Enemy))
-	enemyGroup: Group
+	enemies = this.world.view(Transform3D, Tag.for(GameObjectTypes.Tumbler))
+	tumblerGroup: Group
 	raycaster = new Raycaster()
 	constructor(game: Game) {
 		super(game)
-		this.enemyGroup = this.threeApp.groups.get(GameObjectTypes.Enemy)!
+		this.tumblerGroup = this.threeApp.groups.get(GameObjectTypes.Tumbler)!
 	}
 	update(tick: number) {
 		this.view.each((entity, transform, velocity) => {
@@ -50,12 +49,11 @@ export default class BulletSystem extends System {
 			)
 			this.raycaster.far = velocityLength
 			const [hitEnemy] = this.raycaster.intersectObjects(
-				this.enemyGroup.children
+				this.tumblerGroup.children
 			)
 			if (hitEnemy) this.hitEnemy(entity, hitEnemy.object.userData.entity)
 			if (!this.world.exists(entity)) return
-			transform.scale.z =
-				velocityLength / this.game.turretProperties.bulletSpeed
+			transform.scale.z = velocityLength / Game.turretProperties.bulletSpeed
 			velocity.vector3.multiplyScalar(0.95)
 			transform.scale.multiplyScalar(0.98)
 			transform.lastUpdated = tick
@@ -63,12 +61,12 @@ export default class BulletSystem extends System {
 	}
 	hitEnemy(bullet: Entity, enemy: Entity) {
 		this.world.destroy(bullet)
-		const health = this.world.get(enemy, Health)!
-		health.current -= 1
-		health.sprite.visible = true
-		health.sprite.scale.setComponent(0, health.current / health.max)
-		if (health.current <= 0) {
-			this.world.destroy(enemy)
-		}
+		// const health = this.world.get(enemy, Health)!
+		// health.current -= 1
+		// health.sprite.visible = true
+		// health.sprite.scale.setComponent(0, health.current / health.max)
+		// if (health.current <= 0) {
+		// 	this.world.destroy(enemy)
+		// }
 	}
 }

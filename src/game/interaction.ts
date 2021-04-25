@@ -1,6 +1,8 @@
 import Game from './'
 import { Raycaster } from 'three'
 import { FLOOR_Y } from './level'
+import Turret from '../factory/turret'
+import AmmoLoader from '../factory/ammo_loader'
 
 export enum InteractionState {
 	NONE,
@@ -33,14 +35,14 @@ export default class Interaction {
 					if (groundClick.point.manhattanLength() > 50) return
 					switch (this.state) {
 						case InteractionState.BUILD_TURRET:
-							this.game.factory.createTurret(
+							new Turret(
 								groundClick.point.setComponent(1, FLOOR_Y + 0.5)
-							)
+							).addToGame(this.game)
 							break
 						case InteractionState.BUILD_LOADER:
-							this.game.factory.createLoader(
+							new AmmoLoader(
 								groundClick.point.setComponent(1, FLOOR_Y + 0.5)
-							)
+							).addToGame(this.game)
 							break
 					}
 				}
