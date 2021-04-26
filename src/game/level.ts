@@ -17,7 +17,7 @@ export const FLOOR_Y = 0
 export class Level {
 	ground: Mesh
 	game: Game
-	static Origin = new Vector2(0, 10)
+	static Origin = new Vector2(0, 0)
 	constructor(game: Game) {
 		this.game = game
 
@@ -47,7 +47,7 @@ export class Level {
 			new Euler(0, 0.2)
 		).addToGame(this.game)
 
-		new RiverSpawner(new Vector3(0, FLOOR_Y + 0.25, -8), 12, 0).addToGame(
+		new RiverSpawner(new Vector3(0, FLOOR_Y + 0.25, -14), 12, 0).addToGame(
 			this.game
 		)
 	}

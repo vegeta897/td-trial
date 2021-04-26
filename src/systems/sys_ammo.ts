@@ -1,9 +1,9 @@
 import { System } from './system'
 import Transform3D from '../components/com_transform3d'
-import { GameObjectTypes } from '../game'
 import { Tag } from 'uecs'
 import { FLOOR_Y } from '../game/level'
 import Ammo from '../components/com_ammo'
+import { GameObjectTypes } from '../factory/game_object'
 
 const MAX_DISTANCE = 100
 const MAX_DISTANCE_SQ = MAX_DISTANCE ** 2

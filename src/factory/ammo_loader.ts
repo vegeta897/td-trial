@@ -1,5 +1,4 @@
-import GameObject from './game_object'
-import { GameObjectTypes } from '../game'
+import GameObject, { GameObjectTypes } from './game_object'
 import { createMesh } from '../three/objects'
 import Assets, { AssetNames } from '../three/assets'
 import { Object3D, Quaternion, Vector3 } from 'three'

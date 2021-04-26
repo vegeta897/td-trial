@@ -1,7 +1,7 @@
 import Velocity3D from '../components/com_velocity3d'
 import { Euler, MathUtils, Quaternion, Vector3 } from 'three'
-import Game, { GameObjectTypes } from '../game'
-import GameObject from './game_object'
+import Game from '../game'
+import GameObject, { GameObjectTypes } from './game_object'
 import { createMesh } from '../three/objects'
 
 const BULLET_SCALE = 0.12

@@ -4,9 +4,9 @@ import Transform3D from '../components/com_transform3d'
 import { Entity, Tag, View } from 'uecs'
 import { Object3D } from 'three'
 import Emitter from '../components/com_emitter'
-import { GameObjectTypes } from '../game'
 import { Constructor } from 'uecs/dist/util'
 import AmmoComponent from '../components/com_ammo'
+import { GameObjectTypes } from '../factory/game_object'
 
 const objectProxy = new Object3D() // Could use a Matrix4 but the API is more complex
 

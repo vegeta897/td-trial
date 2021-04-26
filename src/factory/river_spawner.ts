@@ -8,10 +8,9 @@ import {
 	Quaternion,
 	Vector3,
 } from 'three'
-import { GameObjectTypes } from '../game'
-import GameObject from './game_object'
+import GameObject, { GameObjectTypes } from './game_object'
 
-const SPAWN_INTERVAL = 100
+const SPAWN_INTERVAL = 200
 
 const lineGeometry = new BufferGeometry().setFromPoints([
 	new Vector3(0.5),

@@ -1,8 +1,7 @@
-import { GameObjectTypes } from '../game'
 import { createMesh } from '../three/objects'
 import { Quaternion, Vector3 } from 'three'
 import Velocity3D from '../components/com_velocity3d'
-import GameObject from './game_object'
+import GameObject, { GameObjectTypes } from './game_object'
 
 const AMMO_SCALE = 0.2
 

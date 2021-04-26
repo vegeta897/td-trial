@@ -1,8 +1,7 @@
 import { createMesh } from '../three/objects'
 import { Euler, LineBasicMaterial, LineLoop, Quaternion, Vector3 } from 'three'
 import * as CANNON from 'cannon-es'
-import GameObject from './game_object'
-import { GameObjectTypes } from '../game'
+import GameObject, { GameObjectTypes } from './game_object'
 import { createLineCircleGeometry } from '../util'
 
 const HQ_CUBE_SIZE = 3

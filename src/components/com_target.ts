@@ -1,5 +1,5 @@
-import { GameObjectTypes } from '../game'
 import { Entity } from 'uecs'
+import { GameObjectTypes } from '../factory/game_object'
 
 export enum TargetPriority {
 	Nearest,

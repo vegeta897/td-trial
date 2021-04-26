@@ -1,12 +1,12 @@
 import { System } from './system'
 import Transform3D from '../components/com_transform3d'
 import { Entity, Tag } from 'uecs'
-import { GameObjectTypes } from '../game'
 import Velocity3D from '../components/com_velocity3d'
 import { Group, Raycaster } from 'three'
 import { FLOOR_Y } from '../game/level'
 import Game from '../game'
 import { TUMBLER_CUBE_SIZE } from '../factory/tumbler'
+import { GameObjectTypes } from '../factory/game_object'
 
 const MAX_DISTANCE = 100
 const MAX_DISTANCE_SQ = MAX_DISTANCE ** 2

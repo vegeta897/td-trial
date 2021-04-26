@@ -1,14 +1,17 @@
-import { Vec3, World, Material, ContactMaterial } from 'cannon-es'
-import Game from './'
+import { Vec3, World, Material, ContactMaterial, GSSolver } from 'cannon-es'
 
 export class Physics {
-	game: Game
-	world = new World({ gravity: new Vec3(0, -20, 0), allowSleep: true })
+	world = new World({
+		gravity: new Vec3(0, -20, 0),
+		allowSleep: true,
+		quatNormalizeFast: true, // Turn this off if things are unstable
+	})
 	static Materials = {
 		ground: new Material('ground'),
 		tumbler: new Material('tumbler'),
 	}
-	constructor(game: Game) {
+	constructor() {
+		;(<GSSolver>this.world.solver).iterations = 10
 		this.world.addContactMaterial(
 			new ContactMaterial(Physics.Materials.ground, Physics.Materials.tumbler, {
 				friction: 100,

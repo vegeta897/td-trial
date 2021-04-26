@@ -7,3 +7,4 @@ if (WEBGL.isWebGLAvailable()) {
 } else {
 	document.body.appendChild(WEBGL.getWebGLErrorMessage())
 }
+export { GameObjectTypes } from './factory/game_object'

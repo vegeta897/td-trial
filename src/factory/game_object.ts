@@ -1,10 +1,21 @@
-import Game, { GameObjectTypes } from '../game'
+import Game from '../game'
 import { Object3D } from 'three'
 import { Component, Entity, Tag } from 'uecs'
 import ThreeObject3D from '../components/com_object3d'
 import Transform3D from '../components/com_transform3d'
 import { Body } from 'cannon-es'
 import PhysicsBody from '../components/com_physicsbody'
+
+export enum GameObjectTypes {
+	None,
+	Turret,
+	Bullet,
+	AmmoLoader,
+	Ammo,
+	Tumbler,
+	HQ,
+	RiverSpawner,
+}
 
 export default abstract class GameObject {
 	game?: Game

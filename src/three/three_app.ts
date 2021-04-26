@@ -12,11 +12,11 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass'
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
-import { GameObjectTypes } from '../game'
 import CameraControls from 'camera-controls'
 import { setupLights } from './light'
 import { setupCamera, updateCamera } from './camera'
 import { FLOOR_Y } from '../game/level'
+import { GameObjectTypes } from '../factory/game_object'
 
 CameraControls.install({ THREE })
 
@@ -50,7 +50,7 @@ export class ThreeApp {
 
 		// Create axes helper
 		const axesHelper = new AxesHelper(3)
-		axesHelper.position.set(0, FLOOR_Y + 0.05, 0)
+		axesHelper.position.set(0, FLOOR_Y + 0.05, 8)
 		this.scene.add(axesHelper)
 
 		// Render passes

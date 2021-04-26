@@ -15,7 +15,7 @@ export default class Game {
 	threeApp = new ThreeApp()
 	ecs = new ECS()
 	world = this.ecs.world
-	physics = new Physics(this)
+	physics = new Physics()
 	level = new Level(this)
 	interaction = new Interaction(this)
 	gui = new GUI(this)
@@ -68,15 +68,4 @@ export default class Game {
 		update()
 	}
 	update() {}
-}
-
-export enum GameObjectTypes {
-	None,
-	Turret,
-	Bullet,
-	AmmoLoader,
-	Ammo,
-	Tumbler,
-	HQ,
-	RiverSpawner,
 }
