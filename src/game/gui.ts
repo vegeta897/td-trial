@@ -38,6 +38,11 @@ export default class GUI {
 	}
 
 	update() {
+		if (this.game.interaction.state === InteractionState.FOLLOW) {
+			this.buildContainer.style.visibility = 'hidden'
+			return
+		}
+		this.buildContainer.style.visibility = 'visible'
 		this.buttons.forEach(({ element, state, hideOnState }) => {
 			element.disabled = this.game.interaction.state === state
 			if (hideOnState)

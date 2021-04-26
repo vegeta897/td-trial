@@ -1,6 +1,6 @@
 import CameraControls from 'camera-controls'
 import { ThreeApp } from './three_app'
-import { OrthographicCamera } from 'three'
+import { Box3, Object3D, OrthographicCamera, Vector3 } from 'three'
 
 export function setupCamera({ camera, cameraControls, center }: ThreeApp) {
 	// Set up camera
@@ -35,4 +35,13 @@ export function updateCamera(camera: OrthographicCamera, scale: number) {
 	camera.top = scale
 	camera.bottom = -scale
 	camera.updateProjectionMatrix()
+}
+
+const followBox = new Box3()
+const followVec = new Vector3()
+
+export function cameraFollow(object: Object3D, controls: CameraControls) {
+	followBox.setFromObject(object)
+	followBox.getCenter(followVec)
+	controls.setTarget(followVec.x, Math.round(followVec.y), followVec.z, true)
 }

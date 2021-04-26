@@ -3,6 +3,7 @@ import {
 	AxesHelper,
 	Color,
 	Group,
+	Object3D,
 	OrthographicCamera,
 	Scene,
 	Vector3,
@@ -14,7 +15,7 @@ import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
 import CameraControls from 'camera-controls'
 import { setupLights } from './light'
-import { setupCamera, updateCamera } from './camera'
+import { cameraFollow, setupCamera, updateCamera } from './camera'
 import { FLOOR_Y } from '../game/level'
 import { GameObjectTypes } from '../factory/game_object'
 
@@ -28,6 +29,7 @@ export class ThreeApp {
 	scene = new Scene()
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 300)
 	cameraControls = new CameraControls(this.camera, this.renderer.domElement)
+	followObject: Object3D | null
 	systems: System[] = []
 	center = new Vector3(4, 0, 4)
 	smaaPass = new SMAAPass(0, 0)
@@ -72,6 +74,10 @@ export class ThreeApp {
 	}
 	render(tick: number, dt: number) {
 		this.systems.forEach((system) => system.update(tick, dt))
+		if (this.followObject) {
+			cameraFollow(this.followObject, this.cameraControls)
+			if (!this.followObject.parent) this.followObject = null
+		}
 		this.cameraControls.update(1)
 		this.composer.render()
 	}
