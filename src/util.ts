@@ -16,9 +16,9 @@ export function createLineCircleGeometry(
 	const points: Vector3[] = []
 	const positions = new CircleGeometry(radius, segments).getAttribute(
 		'position'
-	).array
-	for (let p = 3; p < positions.length; p += 3) {
-		points.push(new Vector3(positions[p], positions[p + 1], positions[p + 2]))
+	)
+	for (let p = 1; p < positions.count; p++) {
+		points.push(new Vector3().fromBufferAttribute(positions, p))
 	}
 	return new BufferGeometry().setFromPoints(points)
 }
