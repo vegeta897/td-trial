@@ -1,10 +1,11 @@
 import Game from './'
-import { Raycaster } from 'three'
+import { Object3D, Raycaster } from 'three'
 import { FLOOR_Y } from './level'
 import Turret from '../factory/turret'
 import AmmoLoader from '../factory/ammo_loader'
 import { Tag } from 'uecs'
 import { GameObjectTypes } from '../factory/game_object'
+import { ThreeApp } from '../three/three_app'
 
 export enum InteractionState {
 	NONE,
@@ -25,10 +26,7 @@ export default class Interaction {
 			'mousedown',
 			(event) => {
 				if (event.button !== 0) return
-				if (this.state === InteractionState.FOLLOW) {
-					this.state = InteractionState.NONE
-					this.game.threeApp.followObject = null
-				}
+				if (this.state === InteractionState.FOLLOW) this.followObject()
 				const mouse = {
 					x: (event.clientX / window.innerWidth) * 2 - 1,
 					y: -(event.clientY / window.innerHeight) * 2 + 1,
@@ -44,10 +42,7 @@ export default class Interaction {
 							Tag.for(GameObjectTypes.Tumbler)
 						)
 					)
-					if (tumblerClick) {
-						this.state = InteractionState.FOLLOW
-						this.game.threeApp.followObject = tumblerClick.object
-					}
+					if (tumblerClick) this.followObject(tumblerClick.object)
 				} else {
 					const groundClick = intersected.find(
 						(i) => i.object === this.game.level.ground
@@ -71,5 +66,11 @@ export default class Interaction {
 				this.game.gui.update()
 			}
 		)
+	}
+	followObject(object: Object3D | null = null) {
+		this.state =
+			object === null ? InteractionState.NONE : InteractionState.FOLLOW
+		this.game.threeApp.cameraControls.dollyToCursor = object === null
+		ThreeApp.FollowObject = object
 	}
 }

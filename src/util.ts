@@ -1,5 +1,5 @@
 import Transform3D from './components/com_transform3d'
-import { BufferGeometry, CircleGeometry, Vector3 } from 'three'
+import { BufferGeometry, CircleGeometry, Vector2, Vector3 } from 'three'
 
 export function cloneTransform3D(transform: Transform3D): Transform3D {
 	return new Transform3D({
@@ -37,4 +37,15 @@ export function assignDefined<T extends Record<keyof T, unknown>>(
 		}
 	}
 	return target
+}
+
+export function cleanPrintVector(
+	vector: Vector2 | Vector3,
+	precision = 2
+): string {
+	const axes = ['x', 'y', 'z']
+	return vector
+		.toArray()
+		.map((a, i) => axes[i] + ': ' + a.toFixed(precision))
+		.join(', ')
 }

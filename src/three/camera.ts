@@ -1,31 +1,41 @@
 import CameraControls from 'camera-controls'
 import { ThreeApp } from './three_app'
-import { Box3, Object3D, OrthographicCamera, Vector3 } from 'three'
+import { OrthographicCamera, Vector3 } from 'three'
+import { FLOOR_Y, Level } from '../game/level'
 
-export function setupCamera({ camera, cameraControls, center }: ThreeApp) {
-	// Set up camera
-	camera.position.setFromSphericalCoords(
-		100, // Distance
-		Math.PI / 4, // Pitch
-		(Math.PI * 2) / 6 // Yaw
-	)
-	camera.lookAt(center)
+const CAMERA_DISTANCE = 100
 
+export function setupCameraControls({ cameraControls }: ThreeApp) {
 	// Set up camera controls
-	cameraControls.distance = 100
+	cameraControls.distance = CAMERA_DISTANCE
 	cameraControls.minZoom = 0.1
 	cameraControls.maxZoom = 7
 	cameraControls.maxPolarAngle = Math.PI * 0.45
-	cameraControls.setTarget(center.x, center.y, center.z)
+	cameraControls.setTarget(Level.Origin.x, FLOOR_Y, Level.Origin.y)
 	cameraControls.polarAngle = Math.PI / 4
 	cameraControls.azimuthAngle = (Math.PI * 2) / 6
 	cameraControls.mouseButtons.left = CameraControls.ACTION.NONE
 	cameraControls.mouseButtons.right = CameraControls.ACTION.ROTATE
 	cameraControls.mouseButtons.middle = CameraControls.ACTION.TRUCK
+	cameraControls.dollyToCursor = true
 	cameraControls.polarRotateSpeed = 0.5
 	cameraControls.azimuthRotateSpeed = 0.7
 	cameraControls.dampingFactor = 0.01
 	cameraControls.draggingDampingFactor = 0.02
+	cameraControls.addEventListener('update', () => {
+		// Keep target at y = 0 and camera distance constant
+		const t = new Vector3()
+		const p = new Vector3()
+		cameraControls.getTarget(t)
+		cameraControls.getPosition(p)
+		// Extend camera-target vector to y = 0
+		const targetToCamera = new Vector3().subVectors(t, p)
+		const yIntersect = t.addScaledVector(targetToCamera, t.y / (p.y - t.y))
+		cameraControls.setTarget(yIntersect.x, 0, yIntersect.z)
+		// Move camera to appropriate distance
+		yIntersect.add(targetToCamera.setLength(-CAMERA_DISTANCE))
+		cameraControls.setPosition(yIntersect.x, yIntersect.y, yIntersect.z)
+	})
 }
 
 export function updateCamera(camera: OrthographicCamera, scale: number) {
@@ -35,13 +45,4 @@ export function updateCamera(camera: OrthographicCamera, scale: number) {
 	camera.top = scale
 	camera.bottom = -scale
 	camera.updateProjectionMatrix()
-}
-
-const followBox = new Box3()
-const followVec = new Vector3()
-
-export function cameraFollow(object: Object3D, controls: CameraControls) {
-	followBox.setFromObject(object)
-	followBox.getCenter(followVec)
-	controls.setTarget(followVec.x, Math.round(followVec.y), followVec.z, true)
 }

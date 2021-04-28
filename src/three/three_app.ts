@@ -6,7 +6,6 @@ import {
 	Object3D,
 	OrthographicCamera,
 	Scene,
-	Vector3,
 	WebGLRenderer,
 } from 'three'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer'
@@ -15,7 +14,7 @@ import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass'
 import { System } from '../systems/system'
 import CameraControls from 'camera-controls'
 import { setupLights } from './light'
-import { cameraFollow, setupCamera, updateCamera } from './camera'
+import { setupCameraControls, updateCamera } from './camera'
 import { FLOOR_Y } from '../game/level'
 import { GameObjectTypes } from '../factory/game_object'
 
@@ -29,12 +28,11 @@ export class ThreeApp {
 	scene = new Scene()
 	camera = new OrthographicCamera(0, 0, 0, 0, 0, 300)
 	cameraControls = new CameraControls(this.camera, this.renderer.domElement)
-	followObject: Object3D | null
 	systems: System[] = []
-	center = new Vector3(4, 0, 4)
 	smaaPass = new SMAAPass(0, 0)
 	smaa = true
 	groups: Map<GameObjectTypes, Group> = new Map()
+	static FollowObject: Object3D | null
 	constructor() {
 		// Set up renderer
 		this.renderer.shadowMap.enabled = true
@@ -44,11 +42,11 @@ export class ThreeApp {
 
 		// Set up lights & camera
 		setupLights(this)
-		setupCamera(this)
+		setupCameraControls(this)
 
 		// Add background color and fog
 		this.scene.background = new Color(0x38286b)
-		this.scene.fog = new THREE.Fog(0x38286b, 100, 130)
+		// this.scene.fog = new THREE.Fog(0x38286b, 130, 150)
 
 		// Create axes helper
 		const axesHelper = new AxesHelper(3)
@@ -74,10 +72,6 @@ export class ThreeApp {
 	}
 	render(tick: number, dt: number) {
 		this.systems.forEach((system) => system.update(tick, dt))
-		if (this.followObject) {
-			cameraFollow(this.followObject, this.cameraControls)
-			if (!this.followObject.parent) this.followObject = null
-		}
 		this.cameraControls.update(1)
 		this.composer.render()
 	}

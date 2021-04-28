@@ -12,6 +12,7 @@ import PhysicsSystem from '../systems/sys_physics'
 import TransformSystem from '../systems/sys_transform'
 import OrbitSystem from '../systems/sys_orbit'
 import ForceSystem from '../systems/sys_force'
+import CameraFollowSystem from '../systems/sys_camera_follow'
 
 export default class ECS {
 	world = new World()
@@ -29,6 +30,7 @@ export default class ECS {
 		this.systems.push(new ForceSystem(game))
 		this.systems.push(new PhysicsSystem(game))
 		game.threeApp.systems.push(new RenderSystem(game))
+		game.threeApp.systems.push(new CameraFollowSystem(game))
 	}
 	update(tick: number) {
 		this.systems.forEach((system) => system.update(tick))

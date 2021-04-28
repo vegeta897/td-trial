@@ -27,8 +27,8 @@ export class Level {
 		const planeMesh = new Mesh(plane, planeMaterial)
 		planeMesh.receiveShadow = true
 		planeMesh.position.y = FLOOR_Y
-		planeMesh.position.x = this.game.threeApp.center.x
-		planeMesh.position.z = this.game.threeApp.center.z
+		planeMesh.position.x = Level.Origin.x
+		planeMesh.position.z = Level.Origin.y
 		planeMesh.rotateX(-Math.PI / 2)
 		this.game.threeApp.scene.add(planeMesh)
 		this.ground = planeMesh
