@@ -1,5 +1,5 @@
 import Game from './'
-import { Object3D, Raycaster } from 'three'
+import { Raycaster } from 'three'
 import { FLOOR_Y } from './level'
 import Turret from '../factory/turret'
 import AmmoLoader from '../factory/ammo_loader'
@@ -67,7 +67,7 @@ export default class Interaction {
 			}
 		)
 	}
-	followObject(object: Object3D | null = null) {
+	followObject(object: typeof ThreeApp.FollowObject = null) {
 		this.state =
 			object === null ? InteractionState.NONE : InteractionState.FOLLOW
 		this.game.threeApp.cameraControls.dollyToCursor = object === null
