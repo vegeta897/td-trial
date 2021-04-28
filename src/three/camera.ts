@@ -22,14 +22,16 @@ export function setupCameraControls({ cameraControls }: ThreeApp) {
 	cameraControls.azimuthRotateSpeed = 0.7
 	cameraControls.dampingFactor = 0.01
 	cameraControls.draggingDampingFactor = 0.02
+
+	const t = new Vector3()
+	const p = new Vector3()
+	const targetToCamera = new Vector3()
 	cameraControls.addEventListener('update', () => {
 		// Keep target at y = 0 and camera distance constant
-		const t = new Vector3()
-		const p = new Vector3()
 		cameraControls.getTarget(t)
 		cameraControls.getPosition(p)
 		// Extend camera-target vector to y = 0
-		const targetToCamera = new Vector3().subVectors(t, p)
+		targetToCamera.subVectors(t, p)
 		const yIntersect = t.addScaledVector(targetToCamera, t.y / (p.y - t.y))
 		cameraControls.setTarget(yIntersect.x, 0, yIntersect.z)
 		// Move camera to appropriate distance
