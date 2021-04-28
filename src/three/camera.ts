@@ -25,17 +25,17 @@ export function setupCameraControls({ cameraControls }: ThreeApp) {
 
 	const t = new Vector3()
 	const p = new Vector3()
-	const targetToCamera = new Vector3()
+	const cameraToTarget = new Vector3()
 	cameraControls.addEventListener('update', () => {
 		// Keep target at y = 0 and camera distance constant
 		cameraControls.getTarget(t)
 		cameraControls.getPosition(p)
 		// Extend camera-target vector to y = 0
-		targetToCamera.subVectors(t, p)
-		const yIntersect = t.addScaledVector(targetToCamera, t.y / (p.y - t.y))
+		cameraToTarget.subVectors(p, t)
+		const yIntersect = t.addScaledVector(cameraToTarget, t.y / (t.y - p.y))
 		cameraControls.setTarget(yIntersect.x, 0, yIntersect.z)
 		// Move camera to appropriate distance
-		yIntersect.add(targetToCamera.setLength(-CAMERA_DISTANCE))
+		yIntersect.add(cameraToTarget.setLength(CAMERA_DISTANCE))
 		cameraControls.setPosition(yIntersect.x, yIntersect.y, yIntersect.z)
 	})
 }
