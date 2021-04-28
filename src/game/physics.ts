@@ -5,6 +5,7 @@ import {
 	ContactMaterial,
 	SplitSolver,
 	GSSolver,
+	SAPBroadphase,
 } from 'cannon-es'
 
 export class Physics {
@@ -20,6 +21,7 @@ export class Physics {
 		tumbler: new Material('tumbler'),
 	}
 	constructor() {
+		this.world.broadphase = new SAPBroadphase(this.world)
 		this.solver.iterations = 10
 		this.solver.tolerance = 1e-7
 		this.world.addContactMaterial(
