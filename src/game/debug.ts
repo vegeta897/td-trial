@@ -8,6 +8,23 @@ export function createDebugGUI(game: Game) {
 	simFolder
 		.add(Game, 'TickTime', 1, 400)
 		.onChange((tickTime) => (Game.TickTime = tickTime))
+	simFolder.add(
+		{
+			'Reset TickTime to default': () => {
+				Game.TickTime = 1000 / Game.TickRate
+				simFolder.updateDisplay()
+			},
+		},
+		'Reset TickTime to default'
+	)
+	simFolder.add(
+		{
+			'+2000 ticks': () => {
+				for (let i = 0; i < 2000; i++) game.ecs.update(++game.tick)
+			},
+		},
+		'+2000 ticks'
+	)
 	simFolder.add(game, 'interpolate')
 	simFolder.add(game, 'paused')
 	simFolder

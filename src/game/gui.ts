@@ -12,12 +12,6 @@ export default class GUI {
 
 		this.statsContainer.id = 'gui-stats-container'
 		document.body.appendChild(this.statsContainer)
-		const tickButton = document.createElement('button')
-		tickButton.innerText = '+2000 ticks'
-		tickButton.addEventListener('click', () => {
-			for (let i = 0; i < 2000; i++) this.game.ecs.update(++this.game.tick)
-		})
-		this.statsContainer.appendChild(tickButton)
 		this.createDisplay('Tick', () => this.game.tick)
 		this.createDisplay('Entities', () => this.game.world.size())
 		this.createDisplay('Bodies', () => this.game.physics.world.bodies.length)
