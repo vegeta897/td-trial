@@ -36,7 +36,7 @@ export default class Tumbler extends GameObject {
 		}
 		this.additionalComponents = [
 			new Orbit(Level.Origin),
-			new ForceComponent(tumbleDirection.clone(), FORCE, SPEED_LIMIT),
+			new ForceComponent(tumbleDirection.clone(), FORCE, SPEED_LIMIT, 2),
 		]
 	}
 }
