@@ -17,26 +17,32 @@ const tumblerPrototype = createMesh({
 	meshProperties: { castShadow: true },
 })
 
+const SCALE_VECTOR = new Vector3().setScalar(TUMBLER_CUBE_SIZE)
+const BODY_SCALE_VECTOR = new CANNON.Vec3(1, 1, 1).scale(TUMBLER_CUBE_SIZE / 2)
+
 export default class Tumbler extends GameObject {
-	constructor(position: Vector3, tumbleDirection: Quaternion) {
+	constructor(position: Vector3, initDirection: Quaternion) {
 		super(GameObjectTypes.Tumbler, tumblerPrototype.clone())
 		this.body = new CANNON.Body({
 			mass: MASS,
-			shape: new CANNON.Box(
-				new CANNON.Vec3(1, 1, 1).scale(TUMBLER_CUBE_SIZE / 2)
-			),
+			shape: new CANNON.Box(BODY_SCALE_VECTOR.clone()),
 			position: new CANNON.Vec3(position.x, position.y, position.z),
-			quaternion: <CANNON.Quaternion>(<unknown>tumbleDirection.clone()),
+			quaternion: new CANNON.Quaternion(
+				initDirection.x,
+				initDirection.y,
+				initDirection.z,
+				initDirection.w
+			),
 			material: Physics.Materials.tumbler,
 		})
 		this.transform = {
 			position,
-			rotation: tumbleDirection.clone(),
-			scale: new Vector3(1, 1, 1).setScalar(TUMBLER_CUBE_SIZE),
+			rotation: initDirection.clone(),
+			scale: SCALE_VECTOR.clone(),
 		}
 		this.additionalComponents = [
 			new Orbit(Level.Origin),
-			new ForceComponent(tumbleDirection.clone(), FORCE, SPEED_LIMIT, 2),
+			new ForceComponent(initDirection.clone(), FORCE, SPEED_LIMIT, 2),
 		]
 	}
 }

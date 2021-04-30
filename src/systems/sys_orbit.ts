@@ -14,13 +14,15 @@ for (let i = 0; i < SLICES; i++) {
 	)
 }
 
+const RADIUS_VECTOR = new Vector2()
+
 export default class OrbitSystem extends System {
 	view = this.world.view(Orbit, Transform3D, ForceComponent)
 	update(tick: number) {
 		this.view.each((entity, { origin, ccw }, { position }, force) => {
 			if (tick % force.applyRate > 0) return
-			const radiusVector = new Vector2(position.x, position.z).sub(origin)
-			let slice = Math.round((radiusVector.angle() / (Math.PI * 2)) * SLICES)
+			RADIUS_VECTOR.set(position.x, position.z).sub(origin)
+			let slice = Math.round((RADIUS_VECTOR.angle() / (Math.PI * 2)) * SLICES)
 			if (ccw) slice += SLICES / 2
 			const orbitQuaternion = orbitQuaternions[slice % SLICES]
 			force.direction.copy(orbitQuaternion)

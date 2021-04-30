@@ -37,12 +37,14 @@ export default class Bullet extends GameObject {
 	}
 }
 
+const AIM_EULER = new Euler()
+
 function randomizeAim(quaternion: Quaternion, maxAngle: number): Quaternion {
 	return quaternion
 		.clone()
 		.multiply(
 			new Quaternion().setFromEuler(
-				new Euler(
+				AIM_EULER.set(
 					MathUtils.randFloat(-maxAngle, maxAngle),
 					MathUtils.randFloat(-maxAngle, maxAngle),
 					0,
