@@ -22,7 +22,7 @@
 		"uecs": "^0.3.1"
 	},
 	"devDependencies": {
-		"@types/dat.gui": "^0.7.6",
+		"@types/dat.gui": "^0.7.7",
 		"@types/three": "^0.127.1",
 		"clean-webpack-plugin": "^3.0.0",
 		"css-loader": "^5.2.4",
